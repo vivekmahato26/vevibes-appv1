@@ -1,0 +1,14 @@
+com/vevibes/MainActivity.java
+ com.vevibes.MainActivity
+com/vevibes/ReactNativeFlipper.java
+ com.vevibes.ReactNativeFlipper
+ com.vevibes.ReactNativeFlipper$1
+ com.vevibes.ReactNativeFlipper$2
+ com.vevibes.ReactNativeFlipper$2$1
+com/vevibes/BuildConfig.java
+ com.vevibes.BuildConfig
+com/vevibes/MainApplication.java
+ com.vevibes.MainApplication
+ com.vevibes.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
