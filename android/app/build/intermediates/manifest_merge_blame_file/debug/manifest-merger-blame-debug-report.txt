@@ -17,55 +17,274 @@
 13    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 13-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:6:5-79
 13-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:6:22-76
-14    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+14    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Include required permissions for Google Maps API to run. -->
 14-->[com.facebook.flipper:flipper:0.75.1] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\a8f6015f96666ab8d93bfe5b64998bc8\jetified-flipper-0.75.1\AndroidManifest.xml:16:5-76
 14-->[com.facebook.flipper:flipper:0.75.1] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\a8f6015f96666ab8d93bfe5b64998bc8\jetified-flipper-0.75.1\AndroidManifest.xml:16:22-73
-15
-16    <application
-16-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:8:5-26:19
-17        android:name="com.vevibes.MainApplication"
-17-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:9:7-38
-18        android:allowBackup="false"
-18-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:13:7-34
-19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-19-->[androidx.core:core:1.1.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\d67cd79abd1ca209502f51c69d23182b\core-1.1.0\AndroidManifest.xml:24:18-86
-20        android:debuggable="true"
-21        android:icon="@mipmap/ic_launcher"
-21-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:11:7-41
-22        android:label="@string/app_name"
-22-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:10:7-39
-23        android:roundIcon="@mipmap/ic_launcher_round"
-23-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:12:7-52
-24        android:theme="@style/AppTheme"
-24-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:14:7-38
-25        android:usesCleartextTraffic="true" >
-25-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\debug\AndroidManifest.xml:8:9-44
-26        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-26-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\debug\AndroidManifest.xml:11:9-86
-26-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\debug\AndroidManifest.xml:11:19-83
-27        <activity
-27-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:15:7-25:18
-28            android:name="com.vevibes.MainActivity"
-28-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:16:9-37
-29            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-29-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:18:9-86
-30            android:label="@string/app_name"
-30-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:17:9-41
-31            android:launchMode="singleTask"
-31-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:19:9-40
-32            android:windowSoftInputMode="adjustResize" >
-32-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:20:9-51
-33            <intent-filter>
-33-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:21:9-24:25
-34                <action android:name="android.intent.action.MAIN" />
-34-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:22:13-65
-34-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:22:21-62
-35
-36                <category android:name="android.intent.category.LAUNCHER" />
-36-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:23:13-73
-36-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:23:23-70
-37            </intent-filter>
-38        </activity>
-39    </application>
-40
-41</manifest>
+15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+15-->[com.google.android.gms:play-services-maps:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\23a349ca37bf56d61dbc60917fc1e484\jetified-play-services-maps-11.8.0\AndroidManifest.xml:23:5-79
+15-->[com.google.android.gms:play-services-maps:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\23a349ca37bf56d61dbc60917fc1e484\jetified-play-services-maps-11.8.0\AndroidManifest.xml:23:22-76
+16
+17    <uses-feature
+17-->[com.google.android.gms:play-services-maps:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\23a349ca37bf56d61dbc60917fc1e484\jetified-play-services-maps-11.8.0\AndroidManifest.xml:26:5-28:35
+18        android:glEsVersion="0x00020000"
+18-->[com.google.android.gms:play-services-maps:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\23a349ca37bf56d61dbc60917fc1e484\jetified-play-services-maps-11.8.0\AndroidManifest.xml:27:9-41
+19        android:required="true" />
+19-->[com.google.android.gms:play-services-maps:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\23a349ca37bf56d61dbc60917fc1e484\jetified-play-services-maps-11.8.0\AndroidManifest.xml:28:9-32
+20
+21    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+21-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:25:5-68
+21-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:25:22-65
+22    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+22-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:26:5-82
+22-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:26:22-79
+23
+24    <permission
+24-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:28:5-30:47
+25        android:name="com.vevibes.permission.C2D_MESSAGE"
+25-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:29:9-63
+26        android:protectionLevel="signature" />
+26-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:30:9-44
+27
+28    <uses-permission android:name="com.vevibes.permission.C2D_MESSAGE" />
+28-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:32:5-79
+28-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:32:22-76
+29
+30    <application
+30-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:8:5-26:19
+31        android:name="com.vevibes.MainApplication"
+31-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:9:7-38
+32        android:allowBackup="false"
+32-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:13:7-34
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.1.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\d67cd79abd1ca209502f51c69d23182b\core-1.1.0\AndroidManifest.xml:24:18-86
+34        android:debuggable="true"
+35        android:icon="@mipmap/ic_launcher"
+35-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:11:7-41
+36        android:label="@string/app_name"
+36-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:10:7-39
+37        android:roundIcon="@mipmap/ic_launcher_round"
+37-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:12:7-52
+38        android:theme="@style/AppTheme"
+38-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:14:7-38
+39        android:usesCleartextTraffic="true" >
+39-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\debug\AndroidManifest.xml:8:9-44
+40        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+40-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\debug\AndroidManifest.xml:11:9-86
+40-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\debug\AndroidManifest.xml:11:19-83
+41        <activity
+41-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:15:7-25:18
+42            android:name="com.vevibes.MainActivity"
+42-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:16:9-37
+43            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+43-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:18:9-86
+44            android:label="@string/app_name"
+44-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:17:9-41
+45            android:launchMode="singleTask"
+45-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:19:9-40
+46            android:windowSoftInputMode="adjustResize" >
+46-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:20:9-51
+47            <intent-filter>
+47-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:21:9-24:25
+48                <action android:name="android.intent.action.MAIN" />
+48-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:22:13-65
+48-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:22:21-62
+49
+50                <category android:name="android.intent.category.LAUNCHER" />
+50-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:23:13-73
+50-->C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\android\app\src\main\AndroidManifest.xml:23:23-70
+51            </intent-filter>
+52        </activity>
+53        <activity
+53-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-16:75
+54            android:name="com.gettipsi.stripe.OpenBrowserActivity"
+54-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-67
+55            android:exported="false"
+55-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+56            android:launchMode="singleTask"
+56-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-44
+57            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+57-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-72
+58        <activity
+58-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:9-30:20
+59            android:name="com.gettipsi.stripe.RedirectUriReceiver"
+59-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-67
+60            android:exported="true"
+60-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-36
+61            android:launchMode="singleTask"
+61-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:13-44
+62            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
+62-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:13-83
+63            <intent-filter>
+63-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:13-29:29
+64                <action android:name="android.intent.action.VIEW" />
+64-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:17-69
+64-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:25-66
+65
+66                <category android:name="android.intent.category.DEFAULT" />
+66-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:17-76
+66-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:27-73
+67                <category android:name="android.intent.category.BROWSABLE" />
+67-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:17-78
+67-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:27-75
+68
+69                <data android:scheme="example" />
+69-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:17-50
+69-->[:tipsi-stripe] C:\Users\CLIQTICK03\Desktop\Vevibes-App\vevibes\node_modules\tipsi-stripe\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:23-47
+70            </intent-filter>
+71        </activity>
+72        <activity
+72-->[com.google.android.gms:play-services-base:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\74688708890d9cfd29846842609154b0\jetified-play-services-base-11.8.0\AndroidManifest.xml:23:9-26:75
+73            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+73-->[com.google.android.gms:play-services-base:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\74688708890d9cfd29846842609154b0\jetified-play-services-base-11.8.0\AndroidManifest.xml:24:13-79
+74            android:exported="false"
+74-->[com.google.android.gms:play-services-base:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\74688708890d9cfd29846842609154b0\jetified-play-services-base-11.8.0\AndroidManifest.xml:25:13-37
+75            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+75-->[com.google.android.gms:play-services-base:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\74688708890d9cfd29846842609154b0\jetified-play-services-base-11.8.0\AndroidManifest.xml:26:13-72
+76
+77        <receiver
+77-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:28:9-32:20
+78            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+78-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:29:13-85
+79            android:enabled="true"
+79-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:30:13-35
+80            android:exported="false" >
+80-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:31:13-37
+81        </receiver>
+82        <receiver
+82-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:33:9-41:20
+83            android:name="com.google.android.gms.measurement.AppMeasurementInstallReferrerReceiver"
+83-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:34:13-100
+84            android:enabled="true"
+84-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:35:13-35
+85            android:exported="true"
+85-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:36:13-36
+86            android:permission="android.permission.INSTALL_PACKAGES" >
+86-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:37:13-69
+87            <intent-filter>
+87-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:38:13-40:29
+88                <action android:name="com.android.vending.INSTALL_REFERRER" />
+88-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:39:17-79
+88-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:39:25-76
+89            </intent-filter>
+90        </receiver>
+91
+92        <service
+92-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:43:9-46:40
+93            android:name="com.google.android.gms.measurement.AppMeasurementService"
+93-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:44:13-84
+94            android:enabled="true"
+94-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:45:13-35
+95            android:exported="false" />
+95-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:46:13-37
+96        <service
+96-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:47:9-51:72
+97            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+97-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:48:13-87
+98            android:enabled="true"
+98-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:49:13-35
+99            android:exported="false"
+99-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:50:13-37
+100            android:permission="android.permission.BIND_JOB_SERVICE" />
+100-->[com.google.firebase:firebase-analytics:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5663ce40f61c20ebe01c679b39bb8f5a\jetified-firebase-analytics-11.8.0\AndroidManifest.xml:51:13-69
+101
+102        <receiver
+102-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:35:9-44:20
+103            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+103-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:36:13-78
+104            android:exported="true"
+104-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:37:13-36
+105            android:permission="com.google.android.c2dm.permission.SEND" >
+105-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:38:13-73
+106            <intent-filter>
+106-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:39:13-43:29
+107                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+107-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:40:17-81
+107-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:40:25-78
+108
+109                <category android:name="com.vevibes" />
+109-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:42:17-61
+109-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:42:27-58
+110            </intent-filter>
+111        </receiver>
+112        <!--
+113             FirebaseInstanceIdService performs security checks at runtime,
+114             no need for explicit permissions despite exported="true"
+115        -->
+116        <service
+116-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:50:9-56:19
+117            android:name="com.google.firebase.iid.FirebaseInstanceIdService"
+117-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:51:13-77
+118            android:exported="true" >
+118-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:52:13-36
+119            <intent-filter android:priority="-500" >
+119-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:53:13-55:29
+119-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:53:28-51
+120                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+120-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:54:17-80
+120-->[com.google.firebase:firebase-iid:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\158044faee02bb935fff083ef14d2f85\jetified-firebase-iid-11.8.0\AndroidManifest.xml:54:25-77
+121            </intent-filter>
+122        </service>
+123
+124        <provider
+124-->[com.google.firebase:firebase-common:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\604ab335d35efc7ab4eeb664975bd6a8\jetified-firebase-common-11.8.0\AndroidManifest.xml:8:9-12:39
+125            android:name="com.google.firebase.provider.FirebaseInitProvider"
+125-->[com.google.firebase:firebase-common:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\604ab335d35efc7ab4eeb664975bd6a8\jetified-firebase-common-11.8.0\AndroidManifest.xml:9:13-77
+126            android:authorities="com.vevibes.firebaseinitprovider"
+126-->[com.google.firebase:firebase-common:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\604ab335d35efc7ab4eeb664975bd6a8\jetified-firebase-common-11.8.0\AndroidManifest.xml:10:13-72
+127            android:exported="false"
+127-->[com.google.firebase:firebase-common:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\604ab335d35efc7ab4eeb664975bd6a8\jetified-firebase-common-11.8.0\AndroidManifest.xml:11:13-37
+128            android:initOrder="100" />
+128-->[com.google.firebase:firebase-common:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\604ab335d35efc7ab4eeb664975bd6a8\jetified-firebase-common-11.8.0\AndroidManifest.xml:12:13-36
+129
+130        <meta-data
+130-->[com.google.android.gms:play-services-basement:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\65d81bd5e213fb585d1f1457e7cb4b2a\jetified-play-services-basement-11.8.0\AndroidManifest.xml:23:9-25:69
+131            android:name="com.google.android.gms.version"
+131-->[com.google.android.gms:play-services-basement:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\65d81bd5e213fb585d1f1457e7cb4b2a\jetified-play-services-basement-11.8.0\AndroidManifest.xml:24:13-58
+132            android:value="@integer/google_play_services_version" />
+132-->[com.google.android.gms:play-services-basement:11.8.0] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\65d81bd5e213fb585d1f1457e7cb4b2a\jetified-play-services-basement-11.8.0\AndroidManifest.xml:25:13-66
+133
+134        <activity
+134-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:12:9-14:57
+135            android:name="com.stripe.android.view.AddPaymentMethodActivity"
+135-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:13:13-76
+136            android:theme="@style/StripeDefaultTheme" />
+136-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:14:13-54
+137        <activity
+137-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:15:9-17:57
+138            android:name="com.stripe.android.view.PaymentMethodsActivity"
+138-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:16:13-74
+139            android:theme="@style/StripeDefaultTheme" />
+139-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:17:13-54
+140        <activity
+140-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:18:9-20:57
+141            android:name="com.stripe.android.view.PaymentFlowActivity"
+141-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:19:13-71
+142            android:theme="@style/StripeDefaultTheme" />
+142-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:20:13-54
+143        <activity
+143-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:21:9-23:57
+144            android:name="com.stripe.android.view.PaymentAuthWebViewActivity"
+144-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:22:13-78
+145            android:theme="@style/StripeDefaultTheme" />
+145-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:23:13-54
+146        <activity
+146-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:24:9-26:57
+147            android:name="com.stripe.android.view.PaymentRelayActivity"
+147-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:25:13-72
+148            android:theme="@style/StripeDefaultTheme" />
+148-->[com.stripe:stripe-android:10.4.6] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\5e36f32fe7281b95550bdbbc815f83e4\jetified-stripe-android-10.4.6\AndroidManifest.xml:26:13-54
+149        <activity
+149-->[com.stripe:stripe-3ds2-android:1.2.2] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\644d59c0c1397cf499daf3925cb2cca1\jetified-stripe-3ds2-android-1.2.2\AndroidManifest.xml:12:9-14:54
+150            android:name="com.stripe.android.stripe3ds2.views.ChallengeActivity"
+150-->[com.stripe:stripe-3ds2-android:1.2.2] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\644d59c0c1397cf499daf3925cb2cca1\jetified-stripe-3ds2-android-1.2.2\AndroidManifest.xml:13:13-81
+151            android:theme="@style/Stripe3DS2Theme" />
+151-->[com.stripe:stripe-3ds2-android:1.2.2] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\644d59c0c1397cf499daf3925cb2cca1\jetified-stripe-3ds2-android-1.2.2\AndroidManifest.xml:14:13-51
+152        <activity
+152-->[com.stripe:stripe-3ds2-android:1.2.2] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\644d59c0c1397cf499daf3925cb2cca1\jetified-stripe-3ds2-android-1.2.2\AndroidManifest.xml:15:9-17:54
+153            android:name="com.stripe.android.stripe3ds2.views.ChallengeProgressDialogActivity"
+153-->[com.stripe:stripe-3ds2-android:1.2.2] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\644d59c0c1397cf499daf3925cb2cca1\jetified-stripe-3ds2-android-1.2.2\AndroidManifest.xml:16:13-95
+154            android:theme="@style/Stripe3DS2Theme" />
+154-->[com.stripe:stripe-3ds2-android:1.2.2] C:\Users\CLIQTICK03\.gradle\caches\transforms-2\files-2.1\644d59c0c1397cf499daf3925cb2cca1\jetified-stripe-3ds2-android-1.2.2\AndroidManifest.xml:17:13-51
+155    </application>
+156
+157</manifest>

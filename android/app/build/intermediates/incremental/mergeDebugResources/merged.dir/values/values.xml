@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2" xmlns:ns2="http://schemas.android.com/tools">
+    <string-array name="gettipsi_currency_array">
+    <item>Currency (optional)</item>
+    <item>Unspecified</item>
+    <item>USD</item>
+  </string-array>
+    <string-array name="month_array">
+    <item>Month</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+    <item>7</item>
+    <item>8</item>
+    <item>9</item>
+    <item>10</item>
+    <item>11</item>
+    <item>12</item>
+  </string-array>
+    <string-array name="year_array">
+    <item>Year</item>
+    <item>2016</item>
+    <item>2017</item>
+    <item>2018</item>
+    <item>2019</item>
+    <item>2020</item>
+    <item>2021</item>
+    <item>2022</item>
+    <item>2023</item>
+    <item>2024</item>
+    <item>2025</item>
+    <item>2026</item>
+    <item>2027</item>
+    <item>2028</item>
+    <item>2029</item>
+    <item>2030</item>
+  </string-array>
     <attr name="appBarLayoutStyle"/>
     <attr format="reference" name="badgeStyle"/>
     <attr format="reference" name="bottomAppBarStyle"/>
@@ -62,6 +100,7 @@
     <attr format="reference" name="shapeAppearanceSmallComponent"/>
     <attr format="reference" name="showMotionSpec"/>
     <attr format="boolean" name="singleSelection"/>
+    <attr format="color" name="stripe3DS2EditTextBackgroundColor"/>
     <attr format="color" name="strokeColor"/>
     <attr format="dimension" name="strokeWidth"/>
     <attr format="reference" name="tabStyle"/>
@@ -91,6 +130,7 @@
     <color name="abc_search_url_text_normal">#7fa87f</color>
     <color name="abc_search_url_text_pressed">@android:color/black</color>
     <color name="abc_search_url_text_selected">@android:color/black</color>
+    <color name="accent_color_default">#ff2296f3</color>
     <color name="accent_material_dark">@color/material_deep_teal_200</color>
     <color name="accent_material_light">@color/material_deep_teal_500</color>
     <color name="background_floating_material_dark">@color/material_grey_800</color>
@@ -103,6 +143,7 @@
     <color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark</color>
     <color name="bright_foreground_material_dark">@android:color/white</color>
     <color name="bright_foreground_material_light">@android:color/black</color>
+    <color name="buttonText">#EEEEEE</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
     <color name="cardview_dark_background">#FF424242</color>
@@ -111,6 +152,21 @@
     <color name="cardview_shadow_start_color">#37000000</color>
     <color name="catalyst_logbox_background">#ffffffff</color>
     <color name="catalyst_redbox_background">#eecc0000</color>
+    <color name="colorAccent">#005eff</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="color_text_secondary_default">#ff32325d</color>
+    <color name="color_text_unselected_primary_default">#ff000000</color>
+    <color name="color_text_unselected_secondary_default">#80323232</color>
+    <color name="common_google_signin_btn_text_dark_default">@android:color/white</color>
+    <color name="common_google_signin_btn_text_dark_disabled">#1F000000</color>
+    <color name="common_google_signin_btn_text_dark_focused">@android:color/black</color>
+    <color name="common_google_signin_btn_text_dark_pressed">@android:color/white</color>
+    <color name="common_google_signin_btn_text_light_default">#90000000</color>
+    <color name="common_google_signin_btn_text_light_disabled">#1F000000</color>
+    <color name="common_google_signin_btn_text_light_focused">#90000000</color>
+    <color name="common_google_signin_btn_text_light_pressed">#DE000000</color>
+    <color name="control_normal_color_default">#ff90A4AE</color>
     <color name="design_bottom_navigation_shadow_color">#14000000</color>
     <color name="design_dark_default_color_background">#121212</color>
     <color name="design_dark_default_color_error">#CF6679</color>
@@ -150,10 +206,14 @@
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>
     <color name="dim_foreground_material_light">#ff323232</color>
+    <color name="editText">#AAAAAA</color>
     <color name="error_color_material_dark">#ff7043</color>
     <color name="error_color_material_light">#ff5722</color>
+    <color name="error_text_dark_theme">#ffe85746</color>
+    <color name="error_text_light_theme">#ffeb1c26</color>
     <color name="foreground_material_dark">@android:color/white</color>
     <color name="foreground_material_light">@android:color/black</color>
+    <color name="headerText">#EEEEEE</color>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
     <color name="material_blue_grey_800">#ff37474f</color>
@@ -178,6 +238,8 @@
     <color name="mtrl_textinput_hovered_box_stroke_color">#DE000000</color>
     <color name="notification_action_color_filter">#ffffffff</color>
     <color name="notification_icon_bg_color">#ff9e9e9e</color>
+    <color name="notification_material_background_media_default_color">#ff424242</color>
+    <item name="null_color" type="color">234234</item>
     <color name="primary_dark_material_dark">@android:color/black</color>
     <color name="primary_dark_material_light">@color/material_grey_600</color>
     <color name="primary_material_dark">@color/material_grey_900</color>
@@ -192,13 +254,43 @@
     <color name="secondary_text_default_material_light">#8a000000</color>
     <color name="secondary_text_disabled_material_dark">#36ffffff</color>
     <color name="secondary_text_disabled_material_light">#24000000</color>
+    <color name="slate_50">#3332325d</color>
+    <color name="spinnerItem">#AAAAAA</color>
     <color name="splashscreen_background">#FFFFFF</color>
+    <color name="stripe_3ds2_accent">@color/stripe_3ds2_primary</color>
+    <color name="stripe_3ds2_background">@android:color/white</color>
+    <color name="stripe_3ds2_control_activated">@color/stripe_3ds2_primary</color>
+    <color name="stripe_3ds2_divider">#1E000000</color>
+    <color name="stripe_3ds2_primary">#6C00F8</color>
+    <color name="stripe_3ds2_primary_dark">#5500DE</color>
+    <color name="stripe_3ds2_text_color">@android:color/black</color>
+    <color name="stripe_3ds2_text_color_primary">@android:color/white</color>
+    <color name="stripe_3ds2_text_edit">@color/stripe_3ds2_text_color</color>
+    <color name="stripe_3ds2_text_info_toggled">@color/stripe_3ds2_primary</color>
+    <color name="stripe_3ds2_text_input_fill">#FAFAFA</color>
+    <color name="stripe_3ds2_text_input_hint">#99000000</color>
     <color name="switch_thumb_disabled_material_dark">#ff616161</color>
     <color name="switch_thumb_disabled_material_light">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
+    <color name="text_helper_color">#a8a8a8</color>
+    <color name="toolbar_color_default">#ff3f51b5</color>
+    <color name="toolbar_color_default_dark">#ff324090</color>
     <color name="tooltip_background_dark">#e6616161</color>
     <color name="tooltip_background_light">#e6FFFFFF</color>
+    <color name="transparent_background">#00FFFFFF</color>
+    <color name="wallet_bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <color name="wallet_bright_foreground_holo_dark">#fff3f3f3</color>
+    <color name="wallet_bright_foreground_holo_light">#ff000000</color>
+    <color name="wallet_dim_foreground_disabled_holo_dark">#80bebebe</color>
+    <color name="wallet_dim_foreground_holo_dark">#bebebe</color>
+    <color name="wallet_highlighted_text_holo_dark">#6633b5e5</color>
+    <color name="wallet_highlighted_text_holo_light">#6633b5e5</color>
+    <color name="wallet_hint_foreground_holo_dark">#808080</color>
+    <color name="wallet_hint_foreground_holo_light">#808080</color>
+    <color name="wallet_holo_blue_light">#ff33b5e5</color>
+    <color name="wallet_link_text_light">#0000ee</color>
+    <color name="white_background">#FFFFFF</color>
     <dimen name="abc_action_bar_content_inset_material">16dp</dimen>
     <dimen name="abc_action_bar_content_inset_with_nav">72dp</dimen>
     <dimen name="abc_action_bar_default_height_material">56dp</dimen>
@@ -278,10 +370,37 @@
     <dimen name="abc_text_size_title_material">20sp</dimen>
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
     <dimen name="action_bar_size">16dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_total_margin">8dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="add_address_vertical_margin">16dp</dimen>
+    <dimen name="add_card_element_vertical_margin">12dp</dimen>
+    <dimen name="add_card_expiry_middle_margin">8dp</dimen>
+    <dimen name="add_card_total_margin">16dp</dimen>
+    <dimen name="add_payment_method_vertical_padding">8dp</dimen>
+    <dimen name="android_pay_button_layout_margin">24dp</dimen>
+    <dimen name="android_pay_button_separation">8dp</dimen>
+    <dimen name="android_pay_confirmation_margin">8dp</dimen>
     <dimen name="appcompat_dialog_background_inset">16dp</dimen>
+    <dimen name="brand_zone_horizontal_margin">16dp</dimen>
+    <dimen name="brand_zone_max_height">100dp</dimen>
+    <dimen name="card_cvc_initial_margin">1000dp</dimen>
+    <dimen name="card_expiry_initial_margin">200dp</dimen>
+    <dimen name="card_icon_multiline_padding">8dp</dimen>
+    <dimen name="card_icon_multiline_padding_bottom">1.52380955dp</dimen>
+    <dimen name="card_icon_multiline_width">24dp</dimen>
+    <dimen name="card_icon_padding">12dp</dimen>
+    <dimen name="card_widget_min_width">360dp</dimen>
     <dimen name="cardview_compat_inset_shadow">1dp</dimen>
     <dimen name="cardview_default_elevation">2dp</dimen>
     <dimen name="cardview_default_radius">2dp</dimen>
+    <dimen name="challenge_activity_padding">28dp</dimen>
+    <dimen name="challenge_zone_select_button_label_padding">14dp</dimen>
+    <dimen name="challenge_zone_select_button_min_height">48dp</dimen>
+    <dimen name="challenge_zone_select_button_offset_margin">-5dp</dimen>
+    <dimen name="challenge_zone_select_button_vertical_margin">15dp</dimen>
+    <dimen name="challenge_zone_text_indicator_padding">14dp</dimen>
+    <dimen name="challenge_zone_vertical_padding">8dp</dimen>
     <dimen name="compat_button_inset_horizontal_material">4dp</dimen>
     <dimen name="compat_button_inset_vertical_material">6dp</dimen>
     <dimen name="compat_button_padding_horizontal_material">8dp</dimen>
@@ -338,6 +457,8 @@
     <dimen name="design_textinput_caption_translate_y">5dp</dimen>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
+    <dimen name="divider">1dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
     <dimen name="fastscroll_default_thickness">8dp</dimen>
     <dimen name="fastscroll_margin">0dp</dimen>
     <dimen name="fastscroll_minimum_range">50dp</dimen>
@@ -348,9 +469,17 @@
     <item format="float" name="hint_alpha_material_light" type="dimen">0.38</item>
     <item format="float" name="hint_pressed_alpha_material_dark" type="dimen">0.70</item>
     <item format="float" name="hint_pressed_alpha_material_light" type="dimen">0.54</item>
+    <dimen name="information_zone_label_padding">10dp</dimen>
+    <dimen name="information_zone_vertical_padding">30dp</dimen>
     <dimen name="item_touch_helper_max_drag_scroll_per_frame">20dp</dimen>
     <dimen name="item_touch_helper_swipe_escape_max_velocity">800dp</dimen>
     <dimen name="item_touch_helper_swipe_escape_velocity">120dp</dimen>
+    <dimen name="list_row_end_padding">8dp</dimen>
+    <dimen name="list_row_height">48dp</dimen>
+    <dimen name="list_row_start_padding">20dp</dimen>
+    <dimen name="list_top_margin">8dp</dimen>
+    <dimen name="masked_card_icon_width">32dp</dimen>
+    <dimen name="masked_card_vertical_padding">4dp</dimen>
     <item format="float" name="material_emphasis_disabled" type="dimen">0.38</item>
     <item format="float" name="material_emphasis_high_type" type="dimen">0.87</item>
     <item format="float" name="material_emphasis_medium" type="dimen">0.6</item>
@@ -514,9 +643,20 @@
     <dimen name="notification_small_icon_background_padding">3dp</dimen>
     <dimen name="notification_small_icon_size_as_large">24dp</dimen>
     <dimen name="notification_subtext_size">13sp</dimen>
+    <dimen name="notification_text_size">14sp</dimen>
     <dimen name="notification_top_pad">10dp</dimen>
     <dimen name="notification_top_pad_large_text">5dp</dimen>
+    <dimen name="shipping_check_icon_width">24dp</dimen>
+    <dimen name="shipping_method_view_height">21dp</dimen>
+    <dimen name="shipping_widget_horizontal_margin">16dp</dimen>
+    <dimen name="shipping_widget_outer_margin">12dp</dimen>
+    <dimen name="shipping_widget_vertical_margin">4dp</dimen>
+    <dimen name="subtitle_corner_radius">2dp</dimen>
+    <dimen name="subtitle_outline_width">2dp</dimen>
+    <dimen name="subtitle_shadow_offset">2dp</dimen>
+    <dimen name="subtitle_shadow_radius">2dp</dimen>
     <dimen name="test_mtrl_calendar_day_cornerSize">52dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="tooltip_corner_radius">2dp</dimen>
     <dimen name="tooltip_horizontal_padding">16dp</dimen>
     <dimen name="tooltip_margin">8dp</dimen>
@@ -570,6 +710,16 @@
     <item name="action_bar_spinner" type="id"/>
     <item name="action_menu_divider" type="id"/>
     <item name="action_menu_presenter" type="id"/>
+    <item name="cc_card" type="id"/>
+    <item name="cc_ccv" type="id"/>
+    <item name="cc_entry" type="id"/>
+    <item name="cc_entry_internal" type="id"/>
+    <item name="cc_exp" type="id"/>
+    <item name="cc_form_layout" type="id"/>
+    <item name="cc_four_digits" type="id"/>
+    <item name="cc_zip" type="id"/>
+    <item name="default_challenge_zone_select_view_id" type="id"/>
+    <item name="default_reader_id" type="id"/>
     <item name="flipper_skip_empty_view_group_traversal" type="id"/>
     <item name="flipper_skip_view_traversal" type="id"/>
     <item name="fragment_container_view_tag" type="id"/>
@@ -583,6 +733,8 @@
     <item name="mtrl_child_content_container" type="id"/>
     <item name="mtrl_internal_children_alpha_tag" type="id"/>
     <item name="parent_matrix" type="id"/>
+    <item name="payment_methods_add_card" type="id"/>
+    <item name="payment_methods_add_fpx" type="id"/>
     <item name="progress_circular" type="id"/>
     <item name="progress_horizontal" type="id"/>
     <item name="react_test_id" type="id"/>
@@ -601,6 +753,7 @@
     <item name="tag_unhandled_key_listeners" type="id"/>
     <item name="text" type="id"/>
     <item name="text2" type="id"/>
+    <item name="text_helper" type="id"/>
     <item name="textinput_counter" type="id"/>
     <item name="textinput_error" type="id"/>
     <item name="textinput_helper_text" type="id"/>
@@ -620,10 +773,15 @@
     <integer name="app_bar_elevation_anim_duration">150</integer>
     <integer name="bottom_sheet_slide_duration">150</integer>
     <integer name="cancel_button_image_alpha">127</integer>
+    <integer name="card_flip_time_full">700</integer>
+    <integer name="card_flip_time_half">350</integer>
     <integer name="config_tooltipAnimTime">150</integer>
+    <integer name="date_length">5</integer>
     <integer name="design_snackbar_text_max_lines">2</integer>
     <integer name="design_tab_indicator_anim_duration_ms">300</integer>
+    <integer name="google_play_services_version">11910000</integer>
     <integer name="hide_password_duration">320</integer>
+    <integer name="light_text_alpha_hex">204</integer>
     <integer name="mtrl_badge_max_character_count">4</integer>
     <integer name="mtrl_btn_anim_delay_ms">100</integer>
     <integer name="mtrl_btn_anim_duration_ms">100</integer>
@@ -642,6 +800,14 @@
     <item quantity="one"><ns1:g id="count">%d</ns1:g> new notification</item>
     <item quantity="other"><ns1:g id="count">%d</ns1:g> new notifications</item>
   </plurals>
+    <string name="CreditCardFormCardNumberHint">1234 5678 9012 3456</string>
+    <string name="CreditCardNumberHelp"/>
+    <string name="ExpDateFieldHint">MM/YY</string>
+    <string name="ExpirationDateHelp">Expiration date (MM/YY)</string>
+    <string name="SecurityCodeFieldHint">CVV</string>
+    <string name="SecurityCodeHelp">Security code (CVV)</string>
+    <string name="ZipCodeFieldHint">   ZIP   </string>
+    <string name="ZipHelp">Zip code of billing address</string>
     <string name="abc_action_bar_home_description">Navigate home</string>
     <string name="abc_action_bar_up_description">Navigate up</string>
     <string name="abc_action_menu_overflow_description">More options</string>
@@ -669,12 +835,72 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with <ns1:g example="Mail" id="application_name">%s</ns1:g></string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
+    <string name="acc_label_card_number">Card number</string>
+    <string name="acc_label_card_number_node">%s, Card number</string>
+    <string name="acc_label_cvc_node">%s, CVC</string>
+    <string name="acc_label_expiry_date">Expiration date</string>
+    <string name="acc_label_expiry_date_node">%s, Expiration date</string>
+    <string name="acc_label_zip">ZIP Code</string>
+    <string name="acc_label_zip_short">ZIP</string>
+    <string name="add_card">Add a new debit or credit card to make purchases in this app.</string>
+    <string name="address_city_required">Please enter your city</string>
+    <string name="address_county_required">Please enter your county</string>
+    <string name="address_label_address">Address</string>
+    <string name="address_label_address_line1">Address line 1</string>
+    <string name="address_label_address_line1_optional">Address line 1 (optional)</string>
+    <string name="address_label_address_line2">Address line 2</string>
+    <string name="address_label_address_line2_optional">Address line 2 (optional)</string>
+    <string name="address_label_address_optional">Address (optional) </string>
+    <string name="address_label_apt">Apt.</string>
+    <string name="address_label_apt_optional">Apt. (optional)</string>
+    <string name="address_label_city">City</string>
+    <string name="address_label_city_optional">City (optional)</string>
+    <string name="address_label_country">Country</string>
+    <string name="address_label_county">County</string>
+    <string name="address_label_county_optional">County (optional)</string>
+    <string name="address_label_name">Name</string>
+    <string name="address_label_name_optional">Name (optional)</string>
+    <string name="address_label_phone_number">Phone number</string>
+    <string name="address_label_phone_number_optional">Phone number (optional)</string>
+    <string name="address_label_postal_code">Postal code</string>
+    <string name="address_label_postal_code_optional">Postal code (optional)</string>
+    <string name="address_label_postcode">Postcode</string>
+    <string name="address_label_postcode_optional">Postcode (optional)</string>
+    <string name="address_label_province">Province</string>
+    <string name="address_label_province_optional">Province (optional)</string>
+    <string name="address_label_region_generic"> State / Province / Region</string>
+    <string name="address_label_region_generic_optional">State / Province / Region (optional)</string>
+    <string name="address_label_state">State</string>
+    <string name="address_label_state_optional">State (optional)</string>
+    <string name="address_label_zip_code">ZIP code</string>
+    <string name="address_label_zip_code_optional">ZIP code (optional)</string>
+    <string name="address_label_zip_postal_code">ZIP/Postal code</string>
+    <string name="address_label_zip_postal_code_optional">ZIP / Postal code (optional)</string>
+    <string name="address_name_required">Please enter your name</string>
+    <string name="address_phone_number_required">Please enter your phone number</string>
+    <string name="address_postal_code_invalid">Your postal code is invalid</string>
+    <string name="address_postcode_invalid">Your postcode is invalid</string>
+    <string name="address_province_required">Please enter your province</string>
+    <string name="address_region_generic_required">Please enter your State/Province/Region</string>
+    <string name="address_required">Please enter your address</string>
+    <string name="address_shipping_address">Shipping Address</string>
+    <string name="address_state_required">Please enter your state</string>
+    <string name="address_zip_invalid">Your ZIP code is invalid.</string>
+    <string name="address_zip_postal_invalid">Your ZIP/Postal code is invalid</string>
     <string name="alert_description" translatable="false">Alert</string>
+    <string name="amex_short">Amex</string>
     <string name="ampm_description">Select AM/PM</string>
     <string name="app_name">vevibes</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
+    <string name="brand_amex">American Express</string>
+    <string name="brand_discover">Discover</string>
+    <string name="brand_mastercard">Mastercard</string>
+    <string name="brand_visa">Visa</string>
     <string name="button_description" translatable="false">Button</string>
+    <string name="bzv_issuer_image_description">Issuer Image</string>
+    <string name="bzv_payment_system_image_description">Payment System Image</string>
+    <string name="card_number_hint">1234 1234 1234 1234</string>
     <string name="catalyst_change_bundle_location" project="catalyst" translatable="false">Change Bundle Location</string>
     <string name="catalyst_copy_button" project="catalyst" translatable="false">Copy\n</string>
     <string name="catalyst_debug" project="catalyst" translatable="false">Debug</string>
@@ -709,21 +935,70 @@
     <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
     <string name="chip_text">Chip text</string>
     <string name="clear_text_end_icon_content_description">Clear text</string>
+    <string name="close">Close</string>
     <string name="combobox_description" translatable="false">Combo Box</string>
+    <string msgid="2523291102206661146" name="common_google_play_services_enable_button">Enable</string>
+    <string msgid="227660514972886228" name="common_google_play_services_enable_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t work unless you enable Google Play services.</string>
+    <string msgid="5122002158466380389" name="common_google_play_services_enable_title">Enable Google Play services</string>
+    <string msgid="7153882981874058840" name="common_google_play_services_install_button">Install</string>
+    <string name="common_google_play_services_install_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t run without Google Play services, which are missing from your device.</string>
+    <string msgid="7215213145546190223" name="common_google_play_services_install_title">Get Google Play services</string>
+    <string name="common_google_play_services_notification_channel_name">Google Play services availability</string>
+    <string name="common_google_play_services_notification_ticker">Google Play services error</string>
+    <string name="common_google_play_services_unknown_issue"><ns1:g id="app_name">%1$s</ns1:g> is having trouble with Google Play services. Please try again.</string>
+    <string name="common_google_play_services_unsupported_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t run without Google Play services, which are not supported by your device.</string>
+    <string msgid="6556509956452265614" name="common_google_play_services_update_button">Update</string>
+    <string msgid="9053896323427875356" name="common_google_play_services_update_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t run unless you update Google Play services.</string>
+    <string msgid="6006316683626838685" name="common_google_play_services_update_title">Update Google Play services</string>
+    <string name="common_google_play_services_updating_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t run without Google Play services, which are currently updating.</string>
+    <string name="common_google_play_services_wear_update_text">New version of Google Play services needed. It will update itself shortly.</string>
+    <string name="common_open_on_phone">Open on phone</string>
+    <string name="common_signin_button_text">Sign in</string>
+    <string name="common_signin_button_text_long">Sign in with Google</string>
+    <string name="cvc_amex_hint">CVV</string>
+    <string name="cvc_multiline_helper">123</string>
+    <string name="cvc_multiline_helper_amex">1234</string>
+    <string name="cvc_number_hint">CVC</string>
+    <string name="czv_whitelist_no_label">No</string>
+    <string name="czv_whitelist_yes_label">Yes</string>
     <string name="date_description">Select Date</string>
     <string name="day_description">Select Day</string>
+    <string name="diners_club">Diners Club</string>
+    <string name="discover">Discover</string>
+    <string name="ending_in">%1$s ending in %2$s</string>
     <string name="error_icon_content_description">Error</string>
+    <string name="expiry_date_hint">MM/YY</string>
+    <string name="expiry_label_short">Expiry</string>
     <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
     <string name="fab_transformation_scrim_behavior" translatable="false">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior" translatable="false">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
+    <string name="gettipsi_card_cvc">CVC</string>
+    <string name="gettipsi_card_enter_dialog_negative_button">Cancel</string>
+    <string name="gettipsi_card_enter_dialog_positive_button">Done</string>
+    <string name="gettipsi_card_enter_dialog_title">Enter your card</string>
+    <string name="gettipsi_card_number">Card Number</string>
+    <string name="gettipsi_card_number_label">Card</string>
+    <string name="gettipsi_google_pay_unavaliable">Google Pay is unavailable on your device.</string>
+    <string name="gettipsi_save">Save</string>
+    <string name="gettipsi_user_cancel_dialog">A user has canceled the dialog. No card added!</string>
     <string name="header_description" translatable="false">Heading</string>
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
     <string name="hour_description">Select Hour</string>
     <string name="hour_tag">Hour :</string>
+    <string name="hzv_cancel_label">Cancel</string>
+    <string name="hzv_header_label">Secure Checkout</string>
     <string description="Content description for an icon that appears in the title area of a dialog" name="icon_content_description">Dialog Icon</string>
     <string name="image_description" translatable="false">Image</string>
     <string name="imagebutton_description" translatable="false">Button, Image</string>
+    <string name="invalid_card_number">Your card\'s number is invalid.</string>
+    <string name="invalid_cvc">Your card\'s security code is invalid.</string>
+    <string name="invalid_expiry_month">Your card\'s expiration month is invalid.</string>
+    <string name="invalid_expiry_year">Your card\'s expiration year is invalid.</string>
+    <string name="invalid_shipping_information">Invalid Shipping Address</string>
+    <string name="invalid_zip">Your postal code is incomplete.</string>
+    <string name="jcb">JCB</string>
     <string name="link_description" translatable="false">Link</string>
+    <string name="mastercard">MasterCard</string>
     <string name="menu_description" translatable="false">Menu</string>
     <string name="menubar_description" translatable="false">Menu Bar</string>
     <string name="menuitem_description" translatable="false">Menu Item</string>
@@ -764,18 +1039,24 @@
     <string description="a11y string to indicate this button switches the user to choosing a day [CHAR_LIMIT=NONE]" name="mtrl_picker_toggle_to_day_selection">Tap to switch to selecting a day</string>
     <string description="a11y string to indicate this button changes the input mode to a text field [CHAR_LIMIT=NONE]" name="mtrl_picker_toggle_to_text_input_mode">Switch to text input mode</string>
     <string description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]" name="mtrl_picker_toggle_to_year_selection">Tap to switch to selecting a year</string>
+    <string name="no_payment_methods">No payment methods.</string>
     <string name="overlay">Date Picker Overlay</string>
     <string name="password_toggle_content_description">Show password</string>
     <string name="path_password_eye" translatable="false">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
     <string name="path_password_eye_mask_strike_through" translatable="false">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_eye_mask_visible" translatable="false">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
+    <string name="payment_method_add_new_card">Add new card…</string>
+    <string name="payment_method_add_new_fpx" ns2:ignore="MissingTranslation">Select Bank Account (FPX)…</string>
+    <string name="price_free">Free</string>
+    <string name="processing">Processing\u2026</string>
     <string name="progressbar_description" translatable="false">Progress Bar</string>
     <string name="radiogroup_description" translatable="false">Radio Group</string>
     <string name="rn_tab_description" translatable="false">Tab</string>
     <string name="scrollbar_description" translatable="false">Scroll Bar</string>
     <string name="search_description" translatable="false">Search Field</string>
     <string name="search_menu_title">Search</string>
+    <string name="secure_checkout">Secure Checkout</string>
     <string name="selected_ampm_description">Selected AM/PM</string>
     <string name="selected_date_description">Selected Date</string>
     <string name="selected_day_description">Selected Day</string>
@@ -796,8 +1077,19 @@
     <string name="tablist_description" translatable="false">Tab List</string>
     <string name="time_tag">Time is</string>
     <string name="timer_description" translatable="false">Timer</string>
+    <string name="title_add_a_card">Add a Card</string>
+    <string name="title_add_an_address">Add an Address</string>
+    <string name="title_bank_account" ns2:ignore="MissingTranslation">Bank Account</string>
+    <string name="title_payment_method">Payment Method</string>
+    <string name="title_select_shipping_method">Select Shipping Method</string>
     <string name="toolbar_description" translatable="false">Tool Bar</string>
+    <string name="unionpay">UnionPay</string>
+    <string name="unknown">Unknown</string>
+    <string name="valid_digits">0123456789</string>
+    <string name="visa">Visa</string>
+    <string name="wallet_buy_button_place_holder">Buy with Google</string>
     <string name="year_description">Select Year</string>
+    <string name="zip_helper">12345</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
@@ -819,6 +1111,13 @@
     <item name="android:windowEnterAnimation">@anim/mtrl_bottom_sheet_slide_in</item>
     <item name="android:windowExitAnimation">@anim/mtrl_bottom_sheet_slide_out</item>
   </style>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:textColor">#000000</item>
@@ -2650,11 +2949,42 @@
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
     <style name="Base.Widget.MaterialComponents.TextView" parent="Widget.AppCompat.TextView"/>
+    <style name="BaseStripe3DS2Theme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/Stripe3DS2ActionBarStyle</item>
+        <item name="android:actionBarStyle">@style/Stripe3DS2ActionBarStyle</item>
+        <item name="toolbarStyle">@style/Stripe3DS2ToolbarStyle</item>
+        <item name="android:colorBackground">@color/stripe_3ds2_background</item>
+        <item name="colorPrimary">@color/stripe_3ds2_primary</item>
+        <item name="colorPrimaryDark">@color/stripe_3ds2_primary_dark</item>
+        <item name="colorAccent">@color/stripe_3ds2_accent</item>
+        <item name="colorControlActivated">?attr/colorAccent</item>
+        <item name="android:textColor">@color/stripe_3ds2_text_color</item>
+        <item name="android:textColorPrimary">@color/stripe_3ds2_text_color_primary</item>
+        <item name="android:editTextColor">@color/stripe_3ds2_text_edit</item>
+        <item name="stripe3DS2EditTextBackgroundColor">@color/stripe_3ds2_text_input_fill</item>
+    </style>
+    <style name="Button" parent="@android:style/Widget.Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textColor">@color/buttonText</item>
+        <item name="android:background">@drawable/btn_default_holo_dark</item>
+    </style>
+    <style name="CVC" parent="@style/TextField">
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:hint">@string/gettipsi_card_cvc</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
     <style name="CalendarDatePickerDialog" ns2:targetApi="lollipop" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:datePickerStyle">@style/CalendarDatePickerStyle</item>
     </style>
     <style name="CalendarDatePickerStyle" ns2:targetApi="lollipop" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">calendar</item>
+    </style>
+    <style name="CardNumber" parent="@style/TextField">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:hint">@string/gettipsi_card_number</item>
     </style>
     <style name="CardView" parent="Base.CardView">
     </style>
@@ -2664,6 +2994,11 @@
     <style name="CardView.Light">
         <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
+    <style name="Currency" parent="@style/Spinner">
+        <item name="android:entries">@array/gettipsi_currency_array</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
     <style name="DialogAnimationFade">
     <item name="android:windowEnterAnimation">@anim/catalyst_fade_in</item>
     <item name="android:windowExitAnimation">@anim/catalyst_fade_out</item>
@@ -2672,7 +3007,37 @@
     <item name="android:windowEnterAnimation">@anim/catalyst_slide_up</item>
     <item name="android:windowExitAnimation">@anim/catalyst_slide_down</item>
   </style>
+    <style name="Divider">
+        <item name="android:background">@color/stripe_3ds2_divider</item>
+        <item name="android:layout_height">@dimen/divider</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    <style name="Divider.Vertical">
+        <item name="android:layout_width">@dimen/divider</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
     <style name="EmptyTheme"/>
+    <style name="ExpMonth" parent="@style/Spinner">
+        <item name="android:entries">@array/month_array</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+    <style name="ExpYear" parent="@style/Spinner">
+        <item name="android:entries">@array/year_array</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">0.8</item>
+    </style>
+    <style name="Header" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/header_dark</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/headerText</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
     <style name="MaterialAlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
     <item name="android:layout">@layout/mtrl_alert_dialog</item>
     <item name="listItemLayout">@layout/mtrl_alert_select_dialog_item</item>
@@ -2940,6 +3305,11 @@
         <item name="android:paddingLeft">@dimen/abc_action_bar_overflow_padding_start_material</item>
         <item name="android:paddingRight">@dimen/abc_action_bar_overflow_padding_end_material</item>
     </style>
+    <style name="Save" parent="@style/Button">
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:text">@string/gettipsi_save</item>
+    </style>
     <style name="ShapeAppearance.MaterialComponents" parent="">
     <item name="cornerFamily">rounded</item>
   </style>
@@ -3002,11 +3372,70 @@
     <style name="ShapeAppearanceOverlay.TopRightDifferentCornerSize">
     <item name="cornerSizeTopRight">20px</item>
   </style>
+    <style name="Spinner" parent="@android:style/Widget.Spinner">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/spinner_background_holo_dark</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
+    </style>
     <style name="SpinnerDatePickerDialog" ns2:targetApi="lollipop" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:datePickerStyle">@style/SpinnerDatePickerStyle</item>
     </style>
     <style name="SpinnerDatePickerStyle" ns2:targetApi="lollipop" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">spinner</item>
+    </style>
+    <style name="SpinnerItem" parent="@android:style/Widget.TextView.SpinnerItem">
+
+        <item name="android:textAppearance">@style/TextAppearance.SpinnerItem</item>
+        <item name="android:textColor">@color/spinnerItem</item>
+    </style>
+    <style name="Stripe3DS2ActionBarButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+    <style name="Stripe3DS2ActionBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="contentInsetStart">@dimen/challenge_activity_padding</item>
+        <item name="background">?attr/colorPrimary</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="titleTextStyle">@style/Stripe3DS2ActionBarTitleTextStyle</item>
+        <item name="android:titleTextStyle">@style/Stripe3DS2ActionBarTitleTextStyle</item>
+    </style>
+    <style name="Stripe3DS2ActionBarTitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+    <style name="Stripe3DS2ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="Stripe3DS2TextButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="Stripe3DS2TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+        <item name="boxBackgroundColor">?attr/stripe3DS2EditTextBackgroundColor</item>
+    </style>
+    <style name="Stripe3DS2Theme" parent="BaseStripe3DS2Theme"/>
+    <style name="Stripe3DS2ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextColor">?android:attr/textColorPrimary</item>
+    </style>
+    <style name="StripeActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+    <style name="StripeDefaultTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorAccent">@color/accent_color_default</item>
+        <item name="colorControlNormal">@color/control_normal_color_default</item>
+        <item name="colorPrimary">@color/toolbar_color_default</item>
+        <item name="colorPrimaryDark">@color/toolbar_color_default_dark</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/secondary_text_light</item>
+    </style>
+    <style name="StripeErrorTextStyle">
+        <item name="android:textColor">#999999</item>
+        <item name="android:textSize">@dimen/notification_text_size</item>
+    </style>
+    <style name="StripeToolBarStyle" parent="@style/ThemeOverlay.AppCompat">
+        <item name="colorControlNormal">?attr/titleTextColor</item>
+        <item name="actionMenuTextColor">?attr/titleTextColor</item>
+        <item name="android:actionButtonStyle">@style/StripeActionButtonStyle</item>
     </style>
     <style name="Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" parent="">
     <item name="cornerFamily">rounded</item>
@@ -3120,12 +3549,17 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
+    <style name="TextAppearance.Compat.Notification.Info.Media"/>
     <style name="TextAppearance.Compat.Notification.Line2" parent="TextAppearance.Compat.Notification.Info"/>
+    <style name="TextAppearance.Compat.Notification.Line2.Media" parent="TextAppearance.Compat.Notification.Info.Media"/>
+    <style name="TextAppearance.Compat.Notification.Media"/>
     <style name="TextAppearance.Compat.Notification.Time">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
+    <style name="TextAppearance.Compat.Notification.Time.Media"/>
     <style name="TextAppearance.Compat.Notification.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title"/>
+    <style name="TextAppearance.Compat.Notification.Title.Media"/>
     <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
     <item name="android:textColor">?android:attr/textColorPrimary</item>
   </style>
@@ -3237,13 +3671,23 @@
     <item name="android:letterSpacing">0.009375</item>
   </style>
     <style name="TextAppearance.MaterialComponents.Subtitle2" parent="Base.TextAppearance.MaterialComponents.Subtitle2"/>
+    <style name="TextAppearance.SpinnerItem" parent="@android:style/TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/spinnerItem</item>
+    </style>
     <style name="TextAppearance.Widget.AppCompat.ExpandedMenu.Item" parent="Base.TextAppearance.Widget.AppCompat.ExpandedMenu.Item">
     </style>
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Subtitle" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
     </style>
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Title" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
     </style>
-    <style name="Theme"/>
+    <style name="TextField" parent="@android:style/Widget.EditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/editText</item>
+        <item name="android:background">@drawable/edit_text_holo_dark</item>
+    </style>
+    <style name="Theme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
+    </style>
     <style name="Theme.AppCompat" parent="Base.Theme.AppCompat"/>
     <style name="Theme.AppCompat.CompactMenu" parent="Base.Theme.AppCompat.CompactMenu"/>
     <style name="Theme.AppCompat.DayNight" parent="Theme.AppCompat.Light"/>
@@ -3593,6 +4037,51 @@
     <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
     <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
   </style>
+    <style name="ThreeDS2FullScreenDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+    <style name="ThreeDS2HeaderTextViewStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="ThreeDS2TextViewStyle">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="WalletFragmentDefaultButtonTextAppearance">
+<item name="android:textColorLink">@color/wallet_link_text_light</item>
+<item name="android:textColorHint">@color/wallet_hint_foreground_holo_light</item>
+<item name="android:textStyle">normal</item>
+<item name="android:textSize">18sp</item>
+<item name="android:textColorHighlight">@color/wallet_highlighted_text_holo_light</item>
+<item name="android:textColor">@color/wallet_primary_text_holo_light</item>
+</style>
+    <style name="WalletFragmentDefaultDetailsHeaderTextAppearance" parent="WalletFragmentDefaultDetailsTextAppearance">
+<item name="android:textStyle">bold</item>
+</style>
+    <style name="WalletFragmentDefaultDetailsTextAppearance">
+<item name="android:textColorLink">@color/wallet_holo_blue_light</item>
+<item name="android:textColorHint">@color/wallet_hint_foreground_holo_dark</item>
+<item name="android:textStyle">normal</item>
+<item name="android:textSize">14sp</item>
+<item name="android:textColorHighlight">@color/wallet_highlighted_text_holo_dark</item>
+<item name="android:textColor">@color/wallet_secondary_text_holo_dark</item>
+</style>
+    <style name="WalletFragmentDefaultStyle">
+<item name="maskedWalletDetailsLogoImageType">android_pay</item>
+<item name="maskedWalletDetailsLogoTextColor">@color/wallet_bright_foreground_holo_dark</item>
+<item name="buyButtonText">buy_with</item>
+<item name="maskedWalletDetailsTextAppearance">@style/WalletFragmentDefaultDetailsTextAppearance</item>
+<item name="buyButtonAppearance">android_pay_dark</item>
+<item name="maskedWalletDetailsButtonTextAppearance">@style/WalletFragmentDefaultButtonTextAppearance</item>
+<item name="maskedWalletDetailsButtonBackground">@android:drawable/btn_default</item>
+<item name="buyButtonWidth">match_parent</item>
+<item name="maskedWalletDetailsHeaderTextAppearance">@style/WalletFragmentDefaultDetailsHeaderTextAppearance</item>
+<item name="buyButtonHeight">48dp</item>
+<item name="maskedWalletDetailsBackground">@color/wallet_bright_foreground_holo_light</item>
+</style>
     <style name="Widget.AppCompat.ActionBar" parent="Base.Widget.AppCompat.ActionBar">
     </style>
     <style name="Widget.AppCompat.ActionBar.Solid" parent="Base.Widget.AppCompat.ActionBar.Solid">
@@ -5320,6 +5809,14 @@
              enough space to lay them out side-by-side. -->
         <attr format="boolean" name="allowStacking"/>
     </declare-styleable>
+    <declare-styleable name="CardInputView">
+        <attr format="string" name="cardHintText"/>
+        <attr format="color" name="cardTint"/>
+        <attr format="color" name="cardTextErrorColor"/>
+    </declare-styleable>
+    <declare-styleable name="CardMultilineWidget">
+        <attr format="boolean" name="shouldShowPostalCode"/>
+    </declare-styleable>
     <declare-styleable name="CardView">
         <!-- Background color for CardView. -->
         <attr format="color" name="cardBackgroundColor"/>
@@ -5719,6 +6216,35 @@
             <flag name="all" value="0x77"/>
         </attr>
     </declare-styleable>
+    <declare-styleable name="CreditCardForm">
+        <attr format="boolean" name="include_exp"/>
+        <attr format="boolean" name="include_security"/>
+        <attr format="boolean" name="include_zip"/>
+        <attr format="boolean" name="include_helper"/>
+
+        <attr format="color" name="helper_text_color"/>
+        <attr format="color" name="text_color"/>
+        <attr format="color" name="hint_text_color"/>
+        <attr format="color" name="cursor_color"/>
+        <attr format="string" name="card_number_hint"/>
+        <attr format="reference" name="input_background"/>
+        <attr format="boolean" name="default_text_colors"/>
+        <attr format="boolean" name="animate_on_error"/>
+        <attr format="dimension" name="text_size"/>
+    </declare-styleable>
+    <declare-styleable name="CustomWalletTheme"><attr name="windowTransitionStyle">
+<enum name="slide" value="1"/>
+
+<enum name="none" value="2"/>
+
+</attr>
+<attr name="toolbarTextColorStyle">
+<enum name="light" value="1"/>
+
+<enum name="dark" value="2"/>
+
+</attr>
+</declare-styleable>
     <declare-styleable name="DrawerArrowToggle">
         <!-- The drawing color for the bars -->
         <attr format="color" name="color"/>
@@ -6129,6 +6655,76 @@
         <!-- Amount of pixels by which the drop down should be offset horizontally. -->
         <attr name="android:dropDownHorizontalOffset"/>
     </declare-styleable>
+    <declare-styleable name="LoadingImageView"><attr name="imageAspectRatioAdjust">
+<enum name="none" value="0"/>
+
+<enum name="adjust_width" value="1"/>
+
+<enum name="adjust_height" value="2"/>
+
+</attr>
+
+<attr format="float" name="imageAspectRatio"/>
+
+<attr format="boolean" name="circleCrop"/>
+</declare-styleable>
+    <declare-styleable name="MapAttrs"><attr name="mapType">
+<enum name="none" value="0"/>
+
+<enum name="normal" value="1"/>
+
+<enum name="satellite" value="2"/>
+
+<enum name="terrain" value="3"/>
+
+<enum name="hybrid" value="4"/>
+
+</attr>
+
+<attr format="float" name="cameraBearing"/>
+
+<attr format="float" name="cameraTargetLat"/>
+
+<attr format="float" name="cameraTargetLng"/>
+
+<attr format="float" name="cameraTilt"/>
+
+<attr format="float" name="cameraZoom"/>
+
+<attr format="boolean" name="liteMode"/>
+
+<attr format="boolean" name="uiCompass"/>
+
+<attr format="boolean" name="uiRotateGestures"/>
+
+<attr format="boolean" name="uiScrollGestures"/>
+
+<attr format="boolean" name="uiTiltGestures"/>
+
+<attr format="boolean" name="uiZoomControls"/>
+
+<attr format="boolean" name="uiZoomGestures"/>
+
+<attr format="boolean" name="useViewLifecycle"/>
+
+<attr format="boolean" name="zOrderOnTop"/>
+
+<attr format="boolean" name="uiMapToolbar"/>
+
+<attr format="boolean" name="ambientEnabled"/>
+
+<attr format="float" name="cameraMinZoomPreference"/>
+
+<attr format="float" name="cameraMaxZoomPreference"/>
+
+<attr format="float" name="latLngBoundsSouthWestLatitude"/>
+
+<attr format="float" name="latLngBoundsSouthWestLongitude"/>
+
+<attr format="float" name="latLngBoundsNorthEastLatitude"/>
+
+<attr format="float" name="latLngBoundsNorthEastLongitude"/>
+</declare-styleable>
     <declare-styleable name="MaterialAlertDialog">
     <attr format="dimension" name="backgroundInsetStart"/>
     <attr format="dimension" name="backgroundInsetTop"/>
@@ -6689,6 +7285,25 @@
       <enum name="cut" value="1"/>
     </attr>
   </declare-styleable>
+    <declare-styleable name="SignInButton"><attr format="reference" name="buttonSize">
+<enum name="standard" value="0"/>
+
+<enum name="wide" value="1"/>
+
+<enum name="icon_only" value="2"/>
+
+</attr>
+<attr format="reference" name="colorScheme">
+<enum name="dark" value="0"/>
+
+<enum name="light" value="1"/>
+
+<enum name="auto" value="2"/>
+
+</attr>
+
+<attr format="reference|string" name="scopeUris"/>
+</declare-styleable>
     <declare-styleable name="SimpleDraweeView" parent="GenericDraweeHierarchy">
 
     <!-- An image uri . -->
@@ -7382,4 +7997,102 @@
         <attr name="android:inflatedId"/>
         <attr name="android:id"/>
     </declare-styleable>
+    <declare-styleable name="WalletFragmentOptions"><attr name="appTheme">
+<enum name="holo_dark" value="0"/>
+
+<enum name="holo_light" value="1"/>
+
+</attr>
+<attr name="environment">
+<enum name="production" value="1"/>
+
+<enum name="test" value="3"/>
+
+<enum name="sandbox" value="0"/>
+
+<enum name="strict_sandbox" value="2"/>
+
+</attr>
+
+<attr format="reference" name="fragmentStyle"/>
+<attr name="fragmentMode">
+<enum name="buyButton" value="1"/>
+
+<enum name="selectionDetails" value="2"/>
+
+</attr>
+</declare-styleable>
+    <declare-styleable name="WalletFragmentStyle"><attr format="dimension" name="buyButtonHeight">
+<enum name="match_parent" value="-1"/>
+
+<enum name="wrap_content" value="-2"/>
+
+</attr>
+<attr format="dimension" name="buyButtonWidth">
+<enum name="match_parent" value="-1"/>
+
+<enum name="wrap_content" value="-2"/>
+
+</attr>
+<attr name="buyButtonText">
+<enum name="buy_with" value="5"/>
+
+<enum name="logo_only" value="6"/>
+
+<enum name="donate_with" value="7"/>
+
+<enum name="buy_with_google" value="1"/>
+
+<enum name="buy_now" value="2"/>
+
+<enum name="book_now" value="3"/>
+
+<enum name="donate_with_google" value="4"/>
+
+</attr>
+<attr name="buyButtonAppearance">
+<enum name="google_wallet_classic" value="1"/>
+
+<enum name="google_wallet_grayscale" value="2"/>
+
+<enum name="google_wallet_monochrome" value="3"/>
+
+<enum name="android_pay_dark" value="4"/>
+
+<enum name="android_pay_light" value="5"/>
+
+<enum name="android_pay_light_with_border" value="6"/>
+
+<enum name="classic" value="1"/>
+
+<enum name="grayscale" value="2"/>
+
+<enum name="monochrome" value="3"/>
+
+</attr>
+
+<attr format="reference" name="maskedWalletDetailsTextAppearance"/>
+
+<attr format="reference" name="maskedWalletDetailsHeaderTextAppearance"/>
+
+<attr format="color|reference" name="maskedWalletDetailsBackground"/>
+
+<attr format="reference" name="maskedWalletDetailsButtonTextAppearance"/>
+
+<attr format="color|reference" name="maskedWalletDetailsButtonBackground"/>
+
+<attr format="color" name="maskedWalletDetailsLogoTextColor"/>
+<attr name="maskedWalletDetailsLogoImageType">
+<enum name="google_wallet_classic" value="1"/>
+
+<enum name="google_wallet_monochrome" value="2"/>
+
+<enum name="android_pay" value="3"/>
+
+<enum name="classic" value="1"/>
+
+<enum name="monochrome" value="2"/>
+
+</attr>
+</declare-styleable>
 </resources>

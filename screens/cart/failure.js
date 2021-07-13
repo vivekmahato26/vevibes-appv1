@@ -14,7 +14,7 @@ export default function Failure({navigation}) {
     <View style={{flex: 1}}>
       <Icon
         name="close-thick"
-        style={{...FONTS.h2, color: COLORS.primary, margin: 10}}
+        style={{...FONTS.h2, color: COLORS.primary, margin: 10}}  onPress={() => navigation.navigate('ProductHome')}
       />
       <View
         style={{

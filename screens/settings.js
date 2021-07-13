@@ -28,6 +28,7 @@ export default function Settings({navigation}) {
         <Icon
           name="chevron-left"
           style={{...FONTS.h2, color: COLORS.primary, fontWeight: 'bold'}}
+          onPress={() => navigation.goBack()}
         />
         <Text
           style={{...FONTS.body2, color: COLORS.primary, fontWeight: 'bold'}}>

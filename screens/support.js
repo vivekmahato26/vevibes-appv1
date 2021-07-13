@@ -14,6 +14,7 @@ export default function Support() {
         <Icon
           name="chevron-left"
           style={{...FONTS.h2, color: COLORS.primary}}
+          onPress={() => navigation.goBack()}
         />
         <Text
           style={{color: COLORS.primary, ...FONTS.body2, fontWeight: 'bold'}}>

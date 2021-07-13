@@ -9,71 +9,61 @@ import {
   Animated,
   TouchableHighlight,
 } from 'react-native';
-import {Button, TextInput} from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
-const {COLORS, FONTS, SIZES} = theme;
+const { COLORS, FONTS, SIZES } = theme;
 
-export default function Coupon({navigation}) {
+export default function Coupon({ navigation }) {
   const scrollX = new Animated.Value(0);
   const data = [
     {
+      name: 'Get 15% Off',
+      description: 'Get £15 off on purchase of £100 and above',
+      code: 'VEGAN15',
+      discount: 15,
+      percent: true,
+      minCartPrice: 100
+    },
+    {
+      name: 'Get £5 Off',
+      description: 'Get £5 off on purchase of £50 and above',
+      code: 'VEVIBES5',
+      discount: 5,
+      percent: false,
+      minCartPrice: 50
+    },
+    {
+      name: 'Get £15 Off',
+      description: 'Get £15 off on purchase of £10 and above',
+      code: 'VEGAN10',
+      discount: 10,
+      percent: true,
+      minCartPrice: 10
+    },
+    {
       name: 'Get £15 Off',
       description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
+      code: 'VEGAN20',
+      discount: 20,
+      percent: true,
+      minCartPrice: 80
     },
     {
       name: 'Get £15 Off',
       description: 'Get £15 off on purchase of £100 and above',
       code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
-    },
-    {
-      name: 'Get £15 Off',
-      description: 'Get £15 off on purchase of £100 and above',
-      code: 'VEGAN50',
+      discount: 50,
+      percent: true,
+      minCartPrice: 100
     },
   ];
   return (
     <>
-      <View style={{flexDirection: 'row', margin: 10, marginTop: 20}}>
+      <View style={{ flexDirection: 'row', margin: 10, marginTop: 20 }}>
         <Icon
           name="chevron-left"
           style={{
@@ -81,6 +71,7 @@ export default function Coupon({navigation}) {
             color: COLORS.primary,
             fontWeight: 'bold',
           }}
+          onPress={() => navigation.goBack()}
         />
         <Text
           style={{
@@ -110,10 +101,10 @@ export default function Coupon({navigation}) {
           label="Enter coupon code"
           selectionColor={COLORS.primary}
           outlineColor={COLORS.lightGray}
-          style={{fontWeight: 'bold', color: COLORS.lightGray}}
+          style={{ fontWeight: 'bold', color: COLORS.lightGray }}
         />
       </View>
-      <View>
+      <View style={{flex:1}}>
         <Text
           style={{
             ...FONTS.body2,
@@ -127,7 +118,7 @@ export default function Coupon({navigation}) {
           keyExtractor={(item, index) => 'key' + index}
           decelerationRate={'normal'}
           scrollEventThrottle={16}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <View
                 style={{
@@ -155,12 +146,12 @@ export default function Coupon({navigation}) {
                       {item.name}
                     </Text>
                     <Button
-                      onPress={() => navigation.navigate('Cart')}
-                      theme={{colors: {primary: COLORS.white}, roundness: 10}}
+                      onPress={() => navigation.navigate('Cart', { screen: 'cart', coupon: item.code, discount: item.discount, percent: item.percent, minCartPrice: item.minCartPrice })}
+                      theme={{ colors: { primary: COLORS.white }, roundness: 10 }}
                       style={{
                         backgroundColor: COLORS.secondary,
                       }}>
-                      <Text style={{fontWeight:"bold"}}>{item.code}</Text>
+                      <Text style={{ fontWeight: "bold" }}>{item.code}</Text>
                     </Button>
                   </View>
                   <Text
@@ -175,8 +166,8 @@ export default function Coupon({navigation}) {
             );
           }}
           onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {x: scrollX}}}],
-            {useNativeDriver: false},
+            [{ nativeEvent: { contentOffset: { x: scrollX, y: scrollX } } }],
+            { useNativeDriver: false },
           )}
         />
       </View>

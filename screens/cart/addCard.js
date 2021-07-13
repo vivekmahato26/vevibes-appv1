@@ -15,6 +15,7 @@ export default function AddCard({navigation}) {
         <Icon
           name="chevron-left"
           style={{...FONTS.h2, color: COLORS.primary, marginRight: 10}}
+          onPress={() => navigation.goBack()}
         />
         <Text
           style={{

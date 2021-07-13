@@ -14,7 +14,7 @@ export default function OrderDetails() {
   return (
     <View style={{flex: 1}}>
       <View style={{margin: 10,flexDirection:"row",alignItems: "center"}}>
-        <Icon name="chevron-left"  style={{color:COLORS.primary,...FONTS.h2}}/>
+        <Icon name="chevron-left"  style={{color:COLORS.primary,...FONTS.h2}}  onPress={() => navigation.goBack()}/>
         <Text style={{color:COLORS.primary,...FONTS.body2,fontWeight: 'bold'}}>#4567233</Text>
       </View>
       <View

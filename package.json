@@ -34,7 +34,10 @@
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.3.0",
     "react-native-vector-icons": "^8.1.0",
-    "toggle-switch-react-native": "^3.2.0"
+    "tipsi-stripe": "^9.0.0",
+    "toggle-switch-react-native": "^3.2.0",
+    "tsutils": "^3.21.0",
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

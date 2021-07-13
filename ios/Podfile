@@ -20,6 +20,8 @@ target 'vevibes' do
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
+  pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
+
   target 'vevibesTests' do
     inherit! :complete
     # Pods for testing

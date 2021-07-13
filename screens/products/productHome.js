@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useReducer } from 'react';
 import {
   View,
   Text,
@@ -27,7 +27,7 @@ import _ from 'lodash';
 
 import ProductHeader from '../../components/productHeader';
 
-import {Modalize} from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 
 import {
   GET_PRODUCTS,
@@ -36,13 +36,17 @@ import {
 } from '../../constants/graphql';
 
 import Carousal from '../../components/carousal/carousal';
-import {Image} from 'react-native';
+import { Image } from 'react-native';
 import theme from '../../constants/theme';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-const {COLORS, FONTS, SIZES} = theme;
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+const { COLORS, FONTS, SIZES } = theme;
 
-const {width, height} = Dimensions.get('window');
-export default function ProductHome({route, navigation}) {
+
+const { width, height } = Dimensions.get('window');
+
+import { ADD_PRODUCT, REMOVE_PRODUCT, shopReducer } from "../../constants/cart";
+
+export default function ProductHome({ route, navigation }) {
   let tempCity = '';
   if (route.params) {
     tempCity = route.params.city;
@@ -55,7 +59,8 @@ export default function ProductHome({route, navigation}) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [productsData, setProductsData] = React.useState([]);
   const [featuredProducts, setFeaturedProducts] = React.useState([]);
-  const [cart, setCart] = React.useState([]);
+  const [cart, dispatch] = useReducer(shopReducer, []);
+  const [counter, setCounter] = React.useState(0);
 
   const onChangeSearch = query => setSearchQuery(query);
 
@@ -71,7 +76,14 @@ export default function ProductHome({route, navigation}) {
   const getFeaturedProducts = async () => {
     const products = await client.request(GET_FEATURED_PRODUCTS);
     setFeaturedProducts(products.getFeaturedProducts);
-    console.log(featuredProducts);
+  };
+
+  const addProductToCart = product => {
+      dispatch({ type: ADD_PRODUCT, product: product });
+  };
+
+  const removeProductFromCart = productId => {
+      dispatch({ type: REMOVE_PRODUCT, productId: productId });
   };
 
   const dummyData = [
@@ -139,7 +151,7 @@ export default function ProductHome({route, navigation}) {
       id: 2,
     },
   ];
-  const crousalData = dummyData.slice(0, 5);
+
   const data = [
     {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531481/App%20Assets/Asset_42_yownt0.png',
@@ -227,7 +239,7 @@ export default function ProductHome({route, navigation}) {
   ];
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    scrollX.addListener(({value}) => {
+    scrollX.addListener(({ value }) => {
       if (Math.floor(value / SIZES.width) === data.length - 1) {
         setCompleted(true);
       }
@@ -256,38 +268,38 @@ export default function ProductHome({route, navigation}) {
     addressRef.current.open();
   };
 
-  const removeFromCart = (item) => {
-    var index = _.findIndex(cart, function (o) {
-      return o.item.id == item.id;
-    });
-    var tempCart = cart;
-    if(tempCart[index].quantity === 1) {
-      tempCart = tempCart.splice(index, 1);
-    } else {
-      tempCart[index].quantity = tempCart[index].quantity - 1 ;
-    }
-    setCart((prev) => (tempCart));
-    return;
-  }
 
-  const addToCart = item => {
-    var index = _.findIndex(cart, function (o) {
-      return o.item.id == item.id;
-    });
-    var tempCart = cart;
-    if (index === -1) {
-      tempCart.push({
-        item,
-        quantity:1,
-      });
-    } else {
-      tempCart[index].quantity = tempCart[index].quantity + 1 ;
-    }
-    setCart((prev) => {
-      return tempCart;
-    });
-    return;
-  };
+
+  // const removeFromCart = (item) => {
+  //   var index = _.findIndex(cart, function (o) {
+  //     return o.item.id == item.id;
+  //   });
+  //   var tempCart = cart;
+  //   if(tempCart[index].quantity === 1) {
+  //     tempCart = tempCart.splice(index, 1);
+  //   } else {
+  //     tempCart[index].quantity = tempCart[index].quantity - 1 ;
+  //   }
+  //   setCart((prev) => (tempCart));
+  // }
+
+  // const addToCart = item => {
+  //   var index = _.findIndex(cart, function (o) {
+  //     return o.item.id == item.id;
+  //   });
+  //   var tempCart = cart;
+  //   if (index === -1) {
+  //     tempCart.push({
+  //       item,
+  //       quantity:1,
+  //     });
+  //   } else {
+  //     tempCart[index].quantity = tempCart[index].quantity + 1 ;
+  //   }
+  //   setCart((prev) => {
+  //     return tempCart;
+  //   });
+  // };
   return (
     <>
       <Provider>
@@ -298,7 +310,7 @@ export default function ProductHome({route, navigation}) {
           addressRef={openAddress}
           cart={cart}
         />
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{ flex: 1 }}>
           <View
             style={{
               paddingTop: 20,
@@ -319,42 +331,42 @@ export default function ProductHome({route, navigation}) {
                   }}>
                   <Button
                     onPress={openMenu}
-                    style={{marginHorizontal: 0}}
+                    style={{ marginHorizontal: 0 }}
                     compact={true}>
                     Categories
                   </Button>
                   <Icon
                     onPress={openMenu}
                     name="chevron-down"
-                    style={{...FONTS.body2, color: COLORS.primary}}
+                    style={{ ...FONTS.body2, color: COLORS.primary }}
                   />
                 </View>
               }>
               <Menu.Item
                 style={styles.top}
-                onPress={() => {}}
+                onPress={() => { }}
                 title="Food &amp; Drink"
               />
               <Menu.Item
                 style={styles.top}
-                onPress={() => {}}
+                onPress={() => { }}
                 title="Household"
               />
-              <Menu.Item style={styles.top} onPress={() => {}} title="Pets" />
-              <Menu.Item style={styles.top} onPress={() => {}} title="Beauty" />
+              <Menu.Item style={styles.top} onPress={() => { }} title="Pets" />
+              <Menu.Item style={styles.top} onPress={() => { }} title="Beauty" />
               <Menu.Item
                 style={styles.top}
-                onPress={() => {}}
+                onPress={() => { }}
                 title="Dietary Options"
               />
-              <Menu.Item style={styles.top} onPress={() => {}} title="Brands" />
+              <Menu.Item style={styles.top} onPress={() => { }} title="Brands" />
             </Menu>
             <Searchbar
               placeholder="Search For Products"
               onChangeText={onChangeSearch}
               value={searchQuery}
-              style={{width: '60%', elevation: 0, marginLeft: 5}}
-              inputStyle={{fontWeight: 'bold', fontSize: 13, paddingLeft: 0}}
+              style={{ width: '60%', elevation: 0, marginLeft: 5 }}
+              inputStyle={{ fontWeight: 'bold', fontSize: 13, paddingLeft: 0 }}
             />
           </View>
 
@@ -375,12 +387,12 @@ export default function ProductHome({route, navigation}) {
                 scrollEventThrottle={16}
                 snapToAlignment="center"
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                   return (
-                    <View style={{padding: 10, flex: 1, alignItems: 'center'}}>
+                    <View style={{ padding: 10, flex: 1, alignItems: 'center' }}>
                       <Image
-                        source={{uri: item.uri}}
-                        style={{width: 60, height: 60}}
+                        source={{ uri: item.uri }}
+                        style={{ width: 60, height: 60 }}
                       />
                       {item.title.map((t, index) => {
                         return (
@@ -399,8 +411,8 @@ export default function ProductHome({route, navigation}) {
                   );
                 }}
                 onScroll={Animated.event(
-                  [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                  {useNativeDriver: false},
+                  [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                  { useNativeDriver: false },
                 )}
               />
             </View>
@@ -435,18 +447,21 @@ export default function ProductHome({route, navigation}) {
                 scrollEventThrottle={16}
                 snapToAlignment="center"
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
+                  console.log(cart.findIndex(
+                    product => product.product.id === item.id
+                  ));
                   return (
                     <Card style={[styles.card]}>
-                      <Card.Cover
-                        style={styles.cardImg}
-                        source={{uri: item.img[0]}}
-                      />
                       <TouchableWithoutFeedback
                         onPress={() => {
                           productDetails(item);
                         }}
-                        containerStyle={{flex: 1}}>
+                        containerStyle={{ flex: 1 }}>
+                        <Card.Cover
+                          style={styles.cardImg}
+                          source={{ uri: item.img[0] }}
+                        />
                         {item.weightKG && (
                           <Text
                             style={{
@@ -474,9 +489,9 @@ export default function ProductHome({route, navigation}) {
                           justifyContent: 'space-between',
                         }}>
                         <View style={styles.button}>
-                          {_.findIndex(cart, function (o) {
-                            return o.item.id === item.id;
-                          }) !== -1 ? (
+                          {cart.findIndex(
+                            product => product.product.id === item.id
+                          ) >= 0 ? (
                             <View
                               style={{
                                 flexDirection: 'row',
@@ -501,7 +516,7 @@ export default function ProductHome({route, navigation}) {
                                     ...FONTS.body3,
                                     fontWeight: 'bold',
                                   }}
-                                  onPress={() => removeFromCart(item)}
+                                  onPress={() => removeProductFromCart(item.id)}
                                 />
                               </View>
                               <Text
@@ -516,9 +531,9 @@ export default function ProductHome({route, navigation}) {
                                 }}>
                                 {
                                   cart[
-                                    _.findIndex(cart, function (o) {
-                                      return o.item.id === item.id;
-                                    })
+                                    cart.findIndex(
+                                      product => product.product.id === item.id
+                                    )
                                   ].quantity
                                 }
                               </Text>
@@ -539,13 +554,13 @@ export default function ProductHome({route, navigation}) {
                                     ...FONTS.body3,
                                     fontWeight: 'bold',
                                   }}
-                                  onPress={() => addToCart(item)}
+                                  onPress={() => addProductToCart(item)}
                                 />
                               </View>
                             </View>
                           ) : (
                             <Text
-                              onPress={() => addToCart(item)}
+                              onPress={() => addProductToCart(item)}
                               style={{
                                 padding: 2,
                                 color: COLORS.white,
@@ -574,8 +589,8 @@ export default function ProductHome({route, navigation}) {
                   );
                 }}
                 onScroll={Animated.event(
-                  [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                  {useNativeDriver: false},
+                  [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                  { useNativeDriver: false },
                 )}
               />
             </View>
@@ -590,10 +605,10 @@ export default function ProductHome({route, navigation}) {
                 scrollEventThrottle={16}
                 decelerationRate={'fast'}
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                   return (
                     <Card style={styles.cardView}>
-                      <Image style={styles.image} source={{uri: item.url}} />
+                      <Image style={styles.image} source={{ uri: item.url }} />
                       <View style={styles.textView}>
                         <Text style={styles.itemTitle}> {item.title}</Text>
                         <Text style={styles.itemDescription}>
@@ -604,8 +619,8 @@ export default function ProductHome({route, navigation}) {
                   );
                 }}
                 onScroll={Animated.event(
-                  [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                  {useNativeDriver: false},
+                  [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                  { useNativeDriver: false },
                 )}
               />
             </View>
@@ -641,18 +656,18 @@ export default function ProductHome({route, navigation}) {
                 scrollEventThrottle={16}
                 snapToAlignment="center"
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                   return (
                     <Card style={[styles.card]}>
                       <Card.Cover
                         style={styles.cardImg}
-                        source={{uri: item.img[0]}}
+                        source={{ uri: item.img[0] }}
                       />
                       <TouchableWithoutFeedback
                         onPress={() => {
                           productDetails(item);
                         }}
-                        containerStyle={{flex: 1}}>
+                        containerStyle={{ flex: 1 }}>
                         {item.weightKG && (
                           <Text
                             style={{
@@ -680,9 +695,9 @@ export default function ProductHome({route, navigation}) {
                           justifyContent: 'space-between',
                         }}>
                         <View style={styles.button}>
-                          {_.findIndex(cart, function (o) {
-                            return o.item.id === item.id;
-                          }) !== -1 ? (
+                          {cart.findIndex(
+                            product => product.product.id === item.id
+                          ) >= 0 ? (
                             <View
                               style={{
                                 flexDirection: 'row',
@@ -707,7 +722,7 @@ export default function ProductHome({route, navigation}) {
                                     ...FONTS.body3,
                                     fontWeight: 'bold',
                                   }}
-                                  onPress={() => removeFromCart(item)}
+                                  onPress={() => removeProductFromCart(item.id)}
                                 />
                               </View>
                               <Text
@@ -722,9 +737,9 @@ export default function ProductHome({route, navigation}) {
                                 }}>
                                 {
                                   cart[
-                                    _.findIndex(cart, function (o) {
-                                      return o.item.id === item.id;
-                                    })
+                                    cart.findIndex(
+                                      product => product.product.id === item.id
+                                    )
                                   ].quantity
                                 }
                               </Text>
@@ -745,13 +760,13 @@ export default function ProductHome({route, navigation}) {
                                     ...FONTS.body3,
                                     fontWeight: 'bold',
                                   }}
-                                  onPress={() => addToCart(item)}
+                                  onPress={() => addProductToCart(item)}
                                 />
                               </View>
                             </View>
                           ) : (
                             <Text
-                              onPress={() => addToCart(item)}
+                              onPress={() => addProductToCart(item)}
                               style={{
                                 padding: 2,
                                 color: COLORS.white,
@@ -780,8 +795,8 @@ export default function ProductHome({route, navigation}) {
                   );
                 }}
                 onScroll={Animated.event(
-                  [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                  {useNativeDriver: false},
+                  [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                  { useNativeDriver: false },
                 )}
               />
             </View>
@@ -790,7 +805,7 @@ export default function ProductHome({route, navigation}) {
             {dummyData.map((item, index) => {
               return (
                 <Card style={styles.cardView} key={index + Math.random(index)}>
-                  <Image style={styles.image} source={{uri: item.url}} />
+                  <Image style={styles.image} source={{ uri: item.url }} />
                   <View style={styles.textView}>
                     <Text style={styles.itemTitle}> {item.title}</Text>
                     <Text style={styles.itemDescription}>
@@ -803,21 +818,21 @@ export default function ProductHome({route, navigation}) {
           </View>
         </ScrollView>
         <Modalize ref={addressRef}>
-          <View style={{margin: 10, justifyContent: 'flex-start'}}>
+          <View style={{ margin: 10, justifyContent: 'flex-start' }}>
             <TextInput
               placeholder="Enter your location"
               right={
                 <TextInput.Icon
                   name="magnify"
                   color={COLORS.gray}
-                  style={{...FONTS.h2}}
+                  style={{ ...FONTS.h2 }}
                 />
               }
               left={
                 <TextInput.Icon
                   name="chevron-left"
                   color={COLORS.gray}
-                  style={{...FONTS.h2}}
+                  style={{ ...FONTS.h2 }}
                 />
               }
               style={{
@@ -832,17 +847,17 @@ export default function ProductHome({route, navigation}) {
               underlineColor="transparent"
             />
             <View>
-              <View style={{flexDirection: 'row', marginTop: 30}}>
+              <View style={{ flexDirection: 'row', marginTop: 30 }}>
                 <Fa
                   name="location-arrow"
-                  iconStyle={{marginRight: 20}}
+                  iconStyle={{ marginRight: 20 }}
                   style={{
                     ...FONTS.h2,
                     color: COLORS.primary,
                     fontWeight: 'bold',
                   }}
                 />
-                <View style={{marginLeft: 20}}>
+                <View style={{ marginLeft: 20 }}>
                   <Text
                     style={{
                       ...FONTS.h3,
@@ -860,7 +875,7 @@ export default function ProductHome({route, navigation}) {
                   </Text>
                 </View>
               </View>
-              <View style={{marginTop: 20}}>
+              <View style={{ marginTop: 20 }}>
                 <Text
                   style={{
                     ...FONTS.body2,
@@ -877,7 +892,7 @@ export default function ProductHome({route, navigation}) {
                   }}>
                   Digbeth
                 </Text>
-                <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
+                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
                 <Text
                   style={{
                     ...FONTS.body5,
@@ -885,7 +900,7 @@ export default function ProductHome({route, navigation}) {
                   }}>
                   Erdington
                 </Text>
-                <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
+                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
                 <Text
                   style={{
                     ...FONTS.body5,
@@ -893,7 +908,7 @@ export default function ProductHome({route, navigation}) {
                   }}>
                   Digbeth
                 </Text>
-                <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
+                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
                 <Text
                   style={{
                     ...FONTS.body5,
@@ -901,7 +916,7 @@ export default function ProductHome({route, navigation}) {
                   }}>
                   Erdington
                 </Text>
-                <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
+                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
                 <Text
                   style={{
                     ...FONTS.body5,
@@ -909,7 +924,7 @@ export default function ProductHome({route, navigation}) {
                   }}>
                   Digbeth
                 </Text>
-                <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
+                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
                 <Text
                   style={{
                     ...FONTS.body5,
@@ -923,11 +938,11 @@ export default function ProductHome({route, navigation}) {
         </Modalize>
         <Modalize ref={modalizeRef}>
           <View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon
                 name="chevron-left"
                 onPress={() => modalizeRef.current.close()}
-                style={{...FONTS.h2, color: COLORS.primary}}
+                style={{ ...FONTS.h2, color: COLORS.primary }}
               />
               <Text
                 style={{
@@ -947,7 +962,7 @@ export default function ProductHome({route, navigation}) {
               snapToAlignment="center"
               scrollEventThrottle={16}
               decelerationRate={'fast'}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <View
                     style={{
@@ -968,7 +983,7 @@ export default function ProductHome({route, navigation}) {
                         borderRadius: 15,
                         marginRight: 10,
                       }}></View>
-                    <View style={{width: width - 150}}>
+                    <View style={{ width: width - 150 }}>
                       <Text
                         style={{
                           ...FONTS.body3,
@@ -990,8 +1005,8 @@ export default function ProductHome({route, navigation}) {
                 );
               }}
               onScroll={Animated.event(
-                [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                {useNativeDriver: false},
+                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                { useNativeDriver: false },
               )}
             />
           </View>
@@ -1019,6 +1034,10 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: COLORS.white,
     padding: 10,
+    borderColor: COLORS.lightGray,
+    borderWidth:2,
+    borderRadius: 10,
+    elevation:2
   },
   cardImg: {
     width: width / 2 - 60,
@@ -1046,7 +1065,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0.5, height: 0.5},
+    shadowOffset: { width: 0.5, height: 0.5 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 5,
@@ -1067,7 +1086,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 22,
     shadowColor: '#000',
-    shadowOffset: {width: 0.8, height: 0.8},
+    shadowOffset: { width: 0.8, height: 0.8 },
     shadowOpacity: 1,
     shadowRadius: 3,
     marginBottom: 5,
@@ -1078,7 +1097,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     shadowColor: '#000',
-    shadowOffset: {width: 0.8, height: 0.8},
+    shadowOffset: { width: 0.8, height: 0.8 },
     shadowOpacity: 1,
     shadowRadius: 3,
     elevation: 5,

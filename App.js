@@ -26,7 +26,7 @@ import ProductList from './screens/products/productList';
 import ProductDetails from './screens/products/productDetails';
 import Cart from './screens/cart/cart';
 import Coupon from './screens/cart/coupon';
-import Address from './screens/user/address';
+import Address from './screens/user/deliveryAddress';
 import AddAddress from './screens/user/addAddress';
 import Checkout from './screens/cart/checkout';
 import Payment from './screens/cart/payment';

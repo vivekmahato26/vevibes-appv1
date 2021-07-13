@@ -76,7 +76,7 @@ const Slider = ({navigation, items, type}) => {
                   <Text
                     key={index}
                     style={{
-                      ...FONTS.h1,
+                      ...FONTS.h2,
                       color: COLORS.primary,
                       textAlign: 'center',
                     }}>
@@ -90,6 +90,7 @@ const Slider = ({navigation, items, type}) => {
                   ...FONTS.body3,
                   textAlign: 'center',
                   color: COLORS.gray,
+                  marginTop:10
                 }}>
                 {item.description}
               </Text>

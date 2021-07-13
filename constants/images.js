@@ -8,6 +8,7 @@ export const onboarding2 = "https://res.cloudinary.com/vevibes/image/upload/v162
 export const onboarding3 = "https://res.cloudinary.com/vevibes/image/upload/v1624350152/App%20Assets/Asset_2_td9cpt.png";
 export const location = "https://res.cloudinary.com/vevibes/image/upload/v1624354176/App%20Assets/Asset_5_ygqtjs.png";
 export const location_arrow = "https://res.cloudinary.com/vevibes/image/upload/v1624358907/App%20Assets/Asset_6_ddfaml.svg";
+export const emptyCart = "https://res.cloudinary.com/vevibes/image/upload/v1625825756/App%20Assets/Asset_21_torofj.png";
 
 export const feedbackIcons = {
     sad: {

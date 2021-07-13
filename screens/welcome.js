@@ -54,7 +54,6 @@ const Welcome = ({navigation}) => {
     });
     Geolocation.getCurrentPosition(
       position => {
-        navigation.navigate('ProductHome', {params: {city: 'Temp'}});
         setLocationData(position);
         const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyC5F8htg_kG0BcYHooYuxS-aOXGjndiQF4`;
         fetch(url)

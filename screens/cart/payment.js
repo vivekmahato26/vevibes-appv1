@@ -9,16 +9,32 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import {Card, Divider, Button} from 'react-native-paper';
+import { Divider, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fa from 'react-native-vector-icons/FontAwesome5';
-import LinearGradient from 'react-native-linear-gradient';
+import { CheckBox } from 'react-native-elements';
 
-const {width, height} = Dimensions.get('window');
+import stripe from 'tipsi-stripe'
+
+stripe.setOptions({
+  publishableKey: 'pk_test_51IvlSmSHVA8HGx9rrFmbtDKlYvFSQtx77V579n9br5J9HJpIDCvhPz5dFAicfzksyvsBamEWoLYYarj2R6DoKnRP00mIJMNwOp',
+  androidPayMode: 'test', // Android only
+})
+
+const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
-const {COLORS, FONTS, SIZES} = theme;
+const { COLORS, FONTS, SIZES } = theme;
 
-export default function Payment({navigation}) {
+export default function Payment({ navigation, route }) {
+  const couponCode = route.params.couponCode;
+  const cart = route.params.cart;
+  const discount = route.params.discount;
+  const total = route.params.total;
+  const grandTotal = route.params.grandTotal;
+  const deliveryPrice = route.params.deliveryPrice;
+  const address = route.params.address;
+  const [checked, setChecked] = React.useState(-1);
+  const [payment, setPayment] = React.useState({ type: "", details: {} });
   const data = [
     {
       type: 'cc-visa',
@@ -63,8 +79,44 @@ export default function Payment({navigation}) {
       bg: 'https://res.cloudinary.com/vevibes/image/upload/v1625114756/App%20Assets/Asset_10_vzmefn.png',
     },
   ];
+  const paymetnOptions = (type, index) => {
+    if (index === undefined) {
+      setChecked(type);
+      setPayment(prev => ({ type: type }))
+    } else {
+      setChecked(index);
+      setPayment(prev => ({ type: type, details: data[index] }))
+    }
+  }
+
+  const handlePayment = async () => {
+    try {
+      const paymentMethod = await stripe.createPaymentMethod({
+        card : {
+          number : '4000002500003155',
+          cvc : '123',
+          expMonth : 11,
+          expYear : 2022
+        },
+        billingDetails: {
+          address: {
+            city: address.city,
+            postalCode: address.zip,
+            country: address.countryCode,
+            line1: address.street,
+            line2: address.locality,
+            state: address.state,
+          },
+          name: address.name,
+          phone: address.phone
+        }
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
   return (
-    <View style={{margin: 10, flex: 1}}>
+    <View style={{ margin: 10, flex: 1 }}>
       <View>
         <View
           style={{
@@ -72,7 +124,7 @@ export default function Payment({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Icon
               name="chevron-left"
               style={{
@@ -80,6 +132,7 @@ export default function Payment({navigation}) {
                 color: COLORS.primary,
                 fontWeight: 'bold',
               }}
+              onPress={() => navigation.goBack()}
             />
             <Text
               style={{
@@ -105,7 +158,7 @@ export default function Payment({navigation}) {
           />
         </View>
       </View>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Text
           style={{
             ...FONTS.body5,
@@ -122,7 +175,7 @@ export default function Payment({navigation}) {
             keyExtractor={(item, index) => 'key' + index}
             decelerationRate={'normal'}
             scrollEventThrottle={16}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <ImageBackground
                   source={{
@@ -133,24 +186,35 @@ export default function Payment({navigation}) {
                     height: 220,
                     margin: 10,
                     resizeMode: 'cover',
-                  }}>
+                  }}
+                  resizeMode="contain"
+                >
                   <View
                     style={{
                       width: width / 2.5,
-                      height: 250,
+                      height: 220,
                       backgroundColor: 'transparent',
                       borderRadius: 10,
                     }}>
-                    <Icon
-                      name="checkbox-marked-circle"
-                      style={{
-                        textAlign: 'right',
-                        margin: 10,
-                        ...FONTS.body2,
-                        color: COLORS.white,
-                      }}
+                    <CheckBox
+                      right
+                      checkedIcon={
+                        <Icon
+                          name="record-circle-outline"
+                          style={{ ...FONTS.body2, color: COLORS.white }}
+                        />
+                      }
+                      iconType="material"
+                      uncheckedIcon={
+                        <Icon
+                          name="circle-outline"
+                          style={{ ...FONTS.body2, color: COLORS.white }}
+                        />
+                      }
+                      checked={checked === index}
+                      onPress={() => paymetnOptions('card', index)}
                     />
-                    <View style={{marginTop: '10%', margin: 10}}>
+                    <View style={{ marginTop: '5%', margin: 10 }}>
                       <Image
                         source={{
                           uri: 'https://res.cloudinary.com/vevibes/image/upload/v1625118144/App%20Assets/Asset_11_mn4pea.png',
@@ -158,16 +222,15 @@ export default function Payment({navigation}) {
                         style={{
                           width: 80,
                           height: 25,
-
-                          resizeMode: 'cover',
                         }}
+                        resizeMode="contain"
                       />
                       <Text
                         style={{
                           ...FONTS.body3,
                           color: COLORS.white,
                           fontWeight: 'bold',
-                          marginTop: 20,
+                          marginTop: 10,
                         }}>
                         {item.number}
                       </Text>
@@ -175,7 +238,7 @@ export default function Payment({navigation}) {
                         style={{
                           ...FONTS.body2,
                           fontWeight: 'bold',
-                          marginTop: 30,
+                          marginTop: 20,
                         }}>
                         {item.name}
                       </Text>
@@ -200,13 +263,77 @@ export default function Payment({navigation}) {
               justifyContent: 'space-around',
               marginTop: 20,
             }}>
-            <Fa name="cc-paypal" style={{fontSize: 50, color: COLORS.paypal}} />
-            <Fa name="apple-pay" style={{fontSize: 50, color: COLORS.apple}} />
-            <Fa
-              name="amazon-pay"
-              style={{fontSize: 50, color: COLORS.amazon}}
-            />
-          </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+
+              <CheckBox
+                start
+                checkedIcon={
+                  <Icon
+                    name="record-circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.secondary }}
+                  />
+                }
+                iconType="material"
+                uncheckedIcon={
+                  <Icon
+                    name="circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.gray }}
+                  />
+                }
+                checked={checked === 'paypal'}
+                onPress={() => paymetnOptions('paypal')}
+                containerStyle={{ margin: 0, padding: 0 }}
+              />
+              <Fa name="cc-paypal" style={{ fontSize: 50, color: COLORS.paypal }} />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <CheckBox
+                start
+                checkedIcon={
+                  <Icon
+                    name="record-circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.secondary }}
+                  />
+                }
+                iconType="material"
+                uncheckedIcon={
+                  <Icon
+                    name="circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.gray }}
+                  />
+                }
+                checked={checked === 'apple'}
+                onPress={() => paymetnOptions('apple')}
+                containerStyle={{ margin: 0, padding: 0 }}
+              />
+              <Fa name="apple-pay" style={{ fontSize: 50, color: COLORS.apple }} />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+
+              <CheckBox
+                start
+                checkedIcon={
+                  <Icon
+                    name="record-circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.secondary }}
+                  />
+                }
+                iconType="material"
+                uncheckedIcon={
+                  <Icon
+                    name="circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.gray }}
+                  />
+                }
+                checked={checked === 'amazon'}
+                onPress={() => paymetnOptions('amazon')}
+                containerStyle={{ margin: 0, padding: 0 }}
+              />
+              <Fa
+                name="amazon-pay"
+                style={{ fontSize: 50, color: COLORS.amazon }}
+              />
+            </View></View>
         </ScrollView>
       </View>
       <View>
@@ -216,12 +343,12 @@ export default function Payment({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
             Delivery Fees
           </Text>
           <Text
-            style={{...FONTS.body5, color: COLORS.primary, fontWeight: 'bold'}}>
-            $05
+            style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
+            £{deliveryPrice}
           </Text>
         </View>
         <Divider
@@ -238,12 +365,12 @@ export default function Payment({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
             Discount
           </Text>
           <Text
-            style={{...FONTS.body5, color: COLORS.primary, fontWeight: 'bold'}}>
-            $06
+            style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
+            £{discount}
           </Text>
         </View>
         <View
@@ -252,12 +379,12 @@ export default function Payment({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
             Total Price
           </Text>
           <Text
-            style={{...FONTS.body5, color: COLORS.primary, fontWeight: 'bold'}}>
-            $24
+            style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
+            £{total}
           </Text>
         </View>
         <Divider
@@ -274,7 +401,7 @@ export default function Payment({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.primary}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.primary }}>
             Grand Total
           </Text>
           <Text
@@ -283,7 +410,7 @@ export default function Payment({navigation}) {
               color: COLORS.secondary,
               fontWeight: 'bold',
             }}>
-            $23
+            £{grandTotal}
           </Text>
         </View>
         <Button
@@ -294,9 +421,9 @@ export default function Payment({navigation}) {
             marginTop: 20,
             borderRadius: 10,
           }}
-          onPress={() => navigation.navigate('Failure')}>
+          onPress={handlePayment}>
           <Text
-            style={{...FONTS.body5, color: COLORS.white, fontWeight: 'bold'}}>
+            style={{ ...FONTS.body5, color: COLORS.white, fontWeight: 'bold' }}>
             Confirm Order
           </Text>
         </Button>

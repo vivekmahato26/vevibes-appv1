@@ -28,6 +28,10 @@
 		E808EC34E89D4C418D24F786 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 927049B66F2F41E2B66C8D1B /* Octicons.ttf */; };
 		487FFE80188E492B8C3E07EF /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 964B393E9CF54902B37AA47A /* SimpleLineIcons.ttf */; };
 		65029C2ADDA64BB2B4A495C2 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5ADC9C5B946E4436ABD47DF3 /* Zocial.ttf */; };
+		9F917BFE45DE43AAAD497497 /* SegoeUI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6A4D42439FA45C08A8D8EBA /* SegoeUI.ttf */; };
+		49F78CEBAD2948299E50E3A1 /* SegoeUIBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F54DEB261A114B05A9961404 /* SegoeUIBold.ttf */; };
+		5425515E6FAB49B19BD44CF8 /* SegoeUIBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBD818384A054B08BF8547D7 /* SegoeUIBoldItalic.ttf */; };
+		023F1C6A16D948C083C49D5B /* SegoeUIItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F12668D70F47453B8BB75FDD /* SegoeUIItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +72,10 @@
 		927049B66F2F41E2B66C8D1B /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		964B393E9CF54902B37AA47A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		5ADC9C5B946E4436ABD47DF3 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C6A4D42439FA45C08A8D8EBA /* SegoeUI.ttf */ = {isa = PBXFileReference; name = "SegoeUI.ttf"; path = "../assets/fonts/SegoeUI.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F54DEB261A114B05A9961404 /* SegoeUIBold.ttf */ = {isa = PBXFileReference; name = "SegoeUIBold.ttf"; path = "../assets/fonts/SegoeUIBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FBD818384A054B08BF8547D7 /* SegoeUIBoldItalic.ttf */ = {isa = PBXFileReference; name = "SegoeUIBoldItalic.ttf"; path = "../assets/fonts/SegoeUIBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F12668D70F47453B8BB75FDD /* SegoeUIItalic.ttf */ = {isa = PBXFileReference; name = "SegoeUIItalic.ttf"; path = "../assets/fonts/SegoeUIItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +184,10 @@
 				927049B66F2F41E2B66C8D1B /* Octicons.ttf */,
 				964B393E9CF54902B37AA47A /* SimpleLineIcons.ttf */,
 				5ADC9C5B946E4436ABD47DF3 /* Zocial.ttf */,
+				C6A4D42439FA45C08A8D8EBA /* SegoeUI.ttf */,
+				F54DEB261A114B05A9961404 /* SegoeUIBold.ttf */,
+				FBD818384A054B08BF8547D7 /* SegoeUIBoldItalic.ttf */,
+				F12668D70F47453B8BB75FDD /* SegoeUIItalic.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -287,6 +299,10 @@
 				E808EC34E89D4C418D24F786 /* Octicons.ttf in Resources */,
 				487FFE80188E492B8C3E07EF /* SimpleLineIcons.ttf in Resources */,
 				65029C2ADDA64BB2B4A495C2 /* Zocial.ttf in Resources */,
+				9F917BFE45DE43AAAD497497 /* SegoeUI.ttf in Resources */,
+				49F78CEBAD2948299E50E3A1 /* SegoeUIBold.ttf in Resources */,
+				5425515E6FAB49B19BD44CF8 /* SegoeUIBoldItalic.ttf in Resources */,
+				023F1C6A16D948C083C49D5B /* SegoeUIItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

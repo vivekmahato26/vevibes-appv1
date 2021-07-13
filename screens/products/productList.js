@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import {
   View,
@@ -11,19 +11,21 @@ import {
   Image,
   LogBox,
 } from 'react-native';
-import {Button, Card, Title} from 'react-native-paper';
+import { Button, Card, Title } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import Fa from "react-native-vector-icons/FontAwesome";
+
 import theme from '../../constants/theme';
-const {COLORS, FONTS, SIZES} = theme;
+const { COLORS, FONTS, SIZES } = theme;
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-export default function ProductList({navigation, route}) {
+export default function ProductList({ navigation, route }) {
   const products = route.params.products;
   console.log(products);
   const scrollX = new Animated.Value(0);
-  const [viewStyle, setViewStyle] = useState('view-grid');
+  const [viewStyle, setViewStyle] = useState('th-large');
   const data = [
     {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531481/App%20Assets/Asset_42_yownt0.png',
@@ -86,16 +88,16 @@ export default function ProductList({navigation, route}) {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
   const productDetails = (item) => {
-    navigation.navigate('ProductDetails',{
+    navigation.navigate('ProductDetails', {
       screen: "ProductDetails",
       product: item
     });
   };
   const changeViewStyle = () => {
-    if (viewStyle === 'view-grid') {
-      setViewStyle('view-list');
+    if (viewStyle === 'th-large') {
+      setViewStyle('list-ul');
     } else {
-      setViewStyle('view-grid');
+      setViewStyle('th-large');
     }
   };
   return (
@@ -109,19 +111,19 @@ export default function ProductList({navigation, route}) {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <View style={{flex: 1, alignItems: 'center', flexDirection: 'row'}}>
-            <Icon name="chevron-left" style={styles.icon} />
+          <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
+            <Icon name="chevron-left" style={styles.icon} onPress={() => navigation.goBack()}/>
             <Text
-              style={{...FONTS.h3, color: COLORS.primary, fontWeight: 'bold'}}>
+              style={{ ...FONTS.h3, color: COLORS.primary, fontWeight: 'bold' }}>
               Best Selling Items
             </Text>
           </View>
-          <View style={{alignItems: 'center', flexDirection: 'row'}}>
+          <View style={{ alignItems: 'center', flexDirection: 'row' }}>
             <Icon
               name="magnify"
-              style={[styles.icon, {padding: 5, marginRight: 5}]}
+              style={[styles.icon, { padding: 5, marginRight: 5 }]}
             />
-            <Icon
+            <Fa
               name={viewStyle}
               onPress={changeViewStyle}
               style={styles.icon}
@@ -129,7 +131,7 @@ export default function ProductList({navigation, route}) {
           </View>
         </View>
         <View>
-          {viewStyle === 'view-grid' && (
+          {viewStyle === 'th-large' && (
             <FlatList
               horizontal={false}
               numColumns={2}
@@ -141,7 +143,7 @@ export default function ProductList({navigation, route}) {
               scrollEventThrottle={16}
               snapToAlignment="center"
               showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <Card style={styles.card} onPress={() => productDetails(item)}>
                     <View
@@ -159,16 +161,16 @@ export default function ProductList({navigation, route}) {
                           right: 10,
                           ...FONTS.body3,
                           color: COLORS.primary,
-                          elevation:1
+                          elevation: 1
                         }}
                       />
                       <Image
                         style={styles.cardImg}
-                        source={{uri: item.img[0]}}
+                        source={{ uri: item.img[0] }}
                       />
                     </View>
                     <View>
-                      {item.weightKG &&<Text
+                      {item.weightKG && <Text
                         style={{
                           color: COLORS.primary,
                           ...FONTS.h3,
@@ -214,7 +216,7 @@ export default function ProductList({navigation, route}) {
               }}
             />
           )}
-          {viewStyle === 'view-list' && (
+          {viewStyle === 'list-ul' && (
             <FlatList
               horizontal={false}
               data={products}
@@ -225,11 +227,11 @@ export default function ProductList({navigation, route}) {
               scrollEventThrottle={16}
               snapToAlignment="center"
               showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
-                  <Card style={styles.cardList} onPress={productDetails}>
+                  <Card style={styles.cardList} onPress={() => productDetails(item)}>
                     <View
-                      style={{flexDirection: 'row', alignItems: 'flex-start'}}>
+                      style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                       <View
                         style={{
                           backgroundColor: COLORS.lightGray,
@@ -245,16 +247,16 @@ export default function ProductList({navigation, route}) {
                             right: 5,
                             ...FONTS.body3,
                             color: COLORS.primary,
-                            elevation:1
+                            elevation: 1
                           }}
                         />
                         <Image
                           style={styles.cardImgList}
-                          source={{uri: item.img[0]}}
+                          source={{ uri: item.img[0] }}
                         />
                       </View>
                       <View>
-                        {item.weightKG &&<Text
+                        {item.weightKG && <Text
                           style={{
                             color: COLORS.primary,
                             ...FONTS.h3,
@@ -268,6 +270,7 @@ export default function ProductList({navigation, route}) {
                             ...FONTS.body3,
                             color: COLORS.primary,
                             fontWeight: 'bold',
+                            maxWidth: width - 180
                           }}>
                           {item.name}
                         </Title>
@@ -322,14 +325,20 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: COLORS.white,
     padding: 10,
-    borderRadius: 25,
+    borderRadius: 15,
+    borderColor: COLORS.lightGray,
+    borderWidth: 1,
+    elevation: 2
   },
   cardList: {
     width: width - 20,
     margin: 10,
     backgroundColor: COLORS.white,
     padding: 10,
-    borderRadius: 25,
+    borderRadius: 15,
+    borderColor: COLORS.lightGray,
+    borderWidth: 1,
+    elevation: 2
   },
   cardImg: {
     width: width / 2 - 50,

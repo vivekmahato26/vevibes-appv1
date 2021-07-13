@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import {
   View,
@@ -8,20 +8,27 @@ import {
   Animated,
   FlatList,
 } from 'react-native';
-import {TextInput, Divider, Button} from 'react-native-paper';
-import {CheckBox} from 'react-native-elements';
+import { TextInput, Divider, Button } from 'react-native-paper';
+import { CheckBox } from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {Modalize} from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 import DatePicker from 'react-native-date-picker';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
-import {Image} from 'react-native-elements/dist/image/Image';
-const {COLORS, FONTS, SIZES} = theme;
+import { Image } from 'react-native-elements/dist/image/Image';
+const { COLORS, FONTS, SIZES } = theme;
 
-export default function Checkout({navigation}) {
+export default function Checkout({ navigation, route }) {
+  const couponCode = route.params.couponCode;
+  const cart = route.params.cart;
+  const discount = route.params.discount;
+  const total = route.params.total;
+  const grandTotal = route.params.grandTotal;
+  const deliveryPrice = route.params.deliveryPrice;
+  const address = route.params.address;
   const scrollX = new Animated.Value(0);
   const [collection, setCollection] = React.useState(true);
   const [delivery, setDelivery] = React.useState(false);
@@ -72,21 +79,22 @@ export default function Checkout({navigation}) {
   const emptyData = [];
 
   return (
-    <View style={{flex: 1, padding: 10}}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{ flex: 1, padding: 10 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Icon
           name="chevron-left"
-          style={{...FONTS.body1, color: COLORS.primary, fontWeight: 'bold'}}
+          style={{ ...FONTS.body1, color: COLORS.primary, fontWeight: 'bold' }}
+          onPress={() => navigation.goBack()}
         />
         <Text
-          style={{...FONTS.body5, color: COLORS.primary, fontWeight: 'bold'}}>
+          style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
           Checkout Details
         </Text>
       </View>
-      <ScrollView style={{marginTop: 20}}>
+      <ScrollView style={{ marginTop: 20 }}>
         <View
-          style={{borderBottomWidth: 2, borderBottomColor: COLORS.lightGray}}>
-          <Text style={{...FONTS.body3, color: COLORS.lightGray}}>
+          style={{ borderBottomWidth: 2, borderBottomColor: COLORS.lightGray }}>
+          <Text style={{ ...FONTS.body3, color: COLORS.lightGray }}>
             Delivery Date
           </Text>
           <View
@@ -107,7 +115,7 @@ export default function Checkout({navigation}) {
             </Text>
             <Icon
               name="chevron-right"
-              style={{...FONTS.body2, color: COLORS.primary}}
+              style={{ ...FONTS.body2, color: COLORS.primary }}
               onPress={() => dateRef.current.open()}
             />
           </View>
@@ -118,7 +126,7 @@ export default function Checkout({navigation}) {
             borderBottomColor: COLORS.lightGray,
             marginTop: 15,
           }}>
-          <Text style={{...FONTS.body3, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body3, color: COLORS.lightGray }}>
             Delivery Address
           </Text>
           <Text
@@ -144,11 +152,11 @@ export default function Checkout({navigation}) {
                 fontWeight: 'bold',
                 marginTop: 10,
               }}>
-              11, Ralph Coure, Queensway
+              {address.street}, {address.locality}
             </Text>
             <Icon
               name="chevron-right"
-              style={{...FONTS.body2, color: COLORS.primary}}
+              style={{ ...FONTS.body2, color: COLORS.primary }}
               onPress={() => addressRef.current.open()}
             />
           </View>
@@ -173,14 +181,14 @@ export default function Checkout({navigation}) {
               borderWidth: 2,
               marginRight: 10,
             }}>
-            <Text style={{...FONTS.body3, color: COLORS.gray, marginLeft: 10}}>
+            <Text style={{ ...FONTS.body3, color: COLORS.gray, marginLeft: 10 }}>
               Collection
             </Text>
             <CheckBox
               checkedIcon={
                 <Icon
                   name="record-circle-outline"
-                  style={{...FONTS.body2, color: COLORS.secondary}}
+                  style={{ ...FONTS.body2, color: COLORS.secondary }}
                 />
               }
               iconRight={true}
@@ -188,7 +196,7 @@ export default function Checkout({navigation}) {
               uncheckedIcon={
                 <Icon
                   name="circle-outline"
-                  style={{...FONTS.body2, color: COLORS.gray}}
+                  style={{ ...FONTS.body2, color: COLORS.gray }}
                 />
               }
               checked={collection}
@@ -213,14 +221,14 @@ export default function Checkout({navigation}) {
               width: width / 2 - 25,
               justifyContent: 'space-between',
             }}>
-            <Text style={{...FONTS.body3, color: COLORS.gray, marginLeft: 10}}>
+            <Text style={{ ...FONTS.body3, color: COLORS.gray, marginLeft: 10 }}>
               Delivery
             </Text>
             <CheckBox
               checkedIcon={
                 <Icon
                   name="record-circle-outline"
-                  style={{...FONTS.body2, color: COLORS.secondary}}
+                  style={{ ...FONTS.body2, color: COLORS.secondary }}
                 />
               }
               iconRight={true}
@@ -228,7 +236,7 @@ export default function Checkout({navigation}) {
               uncheckedIcon={
                 <Icon
                   name="circle-outline"
-                  style={{...FONTS.body2, color: COLORS.gray}}
+                  style={{ ...FONTS.body2, color: COLORS.gray }}
                 />
               }
               checked={delivery}
@@ -242,7 +250,7 @@ export default function Checkout({navigation}) {
             />
           </View>
         </View>
-        <View
+        {couponCode && <View
           style={{
             flex: 1,
             flexDirection: 'row',
@@ -255,23 +263,23 @@ export default function Checkout({navigation}) {
             margin: 10,
             backgroundColor: '#f7f7f7',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.primary}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.primary }}>
             Coupon Code
           </Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{...FONTS.body5, color: COLORS.secondary}}>
-              VEGAN50
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ ...FONTS.body5, color: COLORS.secondary }}>
+              {couponCode}
             </Text>
             <Icon
               name="check-circle"
-              style={{...FONTS.body5, color: COLORS.secondary, marginLeft: 5}}
+              style={{ ...FONTS.body5, color: COLORS.secondary, marginLeft: 5 }}
             />
           </View>
-        </View>
+        </View>}
       </ScrollView>
       <Modalize modalHeight={300} ref={addressRef}>
         {data.length === 0 ? (
-          <View style={{margin: 10}}>
+          <View style={{ margin: 10 }}>
             <Text
               style={{
                 ...FONTS.body2,
@@ -304,14 +312,14 @@ export default function Checkout({navigation}) {
                 source={{
                   uri: 'https://res.cloudinary.com/vevibes/image/upload/v1625487955/App%20Assets/Asset_16_m7jkxe.png',
                 }}
-                style={{width: 50, height: 80}}
+                style={{ width: 50, height: 80 }}
                 resizeMode="contain"
                 onPress={() => navigation.navigate('AddAddress')}
               />
             </View>
           </View>
         ) : (
-          <View style={{margin: 10}}>
+          <View style={{ margin: 10 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -327,7 +335,7 @@ export default function Checkout({navigation}) {
                 }}>
                 Choose Address
               </Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Icon
                   name="plus"
                   style={{
@@ -382,20 +390,20 @@ export default function Checkout({navigation}) {
                       checkedIcon={
                         <Icon
                           name="record-circle-outline"
-                          style={{...FONTS.body2, color: COLORS.secondary}}
+                          style={{ ...FONTS.body2, color: COLORS.secondary }}
                         />
                       }
                       iconType="material"
                       uncheckedIcon={
                         <Icon
                           name="circle-outline"
-                          style={{...FONTS.body2, color: COLORS.gray}}
+                          style={{ ...FONTS.body2, color: COLORS.gray }}
                         />
                       }
                       checked={checked === index}
                       onPress={() => setChecked(index)}
                     />
-                    <View style={{width: width - 100}}>
+                    <View style={{ width: width - 100 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -411,21 +419,21 @@ export default function Checkout({navigation}) {
                         </Text>
                       </View>
                       <View>
-                        <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+                        <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
                           {item.street}, {item.locality}
                         </Text>
-                        <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+                        <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
                           {item.city} {item.zip},
                         </Text>
-                        <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+                        <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
                           {item.country}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={{...FONTS.body5, color: COLORS.primary}}>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text style={{ ...FONTS.body5, color: COLORS.primary }}>
                             Mobile:{' '}
                           </Text>
                           <Text
-                            style={{...FONTS.body5, color: COLORS.lightGray}}>
+                            style={{ ...FONTS.body5, color: COLORS.lightGray }}>
                             {item.phone}
                           </Text>
                         </View>
@@ -439,7 +447,7 @@ export default function Checkout({navigation}) {
         )}
       </Modalize>
       <Modalize modalHeight={300} ref={dateRef}>
-        <View style={{margin: 10, marginTop: 20, justifyContent: 'center'}}>
+        <View style={{ margin: 10, marginTop: 20, justifyContent: 'center' }}>
           <View
             style={{
               flexDirection: 'row',
@@ -470,7 +478,7 @@ export default function Checkout({navigation}) {
               Done
             </Text>
           </View>
-          <View style={{justifyContent:"center",alignItems: 'center'}}>
+          <View style={{ justifyContent: "center", alignItems: 'center' }}>
             <DatePicker
               date={date}
               onDateChange={setDate}
@@ -482,19 +490,19 @@ export default function Checkout({navigation}) {
           </View>
         </View>
       </Modalize>
-      <View style={{margin: 10, flex: 0}}>
+      <View style={{ margin: 10, flex: 0 }}>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
             Delivery Fees
           </Text>
           <Text
-            style={{...FONTS.body5, color: COLORS.primary, fontWeight: 'bold'}}>
-            $05
+            style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
+            £{deliveryPrice}
           </Text>
         </View>
         <Divider
@@ -511,12 +519,12 @@ export default function Checkout({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
             Discount
           </Text>
           <Text
-            style={{...FONTS.body5, color: COLORS.primary, fontWeight: 'bold'}}>
-            $06
+            style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
+            £{discount}
           </Text>
         </View>
         <View
@@ -525,12 +533,12 @@ export default function Checkout({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
             Total Price
           </Text>
           <Text
-            style={{...FONTS.body5, color: COLORS.primary, fontWeight: 'bold'}}>
-            $24
+            style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
+            £{total}
           </Text>
         </View>
         <Divider
@@ -547,7 +555,7 @@ export default function Checkout({navigation}) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.body5, color: COLORS.primary}}>
+          <Text style={{ ...FONTS.body5, color: COLORS.primary }}>
             Grand Total
           </Text>
           <Text
@@ -556,7 +564,7 @@ export default function Checkout({navigation}) {
               color: COLORS.secondary,
               fontWeight: 'bold',
             }}>
-            $23
+            £{grandTotal}
           </Text>
         </View>
         <Button
@@ -568,9 +576,19 @@ export default function Checkout({navigation}) {
             borderRadius: 10,
             zIndex: -1,
           }}
-          onPress={() => navigation.navigate('Payment')}>
+          onPress={() => navigation.navigate('Payment', {
+            screen: "Payment",
+            cart: cart,
+            discount: discount,
+            total: total,
+            grandTotal: grandTotal,
+            couponCode: couponCode,
+            deliveryPrice: deliveryPrice,
+            address: address,
+
+          })}>
           <Text
-            style={{...FONTS.body5, color: COLORS.white, fontWeight: 'bold'}}>
+            style={{ ...FONTS.body5, color: COLORS.white, fontWeight: 'bold' }}>
             Confirm Order
           </Text>
         </Button>

@@ -102,7 +102,7 @@ export default function Orders({navigation}) {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Icon
             name="chevron-left"
-            style={{...FONTS.h2, color: COLORS.primary}}
+            style={{...FONTS.h2, color: COLORS.primary}}  onPress={() => navigation.goBack()}
           />
           <Text
             style={{...FONTS.body2, color: COLORS.primary, fontWeight: 'bold'}}>
