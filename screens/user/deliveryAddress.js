@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, FlatList, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { Button, FAB } from 'react-native-paper';
+import { Button, FAB, Snackbar } from 'react-native-paper';
 
 import { CheckBox } from 'react-native-elements';
 
@@ -20,6 +20,12 @@ export default function Address({ navigation, route }) {
   const deliveryPrice = route.params.deliveryPrice;
   const scrollX = new Animated.Value(0);
   const [checked, setChecked] = React.useState(-1);
+  const [visible, setVisible] = React.useState(false);
+
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
+
   const data = [
     {
       name: 'Joseph',
@@ -98,6 +104,7 @@ export default function Address({ navigation, route }) {
       })
     }
     else {
+      onToggleSnackBar();
       return;
     }
   }
@@ -240,6 +247,28 @@ export default function Address({ navigation, route }) {
             Delivery to this address
           </Text>
         </Button>
+        <Snackbar
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+          duration={1000}
+          action={{
+            label: 'OK',
+            onPress: () => {
+              // Do something
+            },
+          }}
+          theme={{
+            colors:{accent: COLORS.white,onSurface:COLORS.error}
+          }}
+        >
+          <Text style={{
+            ...FONTS.h3,
+            color: COLORS.white, 
+            backgroundColor:"transparent"
+          }}>
+            Please select a deliver address!
+          </Text>
+        </Snackbar>
       </View>
     </View>
   );

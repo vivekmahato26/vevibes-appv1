@@ -12,6 +12,8 @@ import {Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Modalize} from 'react-native-modalize';
 
+import Auth from "../constants/context/auth";
+
 import {menuIcon} from '../constants/images';
 
 const {width, height} = Dimensions.get('window');
@@ -24,6 +26,7 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 const {COLORS, FONTS} = theme;
 
 export default function Drawer({navigation}) {
+  const {logout,authenticated} = React.useContext(Auth);
   const modalizeRef = React.createRef();
   const data = [
     {
@@ -67,6 +70,10 @@ export default function Drawer({navigation}) {
       link: 'Settings',
     },
   ];
+  const logoutHandler = () => {
+    logout();
+    navigation.navigate("ProductHome");
+  }
   return (
     <View style={{width: width, height: height, flex: 1}}>
       <ScrollView>
@@ -263,7 +270,9 @@ export default function Drawer({navigation}) {
                 borderColor: COLORS.secondary,
                 borderWidth: 2,
                 marginRight: 10,
-              }}>
+              }}
+              onPress={() => modalizeRef.current.close()}
+              >
               <Text style={{...FONTS.body2, color: COLORS.secondary}}>No</Text>
             </Button>
             <Button
@@ -273,7 +282,9 @@ export default function Drawer({navigation}) {
                 borderRadius: 50,
                 paddingRight: 30,
                 paddingLeft: 30,
-              }}>
+              }}
+              onPress={logoutHandler}
+              >
               <Text style={{...FONTS.body2, color: COLORS.white}}>Yes</Text>
             </Button>
           </View>

@@ -9,11 +9,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import theme from '../../constants/theme';
 const {COLORS, FONTS} = theme;
 
-export default function EditProfile() {
+export default function EditProfile({navigation}) {
   return (
     <View style={{margin: 10,flex: 1}}>
         <ScrollView>
-      <Icon name="close-thick" style={{...FONTS.h2, color: COLORS.primary}} />
+      <Icon name="close-thick" style={{...FONTS.h2, color: COLORS.primary}}  onPress={() => navigation.goBack()}/>
       <View
         style={{
           width: 100,

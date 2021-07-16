@@ -12,7 +12,8 @@ export const COLORS = {
   paypal: '#2997D8',
   apple: '#A3AAAE',
   amazon: '#FF9900',
-  secondaryDark: '#58afaf'
+  secondaryDark: '#58afaf',
+  error:"#e84118"
 };
 export const SIZES = {
   // global sizes

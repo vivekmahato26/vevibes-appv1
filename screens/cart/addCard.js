@@ -93,7 +93,6 @@ export default function AddCard({navigation}) {
                 style={{
                   borderBottomWidth: 2,
                   paddingBottom: 20,
-                  width: width / 4 - 40,
                   borderBottomColor: COLORS.lightGray,
                   color: COLORS.gray,
                   ...FONTS.body3,
@@ -102,7 +101,7 @@ export default function AddCard({navigation}) {
               </Text>
               <TextInput
                 mode="flat"
-                style={{width: width / 4 + 80, backgroundColor: COLORS.white}}
+                style={{width: width / 4 + 60, backgroundColor: COLORS.white}}
                 outlineColor={COLORS.white}
                 selectionColor={COLORS.gray}
                 underlineColor={COLORS.lightGray}
@@ -113,12 +112,12 @@ export default function AddCard({navigation}) {
                 flexDirection: 'row',
                 alignItems: 'baseline',
                 marginBottom: 20,
+                marginLeft:10
               }}>
               <Text
                 style={{
                   borderBottomWidth: 2,
                   paddingBottom: 20,
-                  width: width / 4 - 100,
                   borderBottomColor: COLORS.lightGray,
                   color: COLORS.gray,
                   ...FONTS.body3,

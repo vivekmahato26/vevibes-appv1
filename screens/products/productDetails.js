@@ -218,7 +218,7 @@ export default function ProductDetails({navigation, route}) {
             ]}>
             <Text style={styles.head}>{product.name}</Text>
             <View style={[styles.flexView, {justifyContent: 'flex-end'}]}>
-              {product.offerPrice && <Text>£{product.offerPrice}</Text>}
+              {product.salePrice && <Text>£{product.salePrice}</Text>}
               <Text style={styles.head2}>£{product.price}</Text>
             </View>
           </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import {
   View,
@@ -16,16 +16,32 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Fa from "react-native-vector-icons/FontAwesome";
 
+import Auth from "../../constants/context/auth";
+import CartContext from "../../constants/context/cartContext";
+
 import theme from '../../constants/theme';
+import { TouchableWithoutFeedback } from 'react-native';
 const { COLORS, FONTS, SIZES } = theme;
 
 const { width, height } = Dimensions.get('window');
 
 export default function ProductList({ navigation, route }) {
+  const { authenticated } = useContext(Auth);
+  const { cart, addProductToCart, removeProductFromCart } = React.useContext(CartContext);
   const products = route.params.products;
-  console.log(products);
   const scrollX = new Animated.Value(0);
   const [viewStyle, setViewStyle] = useState('th-large');
+  const [cartUpdate, setCartUpdate] = React.useState(0);
+
+  const addProductToCartHandler = product => {
+    addProductToCart(product);
+    setCartUpdate(cartUpdate + 1);
+  };
+
+  const removeProductFromCartHandler = productId => {
+    removeProductFromCart(productId);
+    setCartUpdate(cartUpdate + 1);
+  };
   const data = [
     {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531481/App%20Assets/Asset_42_yownt0.png',
@@ -100,6 +116,14 @@ export default function ProductList({ navigation, route }) {
       setViewStyle('th-large');
     }
   };
+  const toogleWishlist = async (args) => {
+    if (!authenticated) {
+      navigation.navigate('Login');
+    }
+    else {
+      console.log(args);
+    }
+  }
   return (
     <>
       <ScrollView>
@@ -112,7 +136,7 @@ export default function ProductList({ navigation, route }) {
             justifyContent: 'space-between',
           }}>
           <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
-            <Icon name="chevron-left" style={styles.icon} onPress={() => navigation.goBack()}/>
+            <Icon name="chevron-left" style={styles.icon} onPress={() => navigation.goBack()} />
             <Text
               style={{ ...FONTS.h3, color: COLORS.primary, fontWeight: 'bold' }}>
               Best Selling Items
@@ -145,7 +169,20 @@ export default function ProductList({ navigation, route }) {
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => {
                 return (
-                  <Card style={styles.card} onPress={() => productDetails(item)}>
+                  <Card style={styles.card} >
+                    <Icon
+                      name="heart-outline"
+                      style={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        ...FONTS.body2,
+                        color: COLORS.primary,
+                        elevation: 1,
+                        zIndex: 10,
+                      }}
+                      onPress={() => toogleWishlist(item)}
+                    />
                     <View
                       style={{
                         backgroundColor: COLORS.lightGray,
@@ -153,41 +190,33 @@ export default function ProductList({ navigation, route }) {
                         padding: 5,
                         marginRight: 0,
                       }}>
-                      <Icon
-                        name="heart-outline"
-                        style={{
-                          position: 'absolute',
-                          top: 10,
-                          right: 10,
-                          ...FONTS.body3,
-                          color: COLORS.primary,
-                          elevation: 1
-                        }}
-                      />
+
                       <Image
                         style={styles.cardImg}
                         source={{ uri: item.img[0] }}
                       />
                     </View>
-                    <View>
-                      {item.weightKG && <Text
-                        style={{
-                          color: COLORS.primary,
-                          ...FONTS.h3,
-                          fontWeight: 'bold',
-                          marginLeft: 0,
-                        }}>
-                        {item.weightKG} Kg
-                      </Text>}
-                      <Title
-                        style={{
-                          ...FONTS.body3,
-                          color: COLORS.primary,
-                          fontWeight: 'bold',
-                        }}>
-                        {item.name}
-                      </Title>
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => productDetails(item)}>
+                      <View>
+                        {item.weightKG && <Text
+                          style={{
+                            color: COLORS.primary,
+                            ...FONTS.h3,
+                            fontWeight: 'bold',
+                            marginLeft: 0,
+                          }}>
+                          {item.weightKG} Kg
+                        </Text>}
+                        <Title
+                          style={{
+                            ...FONTS.body3,
+                            color: COLORS.primary,
+                            fontWeight: 'bold',
+                          }}>
+                          {item.name}
+                        </Title>
+                      </View>
+                    </TouchableWithoutFeedback>
                     <View
                       style={{
                         flex: 1,
@@ -195,9 +224,90 @@ export default function ProductList({ navigation, route }) {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                       }}>
-                      <Button style={styles.button} mode="contained">
-                        Add
-                      </Button>
+                      <View style={styles.button}>
+                        {cart.findIndex(
+                          product => product.product.id === item.id
+                        ) >= 0 ? (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              backgroundColor: COLORS.secondary,
+                              borderRadius: 50,
+                            }}>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                height: '100%',
+                                backgroundColor: COLORS.secondaryDark,
+                                borderRadius: 40,
+                                flexBasis: 30,
+                              }}>
+                              <Fa
+                                name="minus"
+                                style={{
+                                  color: COLORS.white,
+                                  ...FONTS.body3,
+                                  fontWeight: 'bold',
+                                }}
+                                onPress={() => removeProductFromCartHandler(item.id)}
+                              />
+                            </View>
+                            <Text
+                              style={{
+                                color: COLORS.white,
+                                ...FONTS.body3,
+                                marginLeft: 5,
+                                marginRight: 5,
+                                paddingBottom: 2,
+                                paddingTop: 2,
+                                fontWeight: 'bold',
+                              }}>
+                              {
+                                cart[
+                                  cart.findIndex(
+                                    product => product.product.id === item.id
+                                  )
+                                ].quantity
+                              }
+                            </Text>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                height: '100%',
+                                backgroundColor: COLORS.secondaryDark,
+                                borderRadius: 40,
+                                flexBasis: 30,
+                              }}>
+                              <Fa
+                                name="plus"
+                                style={{
+                                  color: COLORS.white,
+                                  ...FONTS.body3,
+                                  fontWeight: 'bold',
+                                }}
+                                onPress={() => addProductToCartHandler(item)}
+                              />
+                            </View>
+                          </View>
+                        ) : (
+                          <Text
+                            onPress={() => addProductToCartHandler(item)}
+                            style={{
+                              padding: 2,
+                              color: COLORS.white,
+                              ...FONTS.body3,
+                              paddingLeft: 15,
+                              paddingRight: 15,
+                            }}>
+                            Add
+                          </Text>
+                        )}
+                      </View>
                       <View
                         style={{
                           flex: 1,
@@ -205,10 +315,8 @@ export default function ProductList({ navigation, route }) {
                           flexDirection: 'row',
                           justifyContent: 'space-evenly',
                         }}>
-                        <Text style={styles.priceDisabled}>£{item.price}</Text>
-                        {item.offerPrice && (
-                          <Text style={styles.price}>£{item.offerPrice}</Text>
-                        )}
+                        <Text style={item.salePrice ? styles.priceDisabled : styles.price}>£{item.price}</Text>
+                        {item.salePrice && <Text style={styles.price}>£{item.salePrice}</Text>}
                       </View>
                     </View>
                   </Card>
@@ -282,9 +390,90 @@ export default function ProductList({ navigation, route }) {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                           }}>
-                          <Button style={styles.button} mode="contained">
-                            Add
-                          </Button>
+                          <View style={styles.button}>
+                            {cart.findIndex(
+                              product => product.product.id === item.id
+                            ) >= 0 ? (
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  backgroundColor: COLORS.secondary,
+                                  borderRadius: 50,
+                                }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    height: '100%',
+                                    backgroundColor: COLORS.secondaryDark,
+                                    borderRadius: 40,
+                                    flexBasis: 30,
+                                  }}>
+                                  <Fa
+                                    name="minus"
+                                    style={{
+                                      color: COLORS.white,
+                                      ...FONTS.body3,
+                                      fontWeight: 'bold',
+                                    }}
+                                    onPress={() => removeProductFromCartHandler(item.id)}
+                                  />
+                                </View>
+                                <Text
+                                  style={{
+                                    color: COLORS.white,
+                                    ...FONTS.body3,
+                                    marginLeft: 5,
+                                    marginRight: 5,
+                                    paddingBottom: 2,
+                                    paddingTop: 2,
+                                    fontWeight: 'bold',
+                                  }}>
+                                  {
+                                    cart[
+                                      cart.findIndex(
+                                        product => product.product.id === item.id
+                                      )
+                                    ].quantity
+                                  }
+                                </Text>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    height: '100%',
+                                    backgroundColor: COLORS.secondaryDark,
+                                    borderRadius: 40,
+                                    flexBasis: 30,
+                                  }}>
+                                  <Fa
+                                    name="plus"
+                                    style={{
+                                      color: COLORS.white,
+                                      ...FONTS.body3,
+                                      fontWeight: 'bold',
+                                    }}
+                                    onPress={() => addProductToCartHandler(item)}
+                                  />
+                                </View>
+                              </View>
+                            ) : (
+                              <Text
+                                onPress={() => addProductToCartHandler(item)}
+                                style={{
+                                  padding: 2,
+                                  color: COLORS.white,
+                                  ...FONTS.body3,
+                                  paddingLeft: 15,
+                                  paddingRight: 15,
+                                }}>
+                                Add
+                              </Text>
+                            )}
+                          </View>
                           <View
                             style={{
                               flex: 1,
@@ -292,14 +481,8 @@ export default function ProductList({ navigation, route }) {
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                             }}>
-                            <Text style={styles.priceDisabled}>
-                              £{item.price}
-                            </Text>
-                            {item.offerPrice && (
-                              <Text style={styles.price}>
-                                £{item.offerPrice}
-                              </Text>
-                            )}
+                            <Text style={item.salePrice ? styles.priceDisabled : styles.price}>£{item.price}</Text>
+                            {item.salePrice && <Text style={styles.price}>£{item.salePrice}</Text>}
                           </View>
                         </View>
                       </View>

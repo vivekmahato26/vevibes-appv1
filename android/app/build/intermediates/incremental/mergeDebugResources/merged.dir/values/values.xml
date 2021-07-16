@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2" xmlns:ns2="http://schemas.android.com/tools">
+    <string-array name="assume_strong_biometrics_models">
+        <item>Pixel 4</item>
+        <item>Pixel 4 XL</item>
+    </string-array>
+    <string-array name="crypto_fingerprint_fallback_prefixes">
+    </string-array>
+    <string-array name="crypto_fingerprint_fallback_vendors">
+        <item>samsung</item>
+    </string-array>
+    <string-array name="delay_showing_prompt_models">
+        <item>Pixel 4</item>
+        <item>Pixel 4 XL</item>
+    </string-array>
     <string-array name="gettipsi_currency_array">
     <item>Currency (optional)</item>
     <item>Unspecified</item>
     <item>USD</item>
   </string-array>
+    <string-array name="hide_fingerprint_instantly_prefixes">
+        <item>SM-A50</item> <!-- Samsung Galaxy A50 -->
+        <item>SM-G973</item> <!-- Samsung Galaxy S10 -->
+        <item>SM-G975</item> <!-- Samsung Galaxy S10+ -->
+        <item>SM-G977</item> <!-- Samsung Galaxy S10 5G -->
+        <item>SM-G770</item> <!-- Samsung Galaxy S10 Lite -->
+        <item>SM-N970</item> <!-- Samsung Galaxy Note10 -->
+        <item>SM-N971</item> <!-- Samsung Galaxy Note10 5G -->
+        <item>SM-N975</item> <!-- Samsung Galaxy Note10+ -->
+        <item>SM-N976</item> <!-- Samsung Galaxy Note10+ 5G -->
+        <item>SM-N770</item> <!-- Samsung Galaxy Note10 Lite -->
+        <item>SC-03L</item> <!-- Samsung Galaxy S10 (NTT Docomo) -->
+        <item>SC-04L</item> <!-- Samsung Galaxy S10+ (NTT Docomo) -->
+        <item>SC-05L</item> <!-- Samsung Galaxy S10+ (NTT Docomo, Olympic Games Edition) -->
+        <item>SC-01M</item> <!-- Samsung Galaxy Note10+ (NTT Docomo) -->
+        <item>SCV41</item> <!-- Samsung Galaxy S10 (au) -->
+        <item>SCV42</item> <!-- Samsung Galaxy S10+ (au) -->
+        <item>SCV45</item> <!-- Samsung Galaxy Note10+ (au) -->
+    </string-array>
     <string-array name="month_array">
     <item>Month</item>
     <item>1</item>
@@ -137,6 +169,7 @@
     <color name="background_floating_material_light">@android:color/white</color>
     <color name="background_material_dark">@color/material_grey_850</color>
     <color name="background_material_light">@color/material_grey_50</color>
+    <color name="biometric_error_color">#ff5722</color>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
     <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light</color>
@@ -462,6 +495,7 @@
     <dimen name="fastscroll_default_thickness">8dp</dimen>
     <dimen name="fastscroll_margin">0dp</dimen>
     <dimen name="fastscroll_minimum_range">50dp</dimen>
+    <dimen name="fingerprint_icon_size">64dp</dimen>
     <item format="float" name="highlight_alpha_material_colored" type="dimen">0.26</item>
     <item format="float" name="highlight_alpha_material_dark" type="dimen">0.20</item>
     <item format="float" name="highlight_alpha_material_light" type="dimen">0.12</item>
@@ -742,6 +776,7 @@
     <item name="save_overlay_view" type="id"/>
     <item name="snackbar_action" type="id"/>
     <item name="snackbar_text" type="id"/>
+    <item name="special_effects_controller_view_tag" type="id"/>
     <item name="split_action_bar" type="id"/>
     <item name="tag_accessibility_actions" type="id"/>
     <item name="tag_accessibility_clickable_spans" type="id"/>
@@ -767,6 +802,9 @@
     <item name="view_offset_helper" type="id"/>
     <item name="view_tag_instance_handle" type="id"/>
     <item name="view_tag_native_id" type="id"/>
+    <id name="view_tree_lifecycle_owner"/>
+    <id name="view_tree_saved_state_registry_owner"/>
+    <id name="view_tree_view_model_store_owner"/>
     <item name="visible_removing_fragment_view_tag" type="id"/>
     <integer name="abc_config_activityDefaultDur">220</integer>
     <integer name="abc_config_activityShortDur">150</integer>
@@ -955,6 +993,7 @@
     <string name="common_open_on_phone">Open on phone</string>
     <string name="common_signin_button_text">Sign in</string>
     <string name="common_signin_button_text_long">Sign in with Google</string>
+    <string name="confirm_device_credential_password">Use password</string>
     <string name="cvc_amex_hint">CVV</string>
     <string name="cvc_multiline_helper">123</string>
     <string name="cvc_multiline_helper_amex">1234</string>
@@ -963,6 +1002,7 @@
     <string name="czv_whitelist_yes_label">Yes</string>
     <string name="date_description">Select Date</string>
     <string name="day_description">Select Day</string>
+    <string name="default_error_msg">Unknown error</string>
     <string name="diners_club">Diners Club</string>
     <string name="discover">Discover</string>
     <string name="ending_in">%1$s ending in %2$s</string>
@@ -972,6 +1012,16 @@
     <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
     <string name="fab_transformation_scrim_behavior" translatable="false">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior" translatable="false">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
+    <string name="fingerprint_dialog_touch_sensor">Touch the fingerprint sensor</string>
+    <string name="fingerprint_error_hw_not_available">Fingerprint hardware not available.</string>
+    <string name="fingerprint_error_hw_not_present">This device does not have a fingerprint sensor</string>
+    <string name="fingerprint_error_lockout">Too many attempts. Please try again later.</string>
+    <string name="fingerprint_error_no_fingerprints">No fingerprints enrolled.</string>
+    <string name="fingerprint_error_user_canceled">Fingerprint operation canceled by user.</string>
+    <string name="fingerprint_not_recognized">Not recognized</string>
+    <string name="generic_error_no_device_credential">No PIN, pattern, or password set.</string>
+    <string name="generic_error_no_keyguard">This device does not support PIN, pattern, or password.</string>
+    <string name="generic_error_user_canceled">Authentication canceled by user.</string>
     <string name="gettipsi_card_cvc">CVC</string>
     <string name="gettipsi_card_enter_dialog_negative_button">Cancel</string>
     <string name="gettipsi_card_enter_dialog_positive_button">Done</string>

@@ -9,7 +9,7 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import { Divider, Button } from 'react-native-paper';
+import { Divider, Button, Snackbar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fa from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
@@ -35,6 +35,12 @@ export default function Payment({ navigation, route }) {
   const address = route.params.address;
   const [checked, setChecked] = React.useState(-1);
   const [payment, setPayment] = React.useState({ type: "", details: {} });
+  const [visible, setVisible] = React.useState(false);
+
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
+
   const data = [
     {
       type: 'cc-visa',
@@ -90,13 +96,17 @@ export default function Payment({ navigation, route }) {
   }
 
   const handlePayment = async () => {
+    if (checked === -1) {
+      onToggleSnackBar();
+      return;
+    }
     try {
       const paymentMethod = await stripe.createPaymentMethod({
-        card : {
-          number : '4000002500003155',
-          cvc : '123',
-          expMonth : 11,
-          expYear : 2022
+        card: {
+          number: '4000002500003155',
+          cvc: '123',
+          expMonth: 11,
+          expYear: 2022
         },
         billingDetails: {
           address: {
@@ -427,6 +437,28 @@ export default function Payment({ navigation, route }) {
             Confirm Order
           </Text>
         </Button>
+        <Snackbar
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+          duration={1000}
+          action={{
+            label: 'OK',
+            onPress: () => {
+              // Do something
+            },
+          }}
+          theme={{
+            colors:{accent: COLORS.white,onSurface:COLORS.error}
+          }}
+        >
+          <Text style={{
+            ...FONTS.h3,
+            color: COLORS.white, 
+            backgroundColor:"transparent"
+          }}>
+            Please select a payment method!
+          </Text>
+        </Snackbar>
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
 
 import {
   View,
@@ -15,14 +15,16 @@ import {
 } from 'react-native';
 import { Button, Divider, Card, Title } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import Auth from "../../constants/context/auth";
+
 import theme from '../../constants/theme';
 
 import _ from "lodash";
 
 import Fa from "react-native-vector-icons/FontAwesome";
 
-import { ADD_PRODUCT, REMOVE_PRODUCT, shopReducer } from "../../constants/cart";
-
+import CartContext from "../../constants/context/cartContext";
 import { emptyCart } from '../../constants/images';
 
 const { COLORS, FONTS, SIZES } = theme;
@@ -30,24 +32,37 @@ const { COLORS, FONTS, SIZES } = theme;
 const { width, height } = Dimensions.get('window');
 
 export default function Cart({ navigation, route }) {
-  const cart = route.params.cart;
+  const { cart, addProductToCart, removeProductFromCart } = React.useContext(CartContext);
   const coupon = route.params.coupon;
   const discount = route.params.discount;
   const percent = route.params.percent;
   const minCartPrice = route.params.minCartPrice;
-  const [cartData, dispatch] = useReducer(shopReducer, cart);
   const [total, setTotal] = React.useState(0);
   const [grandTotal, setGrandTotal] = React.useState(0);
   const [couponErr, setCouponErr] = React.useState();
   const [discountPrice, setDiscountPrice] = React.useState(0);
   const scrollX = new Animated.Value(0);
+  const [cartUpdate, setCartUpdate] = React.useState(0);
 
+
+  const { authenticated } = useContext(Auth);
+
+
+  const addProductToCartHandler = product => {
+    addProductToCart(product);
+    setCartUpdate(cartUpdate + 1);
+  };
+
+  const removeProductFromCartHandler = productId => {
+    removeProductFromCart(productId);
+    setCartUpdate(cartUpdate + 1);
+  };
   React.useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     var temp = 0;
-    cartData.map((item) => {
-      if (item.product.offerPrice) {
-        temp = (temp + item.product.offerPrice * item.quantity)
+    cart.map((item) => {
+      if (item.product.salePrice) {
+        temp = (temp + item.product.salePrice * item.quantity)
       } else {
         temp = (temp + item.product.price * item.quantity)
 
@@ -110,17 +125,31 @@ export default function Cart({ navigation, route }) {
   //     return tempCart;
   //   });
   // };
-  const addProductToCart = product => {
-    setTimeout(() => {
-      dispatch({ type: ADD_PRODUCT, product: product });
-    }, 400);
-  };
 
-  const removeProductFromCart = productId => {
-    setTimeout(() => {
-      dispatch({ type: REMOVE_PRODUCT, productId: productId });
-    }, 400);
-  };
+
+  const handleNavigation = () => {
+    if (authenticated) {
+      navigation.navigate("Address",
+        {
+          screen: 'Address',
+          discount: discountPrice,
+          total: total,
+          grandTotal: grandTotal,
+          couponCode: !couponErr && coupon,
+          deliveryPrice: 5
+        })
+    } else {
+      navigation.navigate("Login",
+        {
+          screen: 'Login',
+          discount: discountPrice,
+          total: total,
+          grandTotal: grandTotal,
+          couponCode: !couponErr && coupon,
+          deliveryPrice: 5
+        })
+    }
+  }
   return (
     <>
       {cart.length !== 0 && (
@@ -154,12 +183,13 @@ export default function Cart({ navigation, route }) {
           </View>
           <View style={{ height: height / 2, flex: 1 }}>
             <FlatList
-              data={cartData}
+              data={cart}
               keyExtractor={(item, index) => 'key' + index}
               decelerationRate={'normal'}
               scrollEventThrottle={16}
               renderItem={(product) => {
                 const item = product.item;
+                console.log(item);
                 return (
                   <Card style={styles.cardList} >
                     <View
@@ -243,7 +273,7 @@ export default function Cart({ navigation, route }) {
                                   ...FONTS.body3,
                                   fontWeight: 'bold',
                                 }}
-                                onPress={() => removeProductFromCart(item.product.id)}
+                                onPress={() => removeProductFromCartHandler(item.product.id)}
                               />
                             </View>
                             <Text
@@ -275,7 +305,7 @@ export default function Cart({ navigation, route }) {
                                   ...FONTS.body3,
                                   fontWeight: 'bold',
                                 }}
-                                onPress={() => addProductToCart(item)}
+                                onPress={() => addProductToCartHandler(item.product)}
                               />
                             </View>
                           </View>
@@ -284,8 +314,8 @@ export default function Cart({ navigation, route }) {
                               alignItems: 'center',
                               flexDirection: 'row',
                             }}>
-                            <Text style={item.product.offerPrice ? styles.priceDisabled : styles.price}>£{item.product.price}</Text>
-                            {item.product.offerPrice && <Text style={styles.price}>£{item.product.offerPrice}</Text>}
+                            <Text style={item.product.salePrice ? styles.priceDisabled : styles.price}>£{item.product.price}</Text>
+                            {item.product.salePrice && <Text style={styles.price}>£{item.product.salePrice}</Text>}
                           </View>
                         </View>
                       </View>
@@ -416,7 +446,7 @@ export default function Cart({ navigation, route }) {
                   borderRadius: 5,
                   marginTop: 15,
                 }}
-                onPress={() => { navigation.navigate("Address", { screen: 'Address', cart: cartData, discount: discountPrice, total: total, grandTotal: grandTotal, couponCode: !couponErr && coupon, deliveryPrice: 5 }) }}
+                onPress={handleNavigation}
               >
                 <Text
                   style={{ ...FONTS.body2, color: COLORS.white, fontWeight: 'bold' }}>

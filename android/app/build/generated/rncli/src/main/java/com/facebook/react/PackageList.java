@@ -11,6 +11,8 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+// @react-native-async-storage/async-storage
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 // @react-native-community/geolocation
 import com.reactnativecommunity.geolocation.GeolocationPackage;
 // @react-native-community/masked-view
@@ -19,6 +21,8 @@ import org.reactnative.maskedview.RNCMaskedViewPackage;
 import com.henninghall.date_picker.DatePickerPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+// react-native-keychain
+import com.oblador.keychain.KeychainPackage;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-permissions
@@ -78,10 +82,12 @@ public class PackageList {
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
+      new AsyncStoragePackage(),
       new GeolocationPackage(),
       new RNCMaskedViewPackage(),
       new DatePickerPackage(),
       new RNGestureHandlerPackage(),
+      new KeychainPackage(),
       new LinearGradientPackage(),
       new RNPermissionsPackage(),
       new ReanimatedPackage(),

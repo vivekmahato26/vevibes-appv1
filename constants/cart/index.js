@@ -12,7 +12,6 @@ const addProductToCart = (product, cart) => {
   } else {
     updatedCart[updatedItemIndex].quantity++ ;
   }
-  console.log(updatedCart);
   return updatedCart;
 };
 

@@ -25,6 +25,9 @@ import Fa from 'react-native-vector-icons/FontAwesome';
 
 import _ from 'lodash';
 
+import AuthContext from "../../constants/context/auth";
+import CartContext from "../../constants/context/cartContext";
+
 import ProductHeader from '../../components/productHeader';
 
 import { Modalize } from 'react-native-modalize';
@@ -44,23 +47,19 @@ const { COLORS, FONTS, SIZES } = theme;
 
 const { width, height } = Dimensions.get('window');
 
-import { ADD_PRODUCT, REMOVE_PRODUCT, shopReducer } from "../../constants/cart";
 
 export default function ProductHome({ route, navigation }) {
-  let tempCity = '';
-  if (route.params) {
-    tempCity = route.params.city;
-  }
+  const { location } = React.useContext(AuthContext);
+  const { cart, addProductToCart, removeProductFromCart } = React.useContext(CartContext);
   const modalizeRef = React.createRef();
   const addressRef = React.createRef();
   const scrollX = new Animated.Value(0);
-  const [city, setCity] = React.useState(tempCity);
   const [visible, setVisible] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [productsData, setProductsData] = React.useState([]);
   const [featuredProducts, setFeaturedProducts] = React.useState([]);
-  const [cart, dispatch] = useReducer(shopReducer, []);
-  const [counter, setCounter] = React.useState(0);
+  //const [cart, dispatch] = useReducer(shopReducer, []);
+  const [cartUpdate, setCartUpdate] = React.useState(0);
 
   const onChangeSearch = query => setSearchQuery(query);
 
@@ -78,12 +77,14 @@ export default function ProductHome({ route, navigation }) {
     setFeaturedProducts(products.getFeaturedProducts);
   };
 
-  const addProductToCart = product => {
-      dispatch({ type: ADD_PRODUCT, product: product });
+  const addProductToCartHandler = product => {
+    addProductToCart(product);
+    setCartUpdate(cartUpdate + 1);
   };
 
-  const removeProductFromCart = productId => {
-      dispatch({ type: REMOVE_PRODUCT, productId: productId });
+  const removeProductFromCartHandler = productId => {
+    removeProductFromCart(productId);
+    setCartUpdate(cartUpdate + 1);
   };
 
   const dummyData = [
@@ -305,7 +306,7 @@ export default function ProductHome({ route, navigation }) {
       <Provider>
         <ProductHeader
           navigation={navigation}
-          city={city}
+          city={location}
           notificationRef={openNotification}
           addressRef={openAddress}
           cart={cart}
@@ -516,7 +517,7 @@ export default function ProductHome({ route, navigation }) {
                                     ...FONTS.body3,
                                     fontWeight: 'bold',
                                   }}
-                                  onPress={() => removeProductFromCart(item.id)}
+                                  onPress={() => removeProductFromCartHandler(item.id)}
                                 />
                               </View>
                               <Text
@@ -554,13 +555,13 @@ export default function ProductHome({ route, navigation }) {
                                     ...FONTS.body3,
                                     fontWeight: 'bold',
                                   }}
-                                  onPress={() => addProductToCart(item)}
+                                  onPress={() => addProductToCartHandler(item)}
                                 />
                               </View>
                             </View>
                           ) : (
                             <Text
-                              onPress={() => addProductToCart(item)}
+                              onPress={() => addProductToCartHandler(item)}
                               style={{
                                 padding: 2,
                                 color: COLORS.white,
@@ -579,10 +580,8 @@ export default function ProductHome({ route, navigation }) {
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
                           }}>
-                          <Text style={styles.priceDisabled}>
-                            {item.offerPrice}
-                          </Text>
-                          <Text style={styles.price}>{item.price}</Text>
+                          <Text style={item.salePrice ? styles.priceDisabled : styles.price}>£{item.price}</Text>
+                            {item.salePrice && <Text style={styles.price}>£{item.salePrice}</Text>}
                         </View>
                       </View>
                     </Card>
@@ -786,7 +785,7 @@ export default function ProductHome({ route, navigation }) {
                             justifyContent: 'space-evenly',
                           }}>
                           <Text style={styles.priceDisabled}>
-                            {item.offerPrice}
+                            {item.salePrice}
                           </Text>
                           <Text style={styles.price}>{item.price}</Text>
                         </View>
@@ -842,8 +841,9 @@ export default function ProductHome({ route, navigation }) {
                 borderTopLeftRadius: 15,
                 borderTopRightRadius: 15,
               }}
+              theme={{ colors: { primary: "transparent" } }}
               outlineColor="transparent"
-              selectionColor="transparent"
+              selectionColor={COLORS.secondary}
               underlineColor="transparent"
             />
             <View>
@@ -1035,9 +1035,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: 10,
     borderColor: COLORS.lightGray,
-    borderWidth:2,
+    borderWidth: 2,
     borderRadius: 10,
-    elevation:2
+    elevation: 2
   },
   cardImg: {
     width: width / 2 - 60,

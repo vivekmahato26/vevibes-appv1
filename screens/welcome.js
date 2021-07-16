@@ -17,8 +17,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Geolocation from '@react-native-community/geolocation';
 
-import {location} from '../constants/images';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {locationIcon} from '../constants/images';
 import {homeStyle} from '../constants/styles';
+
+import Auth from "../constants/context/auth";
 
 import theme from '../constants/theme';
 const {COLORS, FONTS, SIZES} = theme;
@@ -26,6 +30,11 @@ const {COLORS, FONTS, SIZES} = theme;
 const Welcome = ({navigation}) => {
   const modalizeRef = React.createRef();
   const [locationData, setLocationData] = React.useState();
+  const {setLocation,location} = React.useContext(Auth);
+
+  if(location !== undefined && location !== "") {
+    navigation.navigate("ProductHome");
+  }
 
   const findCoordinates = async () => {
     try {
@@ -48,6 +57,10 @@ const Welcome = ({navigation}) => {
       console.warn(err);
     }
 
+    const setAscynStorage = async (arg) => {
+      await AsyncStorage.setItem('location',arg);
+    }
+
     Geolocation.setRNConfiguration({
       skipPermissionRequests: false,
       authorizationLevel: 'auto',
@@ -64,6 +77,8 @@ const Welcome = ({navigation}) => {
               const city = resJson.plus_code.compound_code
                 .split(' ')[1]
                 .split(',')[0];
+                setLocation(city);
+                setAscynStorage(city);
               navigation.navigate('ProductHome', {
                 screen: 'ProductHome',
                city: city,
@@ -114,7 +129,7 @@ const Welcome = ({navigation}) => {
             width: '40%',
             height: '30%',
           }}
-          source={{uri: location}}
+          source={{uri: locationIcon}}
         />
         <Text
           style={{

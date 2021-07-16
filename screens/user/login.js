@@ -1,15 +1,33 @@
-import React from 'react';
+import React, { useContext, useRef } from 'react';
 
-import {View, Text, StyleSheet} from 'react-native';
-import {Input, Button} from 'react-native-elements';
+import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {homeStyle} from '../../constants/styles';
+import { Button, TextInput } from 'react-native-paper';
+
+import Auth from "../../constants/context/auth";
+
 
 import theme from '../../constants/theme';
-const {COLORS, FONTS, SIZES} = theme;
+const { COLORS, FONTS, SIZES } = theme;
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
+  const { login } = useContext(Auth);
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const handlelogin = () => {
+    const variables = {
+      input: { 
+        email: emailRef.current.state.value,
+        password: passwordRef.current.state.value,
+      }
+    }
+    const res = login(variables);
+    if(res) {
+      navigation.goBack();
+    }
+  }
   return (
     <>
       <View>
@@ -40,11 +58,41 @@ const Login = ({navigation}) => {
             paddingLeft: 10,
             marginTop: 10,
           }}>
-          Login to access to VeVibes
+          Login to access VeVibes
         </Text>
-        <View style={{marginTop: 80}}>
-          <Input placeholder="Email ID" />
-          <Input placeholder="Password" rightIcon={<Icon name="eye" />} />
+        <View style={{ marginTop: 80 }}>
+          <TextInput placeholder="Email ID" label="Email*" ref={emailRef} 
+          theme={{
+            colors: { text: COLORS.primary, primary: COLORS.primary },
+          }}
+            name="email"
+            style={{
+              margin:10,
+              marginBottom: 20,
+              backgroundColor: COLORS.white,
+              ...FONTS.body3,
+              color: COLORS.primary,
+              fontWeight: 'bold',
+            }}
+            selectionColor={COLORS.lightGray}
+            outlineColor={COLORS.lightGray}
+            underlineColor={COLORS.lightGray} />
+          <TextInput placeholder="Password" label="Password*" rightIcon={<Icon name="eye" />} ref={passwordRef} 
+          theme={{
+            colors: { text: COLORS.primary, primary: COLORS.primary },
+          }}
+            name="password"
+            style={{
+              margin:10,
+              marginBottom: 20,
+              backgroundColor: COLORS.white,
+              ...FONTS.body3,
+              color: COLORS.primary,
+              fontWeight: 'bold',
+            }}
+            selectionColor={COLORS.primary}
+            outlineColor={COLORS.lightGray}
+            underlineColor={COLORS.primary} />
           <Text
             style={{
               textAlign: 'right',
@@ -58,15 +106,21 @@ const Login = ({navigation}) => {
           </Text>
         </View>
         <Button
-          title="SIGN IN"
-          containerStyle={{
-            padding: 10,
-            color: COLORS.primary,
+          style={{
+            margin: 10,
+            backgroundColor: COLORS.secondary,
           }}
-          onPress={() => {
-            navigation.navigate('Register');
+          onPress={handlelogin}
+        >
+          <Text style={{
+            ...FONTS.body2,
+            color: COLORS.white,
+            paddingTop: 10,
+            textAlign: 'center',
+            fontWeight: 'bold',
           }}
-        />
+          >SIGN IN</Text>
+        </Button>
         <Text
           style={{
             ...FONTS.body3,
@@ -74,7 +128,9 @@ const Login = ({navigation}) => {
             paddingTop: 10,
             textAlign: 'center',
             fontWeight: 'bold',
-          }}>
+          }}
+          onPress={() => navigation.navigate("Register")}
+        >
           Don't have an account? Sign Up
         </Text>
       </View>
