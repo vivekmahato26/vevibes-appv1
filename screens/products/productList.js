@@ -10,8 +10,9 @@ import {
   StyleSheet,
   Image,
   LogBox,
+  TouchableWithoutFeedback
 } from 'react-native';
-import { Button, Card, Title } from 'react-native-paper';
+import { Card, Title, Snackbar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Fa from "react-native-vector-icons/FontAwesome";
@@ -20,18 +21,34 @@ import Auth from "../../constants/context/auth";
 import CartContext from "../../constants/context/cartContext";
 
 import theme from '../../constants/theme';
-import { TouchableWithoutFeedback } from 'react-native';
 const { COLORS, FONTS, SIZES } = theme;
+
+import {
+  client,
+  ADD_TO_WISHLIST,
+  REMOVE_FROM_WISHLIST,
+  GET_WISHLIST
+} from '../../constants/graphql';
+
+import { useIsFocused } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get('window');
 
 export default function ProductList({ navigation, route }) {
-  const { authenticated } = useContext(Auth);
+  const isFocused = useIsFocused();
+  const { authenticated, token } = useContext(Auth);
   const { cart, addProductToCart, removeProductFromCart } = React.useContext(CartContext);
   const products = route.params.products;
   const scrollX = new Animated.Value(0);
   const [viewStyle, setViewStyle] = useState('th-large');
   const [cartUpdate, setCartUpdate] = React.useState(0);
+  const [wishlistData, setWishlistData] = React.useState([]);
+  const [visible, setVisible] = useState(false);
+  const [snackText, setSnackText] = useState("");
+
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   const addProductToCartHandler = product => {
     addProductToCart(product);
@@ -102,7 +119,8 @@ export default function ProductList({ navigation, route }) {
   ];
   React.useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-  }, []);
+    getWishlist();
+  }, [isFocused]);
   const productDetails = (item) => {
     navigation.navigate('ProductDetails', {
       screen: "ProductDetails",
@@ -116,13 +134,32 @@ export default function ProductList({ navigation, route }) {
       setViewStyle('th-large');
     }
   };
-  const toogleWishlist = async (args) => {
+  const toogleWishlist = async (id, flag) => {
     if (!authenticated) {
       navigation.navigate('Login');
     }
     else {
-      console.log(args);
+      if (flag === -1) {
+        client.setHeader('authorization', `Bearer ${token}`);
+        const addToWishlist = await client.request(ADD_TO_WISHLIST, { productId: id })
+        getWishlist();
+        setSnackText("Added from Wishlist!");
+        onToggleSnackBar();
+      } else {
+        client.setHeader('authorization', `Bearer ${token}`);
+        const removeFromWishlist = await client.request(REMOVE_FROM_WISHLIST, { productId: id })
+        getWishlist();
+        setSnackText("Removed to Wishlist!")
+        onToggleSnackBar();
+      }
     }
+  }
+  const getWishlist = async () => {
+    client.setHeader('authorization', `Bearer ${token}`);
+    const wishlist = await client.request(GET_WISHLIST);
+    const wishlistData = wishlist.getWishlist;
+    setWishlistData(wishlistData);
+    return;
   }
   return (
     <>
@@ -168,20 +205,21 @@ export default function ProductList({ navigation, route }) {
               snapToAlignment="center"
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => {
+                const wishlisted = wishlistData.findIndex((wishlist) => wishlist.id === item.id)
                 return (
                   <Card style={styles.card} >
                     <Icon
-                      name="heart-outline"
+                      name={wishlisted === -1 ? "heart-outline" : "heart"}
                       style={{
                         position: 'absolute',
                         top: 10,
                         right: 10,
                         ...FONTS.body2,
-                        color: COLORS.primary,
+                        color: COLORS.error,
                         elevation: 1,
                         zIndex: 10,
                       }}
-                      onPress={() => toogleWishlist(item)}
+                      onPress={() => toogleWishlist(item.id, wishlisted)}
                     />
                     <View
                       style={{
@@ -313,7 +351,7 @@ export default function ProductList({ navigation, route }) {
                           flex: 1,
                           alignItems: 'center',
                           flexDirection: 'row',
-                          justifyContent: 'space-evenly',
+                          justifyContent: 'flex-end',
                         }}>
                         <Text style={item.salePrice ? styles.priceDisabled : styles.price}>£{item.price}</Text>
                         {item.salePrice && <Text style={styles.price}>£{item.salePrice}</Text>}
@@ -336,6 +374,7 @@ export default function ProductList({ navigation, route }) {
               snapToAlignment="center"
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => {
+                const wishlisted = wishlistData.findIndex((wishlist) => wishlist.id === item.id)
                 return (
                   <Card style={styles.cardList} onPress={() => productDetails(item)}>
                     <View
@@ -348,15 +387,17 @@ export default function ProductList({ navigation, route }) {
                           marginRight: 10,
                         }}>
                         <Icon
-                          name="heart-outline"
+                          name={wishlisted === -1 ? "heart-outline" : "heart"}
                           style={{
                             position: 'absolute',
                             top: 5,
                             right: 5,
-                            ...FONTS.body3,
-                            color: COLORS.primary,
-                            elevation: 1
+                            ...FONTS.body2,
+                            color: COLORS.error,
+                            elevation: 1,
+                            zIndex: 10
                           }}
+                          onPress={() => toogleWishlist(item.id, wishlisted)}
                         />
                         <Image
                           style={styles.cardImgList}
@@ -479,7 +520,7 @@ export default function ProductList({ navigation, route }) {
                               flex: 1,
                               alignItems: 'center',
                               flexDirection: 'row',
-                              justifyContent: 'space-between',
+                              justifyContent: 'flex-end',
                             }}>
                             <Text style={item.salePrice ? styles.priceDisabled : styles.price}>£{item.price}</Text>
                             {item.salePrice && <Text style={styles.price}>£{item.salePrice}</Text>}
@@ -494,6 +535,25 @@ export default function ProductList({ navigation, route }) {
           )}
         </View>
       </ScrollView>
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        duration={200}
+        theme={{
+          colors: { accent: COLORS.white, onSurface: COLORS.error }
+        }}
+      >
+        <View style={{width: '100%',justifyContent: 'center'}}>
+          <Text style={{
+            ...FONTS.h3,
+            color: COLORS.white,
+            backgroundColor: "transparent",
+            textAlign: 'center',
+          }}>
+            {snackText}
+          </Text>
+        </View>
+      </Snackbar>
     </>
   );
 }
@@ -544,11 +604,12 @@ const styles = StyleSheet.create({
   },
 
   price: {
-    ...FONTS.body3,
+    ...FONTS.body4,
     color: COLORS.secondary,
+    marginLeft: 5
   },
   priceDisabled: {
-    ...FONTS.body3,
+    ...FONTS.body4,
     color: COLORS.gray,
     textDecorationLine: 'line-through',
   },

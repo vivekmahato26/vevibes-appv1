@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   LogBox,
+  BackHandler
 } from 'react-native';
 import {
   Button,
@@ -37,11 +38,12 @@ import {
   client,
   GET_FEATURED_PRODUCTS,
 } from '../../constants/graphql';
+import axios from 'axios';
 
 import Carousal from '../../components/carousal/carousal';
 import { Image } from 'react-native';
 import theme from '../../constants/theme';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback } from 'react-native';
 const { COLORS, FONTS, SIZES } = theme;
 
 
@@ -49,7 +51,7 @@ const { width, height } = Dimensions.get('window');
 
 
 export default function ProductHome({ route, navigation }) {
-  const { location } = React.useContext(AuthContext);
+  const { location, setLocation } = React.useContext(AuthContext);
   const { cart, addProductToCart, removeProductFromCart } = React.useContext(CartContext);
   const modalizeRef = React.createRef();
   const addressRef = React.createRef();
@@ -60,6 +62,7 @@ export default function ProductHome({ route, navigation }) {
   const [featuredProducts, setFeaturedProducts] = React.useState([]);
   //const [cart, dispatch] = useReducer(shopReducer, []);
   const [cartUpdate, setCartUpdate] = React.useState(0);
+  const [predictions, setPredictions] = React.useState([]);
 
   const onChangeSearch = query => setSearchQuery(query);
 
@@ -86,6 +89,22 @@ export default function ProductHome({ route, navigation }) {
     removeProductFromCart(productId);
     setCartUpdate(cartUpdate + 1);
   };
+
+  const getLocation = async (arg) => {
+    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBkXZv_YS1-hZWuk30goMUvGf_d5aOsxHg&input=${arg}`
+    axios
+      .request({
+        method: 'post',
+        url: url,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setPredictions(response.data.predictions);
+      })
+      .catch((e) => {
+        console.log(e.response);
+      });
+  }
 
   const dummyData = [
     {
@@ -245,16 +264,24 @@ export default function ProductHome({ route, navigation }) {
         setCompleted(true);
       }
     });
+    
 
-    if (route.params) {
-      if (route.params.city) {
-        setCity(route.params.city);
-      }
-    }
     getProducts();
     getFeaturedProducts();
-    return () => scrollX.removeListener();
+    return () =>  scrollX.removeListener();
   }, []);
+  useEffect(() =>{
+    // const onBackPress = () => {
+    //   if (location) {
+    //     return true;
+    //   } else {
+    //     navigation.navigate("Welcome");
+    //     return false;
+    //   }
+    // };
+    // BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    // return () =>  BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  })
   const productDetails = item => {
     navigation.navigate('ProductDetails', {
       screen: 'ProductsDetails',
@@ -449,9 +476,6 @@ export default function ProductHome({ route, navigation }) {
                 snapToAlignment="center"
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => {
-                  console.log(cart.findIndex(
-                    product => product.product.id === item.id
-                  ));
                   return (
                     <Card style={[styles.card]}>
                       <TouchableWithoutFeedback
@@ -459,29 +483,31 @@ export default function ProductHome({ route, navigation }) {
                           productDetails(item);
                         }}
                         containerStyle={{ flex: 1 }}>
-                        <Card.Cover
-                          style={styles.cardImg}
-                          source={{ uri: item.img[0] }}
-                        />
-                        {item.weightKG && (
-                          <Text
+                        <View>
+                          <Card.Cover
+                            style={styles.cardImg}
+                            source={{ uri: item.img[0] }}
+                          />
+                          {item.weightKG && (
+                            <Text
+                              style={{
+                                color: COLORS.primary,
+                                ...FONTS.h3,
+                                fontWeight: 'bold',
+                                marginLeft: 0,
+                              }}>
+                              {item.weightKG} Kg
+                            </Text>
+                          )}
+                          <Title
                             style={{
+                              ...FONTS.body3,
                               color: COLORS.primary,
-                              ...FONTS.h3,
                               fontWeight: 'bold',
-                              marginLeft: 0,
                             }}>
-                            {item.weightKG} Kg
-                          </Text>
-                        )}
-                        <Title
-                          style={{
-                            ...FONTS.body3,
-                            color: COLORS.primary,
-                            fontWeight: 'bold',
-                          }}>
-                          {item.name}
-                        </Title>
+                            {item.name}
+                          </Title>
+                        </View>
                       </TouchableWithoutFeedback>
                       <View
                         style={{
@@ -514,7 +540,7 @@ export default function ProductHome({ route, navigation }) {
                                   name="minus"
                                   style={{
                                     color: COLORS.white,
-                                    ...FONTS.body3,
+                                    ...FONTS.body4,
                                     fontWeight: 'bold',
                                   }}
                                   onPress={() => removeProductFromCartHandler(item.id)}
@@ -523,7 +549,7 @@ export default function ProductHome({ route, navigation }) {
                               <Text
                                 style={{
                                   color: COLORS.white,
-                                  ...FONTS.body3,
+                                  ...FONTS.body4,
                                   marginLeft: 5,
                                   marginRight: 5,
                                   paddingBottom: 2,
@@ -552,7 +578,7 @@ export default function ProductHome({ route, navigation }) {
                                   name="plus"
                                   style={{
                                     color: COLORS.white,
-                                    ...FONTS.body3,
+                                    ...FONTS.body4,
                                     fontWeight: 'bold',
                                   }}
                                   onPress={() => addProductToCartHandler(item)}
@@ -578,10 +604,10 @@ export default function ProductHome({ route, navigation }) {
                             flex: 1,
                             alignItems: 'center',
                             flexDirection: 'row',
-                            justifyContent: 'space-evenly',
+                            justifyContent: 'flex-end',
                           }}>
                           <Text style={item.salePrice ? styles.priceDisabled : styles.price}>£{item.price}</Text>
-                            {item.salePrice && <Text style={styles.price}>£{item.salePrice}</Text>}
+                          {item.salePrice && <Text style={styles.price}>£{item.salePrice}</Text>}
                         </View>
                       </View>
                     </Card>
@@ -658,34 +684,36 @@ export default function ProductHome({ route, navigation }) {
                 renderItem={({ item }) => {
                   return (
                     <Card style={[styles.card]}>
-                      <Card.Cover
-                        style={styles.cardImg}
-                        source={{ uri: item.img[0] }}
-                      />
                       <TouchableWithoutFeedback
                         onPress={() => {
                           productDetails(item);
                         }}
                         containerStyle={{ flex: 1 }}>
-                        {item.weightKG && (
-                          <Text
+                        <View>
+                          <Card.Cover
+                            style={styles.cardImg}
+                            source={{ uri: item.img[0] }}
+                          />
+                          {item.weightKG && (
+                            <Text
+                              style={{
+                                color: COLORS.primary,
+                                ...FONTS.h3,
+                                fontWeight: 'bold',
+                                marginLeft: 0,
+                              }}>
+                              {item.weightKG} Kg
+                            </Text>
+                          )}
+                          <Title
                             style={{
+                              ...FONTS.body3,
                               color: COLORS.primary,
-                              ...FONTS.h3,
                               fontWeight: 'bold',
-                              marginLeft: 0,
                             }}>
-                            {item.weightKG} Kg
-                          </Text>
-                        )}
-                        <Title
-                          style={{
-                            ...FONTS.body3,
-                            color: COLORS.primary,
-                            fontWeight: 'bold',
-                          }}>
-                          {item.name}
-                        </Title>
+                            {item.name}
+                          </Title>
+                        </View>
                       </TouchableWithoutFeedback>
                       <View
                         style={{
@@ -827,13 +855,6 @@ export default function ProductHome({ route, navigation }) {
                   style={{ ...FONTS.h2 }}
                 />
               }
-              left={
-                <TextInput.Icon
-                  name="chevron-left"
-                  color={COLORS.gray}
-                  style={{ ...FONTS.h2 }}
-                />
-              }
               style={{
                 ...FONTS.body2,
                 color: COLORS.lightGray,
@@ -845,6 +866,7 @@ export default function ProductHome({ route, navigation }) {
               outlineColor="transparent"
               selectionColor={COLORS.secondary}
               underlineColor="transparent"
+              onChangeText={text => getLocation(text)}
             />
             <View>
               <View style={{ flexDirection: 'row', marginTop: 30 }}>
@@ -885,53 +907,26 @@ export default function ProductHome({ route, navigation }) {
                   }}>
                   Choose your location
                 </Text>
-                <Text
-                  style={{
-                    ...FONTS.body5,
-                    color: COLORS.primary,
-                  }}>
-                  Digbeth
-                </Text>
-                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
-                <Text
-                  style={{
-                    ...FONTS.body5,
-                    color: COLORS.primary,
-                  }}>
-                  Erdington
-                </Text>
-                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
-                <Text
-                  style={{
-                    ...FONTS.body5,
-                    color: COLORS.primary,
-                  }}>
-                  Digbeth
-                </Text>
-                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
-                <Text
-                  style={{
-                    ...FONTS.body5,
-                    color: COLORS.primary,
-                  }}>
-                  Erdington
-                </Text>
-                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
-                <Text
-                  style={{
-                    ...FONTS.body5,
-                    color: COLORS.primary,
-                  }}>
-                  Digbeth
-                </Text>
-                <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
-                <Text
-                  style={{
-                    ...FONTS.body5,
-                    color: COLORS.primary,
-                  }}>
-                  Erdington
-                </Text>
+                <FlatList
+                  data={predictions}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <TouchableWithoutFeedback onPress={() => { setLocation(item.terms[0].value); addressRef.current.close() }}>
+                        <View>
+                          <Text
+                            style={{
+                              ...FONTS.body5,
+                              color: COLORS.primary,
+                            }}>
+                            {item.description}
+                          </Text>
+                          <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
+                        </View>
+                      </TouchableWithoutFeedback>
+                    );
+                  }}
+                  keyExtractor={(item) => item.place_id}
+                />
               </View>
             </View>
           </View>
@@ -1030,8 +1025,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   card: {
-    width: width / 2 - 40,
-    margin: 10,
+    width: width / 2 - 20,
+    margin: 5,
     backgroundColor: COLORS.white,
     padding: 10,
     borderColor: COLORS.lightGray,
@@ -1051,11 +1046,12 @@ const styles = StyleSheet.create({
   },
 
   price: {
-    ...FONTS.body3,
+    ...FONTS.body4,
     color: COLORS.secondary,
+    marginLeft: 5
   },
   priceDisabled: {
-    ...FONTS.body3,
+    ...FONTS.body4,
     color: COLORS.gray,
     textDecorationLine: 'line-through',
   },

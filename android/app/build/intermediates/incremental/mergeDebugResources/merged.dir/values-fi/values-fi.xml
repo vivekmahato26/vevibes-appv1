@@ -75,7 +75,7 @@
     <string name="selected_month_description">Valittu Kuukausi</string>
     <string name="selected_value_description">Arvo on</string>
     <string name="selected_year_description">Valittu Vuosi</string>
-    <string msgid="8106346172024741305" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
     <string name="time_tag">Kello on</string>
     <string msgid="363496807345461806" name="wallet_buy_button_place_holder">"Maksa Googlen kautta"</string>
     <string name="year_description">Valitse Vuosi</string>

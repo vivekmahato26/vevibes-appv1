@@ -8,25 +8,27 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Modalize} from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 
 import Auth from "../constants/context/auth";
+import UserContext from '../constants/context/userContext';
 
-import {menuIcon} from '../constants/images';
+import { menuIcon } from '../constants/images';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-import {logo_Colored} from '../constants/images';
+import { logo_Colored } from '../constants/images';
 
 import theme from '../constants/theme';
-import {TouchableHighlight} from 'react-native-gesture-handler';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
-const {COLORS, FONTS} = theme;
+const { COLORS, FONTS } = theme;
 
-export default function Drawer({navigation}) {
-  const {logout,authenticated} = React.useContext(Auth);
+export default function Drawer({ navigation }) {
+  const { logout, authenticated } = React.useContext(Auth);
+  const { user } = React.useContext(UserContext);
   const modalizeRef = React.createRef();
   const data = [
     {
@@ -71,11 +73,15 @@ export default function Drawer({navigation}) {
     },
   ];
   const logoutHandler = () => {
+    modalizeRef.current.close();
     logout();
     navigation.navigate("ProductHome");
   }
+  const loginHandler = () => {
+    navigation.navigate("Login");
+  }
   return (
-    <View style={{width: width, height: height, flex: 1}}>
+    <View style={{ width: width, height: height, flex: 1 }}>
       <ScrollView>
         <ImageBackground
           source={{
@@ -98,47 +104,59 @@ export default function Drawer({navigation}) {
                 backgroundColor: 'white',
                 borderRadius: 20,
               }}></View>
-            <Text
+            {authenticated && user ? <><Text
               style={{
                 ...FONTS.h2,
                 color: COLORS.primary,
                 fontWeight: 'bold',
                 marginTop: 20,
               }}>
-              Joseph
+              {user.name}
             </Text>
-            <Text
-              style={{
-                ...FONTS.body3,
-                color: COLORS.primary,
-                marginTop: 10,
-                fontWeight: 'bold',
-              }}>
-              Joseph1234@gmail.com
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: COLORS.white,
-                borderRadius: 20,
-                padding: 5,
-                marginTop: 10,
-              }}>
-              <Icon
-                name="phone"
-                style={{color: COLORS.secondary, ...FONTS.body2}}
-              />
               <Text
                 style={{
                   ...FONTS.body3,
                   color: COLORS.primary,
+                  marginTop: 10,
                   fontWeight: 'bold',
-                  marginLeft: 10,
                 }}>
-                +44 999 999 9999
+                {user.email}
               </Text>
-            </View>
+              {user.phone && <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: COLORS.white,
+                  borderRadius: 20,
+                  padding: 5,
+                  marginTop: 10,
+                }}>
+                <Icon
+                  name="phone"
+                  style={{ color: COLORS.secondary, ...FONTS.body2 }}
+                />
+                <Text
+                  style={{
+                    ...FONTS.body3,
+                    color: COLORS.primary,
+                    fontWeight: 'bold',
+                    marginLeft: 10,
+                  }}>
+                  {user.phone}
+                </Text>
+              </View>}</> : <Button
+                mode="contained"
+                style={{
+                  backgroundColor: COLORS.primary,
+                  borderRadius: 50,
+                  paddingRight: 30,
+                  paddingLeft: 30,
+                  marginTop: 30
+                }}
+                onPress={loginHandler}
+              >
+              <Text style={{ ...FONTS.body2, color: COLORS.white }}>Login</Text>
+            </Button>}
           </View>
         </ImageBackground>
         <View
@@ -161,7 +179,21 @@ export default function Drawer({navigation}) {
                   padding: 15,
                   marginBottom: 10,
                 }}
-                onPress={() => navigation.navigate(d.link)}>
+                onPress={() => {
+                  if (d.name === "Settings") {
+                    navigation.navigate(d.link);
+                    return;
+                  }
+                  if (d.name === "Coupons") {
+                    navigation.navigate(d.link);
+                    return;
+                  }
+                  if (authenticated) {
+                    navigation.navigate(d.link);
+                  } else {
+                    loginHandler();
+                  }
+                }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -184,7 +216,7 @@ export default function Drawer({navigation}) {
                         marginRight: 10,
                       }}>
                       <Image
-                        source={{uri: d.icon}}
+                        source={{ uri: d.icon }}
                         style={{
                           width: 20,
                           height: 20,
@@ -221,7 +253,7 @@ export default function Drawer({navigation}) {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Button
+          {authenticated && <Button
             mode="contained"
             style={{
               backgroundColor: COLORS.secondary,
@@ -230,19 +262,19 @@ export default function Drawer({navigation}) {
               width: width / 2,
             }}
             onPress={() => modalizeRef.current.open()}>
-            <Text style={{...FONTS.body2, color: COLORS.white}}>Logout</Text>
-          </Button>
+            <Text style={{ ...FONTS.body2, color: COLORS.white }}>Logout</Text>
+          </Button>}
         </View>
       </ScrollView>
       <Modalize ref={modalizeRef} modalHeight={300}>
-        <View style={{margin: 10}}>
+        <View style={{ margin: 10 }}>
           <Image
-            source={{uri: logo_Colored}}
-            style={{width: width / 2, height: 150}}
+            source={{ uri: logo_Colored }}
+            style={{ width: width / 2, height: 150 }}
             resizeMode="contain"
           />
           <Text
-            style={{...FONTS.body2, color: COLORS.primary, fontWeight: 'bold'}}>
+            style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold' }}>
             Logout
           </Text>
           <Text
@@ -272,8 +304,8 @@ export default function Drawer({navigation}) {
                 marginRight: 10,
               }}
               onPress={() => modalizeRef.current.close()}
-              >
-              <Text style={{...FONTS.body2, color: COLORS.secondary}}>No</Text>
+            >
+              <Text style={{ ...FONTS.body2, color: COLORS.secondary }}>No</Text>
             </Button>
             <Button
               mode="contained"
@@ -284,8 +316,8 @@ export default function Drawer({navigation}) {
                 paddingLeft: 30,
               }}
               onPress={logoutHandler}
-              >
-              <Text style={{...FONTS.body2, color: COLORS.white}}>Yes</Text>
+            >
+              <Text style={{ ...FONTS.body2, color: COLORS.white }}>Yes</Text>
             </Button>
           </View>
         </View>

@@ -2,30 +2,100 @@ import React, { useContext, useRef } from 'react';
 
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button, TextInput } from 'react-native-paper';
 
 import Auth from "../../constants/context/auth";
 
 
+import { client,LOGIN } from "../../constants/graphql";
+
 import theme from '../../constants/theme';
 const { COLORS, FONTS, SIZES } = theme;
 
+import {useNavigationState} from "@react-navigation/native";
+
 const Login = ({ navigation }) => {
-  const { login } = useContext(Auth);
+  const { login,setAuthenticated,setToken,getUserData } = useContext(Auth);
   const emailRef = useRef();
   const passwordRef = useRef();
+  const [loginError,setLoginError] = React.useState({status:false,message:""});
 
-  const handlelogin = () => {
+  const state = useNavigationState(state => state);
+  const index = useNavigationState(state => state.index);
+
+  const handlelogin = async() => {
+    if(emailRef.current.state.value === undefined) {
+      setLoginError({
+        status: true,
+        message: "Email can't be empty"
+      });
+      return;
+    } else {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const check =  re.test(String(emailRef.current.state.value).toLowerCase());
+      console.log(check);
+      if(check) {
+        setLoginError({ 
+          status: false,
+          message: ""
+        });
+      } else {
+        setLoginError({ 
+          status: true,
+          message: "Please enter a valid email address"
+        });
+        return;
+      }
+    }
+    if(passwordRef.current.state.value === undefined) {
+      setLoginError({
+        status: true,
+        message: "Password can't be empty"
+      });
+      return;
+    } else {
+      setLoginError({ 
+        status: false,
+        message: ""
+      });
+    }
     const variables = {
       input: { 
         email: emailRef.current.state.value,
         password: passwordRef.current.state.value,
       }
     }
-    const res = login(variables);
-    if(res) {
-      navigation.goBack();
+      try {
+        const data = await client.request(LOGIN, variables);
+        const loginData = data.signIn;
+        if (loginData.token) {
+          setAuthenticated(true);
+          setToken(loginData.token);
+          getUserData();
+          try {
+            await AsyncStorage.setItem('token', loginData.token);
+            await AsyncStorage.setItem('userId', loginData.userId);
+            await AsyncStorage.setItem('email', loginData.email);
+            return true;
+          } catch (e) {
+            // saving error
+          }
+        }
+        else {
+          return;
+        }
+      } catch (e) {
+        const errorObj = JSON.parse(e.message.split("!!!:")[1]);
+        setLoginError({
+          status: true,
+          message: errorObj.response.errors[0].message
+        })
+        return;
+      }
+   
+    if(res.staus) {
+      navigation.navigate(state.routes[index-1].name);
     }
   }
   return (
@@ -77,7 +147,7 @@ const Login = ({ navigation }) => {
             selectionColor={COLORS.lightGray}
             outlineColor={COLORS.lightGray}
             underlineColor={COLORS.lightGray} />
-          <TextInput placeholder="Password" label="Password*" rightIcon={<Icon name="eye" />} ref={passwordRef} 
+          <TextInput placeholder="Password" label="Password*" right={<Icon name="eye" />} ref={passwordRef} 
           theme={{
             colors: { text: COLORS.primary, primary: COLORS.primary },
           }}
@@ -90,6 +160,7 @@ const Login = ({ navigation }) => {
               color: COLORS.primary,
               fontWeight: 'bold',
             }}
+            secureTextEntry={true} 
             selectionColor={COLORS.primary}
             outlineColor={COLORS.lightGray}
             underlineColor={COLORS.primary} />
@@ -105,6 +176,7 @@ const Login = ({ navigation }) => {
             Forgot Password?
           </Text>
         </View>
+        {loginError.status && <Text style={{...FONTS.body3,color: COLORS.error,margin: 10}}>{loginError.message}</Text>}
         <Button
           style={{
             margin: 10,

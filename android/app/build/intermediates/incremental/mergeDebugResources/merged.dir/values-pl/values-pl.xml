@@ -58,6 +58,6 @@
     <string msgid="1807436368654974044" name="generic_error_no_keyguard">"To urządzenie nie obsługuje kodu PIN, wzoru ani hasła."</string>
     <string msgid="7309881387583143581" name="generic_error_user_canceled">"Użytkownik anulował uwierzytelnianie."</string>
     <string msgid="730395136688082741" name="search_menu_title">"Szukaj"</string>
-    <string msgid="8106346172024741305" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
     <string msgid="363496807345461806" name="wallet_buy_button_place_holder">"Kup to z Google"</string>
 </resources>

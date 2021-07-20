@@ -7,11 +7,13 @@ import {
   TouchableHighlight,
   StyleSheet,
   PermissionsAndroid,
+  TouchableWithoutFeedback,
+  FlatList
 } from 'react-native';
 
-import {TextInput, Divider} from 'react-native-paper';
+import { TextInput, Divider } from 'react-native-paper';
 
-import {Modalize} from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -19,21 +21,40 @@ import Geolocation from '@react-native-community/geolocation';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {locationIcon} from '../constants/images';
-import {homeStyle} from '../constants/styles';
+import { locationIcon } from '../constants/images';
+import { homeStyle } from '../constants/styles';
 
 import Auth from "../constants/context/auth";
 
-import theme from '../constants/theme';
-const {COLORS, FONTS, SIZES} = theme;
+import axios from 'axios';
 
-const Welcome = ({navigation}) => {
+import theme from '../constants/theme';
+const { COLORS, FONTS, SIZES } = theme;
+
+const Welcome = ({ navigation }) => {
   const modalizeRef = React.createRef();
   const [locationData, setLocationData] = React.useState();
-  const {setLocation,location} = React.useContext(Auth);
+  const { setLocation, location } = React.useContext(Auth);
+  const [predictions, setPredictions] = React.useState([]);
 
-  if(location !== undefined && location !== "") {
+  if (location !== undefined && location !== "") {
     navigation.navigate("ProductHome");
+  }
+
+  const getLocation = async (arg) => {
+    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBkXZv_YS1-hZWuk30goMUvGf_d5aOsxHg&input=${arg}`
+    axios
+      .request({
+        method: 'post',
+        url: url,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setPredictions(response.data.predictions);
+      })
+      .catch((e) => {
+        console.log(e.response);
+      });
   }
 
   const findCoordinates = async () => {
@@ -58,9 +79,8 @@ const Welcome = ({navigation}) => {
     }
 
     const setAscynStorage = async (arg) => {
-      await AsyncStorage.setItem('location',arg);
+      await AsyncStorage.setItem('location', arg);
     }
-
     Geolocation.setRNConfiguration({
       skipPermissionRequests: false,
       authorizationLevel: 'auto',
@@ -77,11 +97,11 @@ const Welcome = ({navigation}) => {
               const city = resJson.plus_code.compound_code
                 .split(' ')[1]
                 .split(',')[0];
-                setLocation(city);
-                setAscynStorage(city);
+              setLocation(city);
+              setAscynStorage(city);
               navigation.navigate('ProductHome', {
                 screen: 'ProductHome',
-               city: city,
+                city: city,
               });
             }
           })
@@ -92,7 +112,7 @@ const Welcome = ({navigation}) => {
       error => {
         console.log(error);
       },
-      {enableHighAccuracy: true, timeout: 5000, maximumAge: 10000},
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 10000 },
     );
   };
   return (
@@ -129,7 +149,7 @@ const Welcome = ({navigation}) => {
             width: '40%',
             height: '30%',
           }}
-          source={{uri: locationIcon}}
+          source={{ uri: locationIcon }}
         />
         <Text
           style={{
@@ -157,10 +177,10 @@ const Welcome = ({navigation}) => {
           start shopping
         </Text>
         <TouchableHighlight style={styles.button} onPress={findCoordinates}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Icon
               name="location-arrow"
-              iconStyle={{marginRight: 20}}
+              iconStyle={{ marginRight: 20 }}
               style={{
                 ...FONTS.body2,
                 textAlign: 'center',
@@ -193,23 +213,17 @@ const Welcome = ({navigation}) => {
         </Text>
       </View>
       <Modalize ref={modalizeRef}>
-        <View style={{margin: 10, justifyContent: 'flex-start'}}>
+        <View style={{ margin: 10, justifyContent: 'flex-start' }}>
           <TextInput
             placeholder="Enter your location"
             right={
               <TextInput.Icon
                 name="magnify"
                 color={COLORS.gray}
-                style={{...FONTS.h2}}
+                style={{ ...FONTS.h2 }}
               />
             }
-            left={
-              <TextInput.Icon
-                name="chevron-left"
-                color={COLORS.gray}
-                style={{...FONTS.h2}}
-              />
-            }
+            onChangeText={text => getLocation(text)}
             style={{
               ...FONTS.body2,
               color: COLORS.lightGray,
@@ -222,17 +236,17 @@ const Welcome = ({navigation}) => {
             underlineColor="transparent"
           />
           <View>
-            <View style={{flexDirection: 'row', marginTop: 30}}>
+            <View style={{ flexDirection: 'row', marginTop: 30 }}>
               <Icon
                 name="location-arrow"
-                iconStyle={{marginRight: 20}}
+                iconStyle={{ marginRight: 20 }}
                 style={{
                   ...FONTS.h2,
                   color: COLORS.primary,
                   fontWeight: 'bold',
                 }}
               />
-              <View style={{marginLeft: 20}}>
+              <View style={{ marginLeft: 20 }}>
                 <Text
                   style={{
                     ...FONTS.h3,
@@ -250,7 +264,7 @@ const Welcome = ({navigation}) => {
                 </Text>
               </View>
             </View>
-            <View style={{marginTop: 20}}>
+            <View style={{ marginTop: 20 }}>
               <Text
                 style={{
                   ...FONTS.body2,
@@ -260,53 +274,26 @@ const Welcome = ({navigation}) => {
                 }}>
                 Choose your location
               </Text>
-              <Text
-                style={{
-                  ...FONTS.body5,
-                  color: COLORS.primary,
-                }}>
-                Digbeth
-              </Text>
-              <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
-              <Text
-                style={{
-                  ...FONTS.body5,
-                  color: COLORS.primary,
-                }}>
-                Erdington
-              </Text>
-              <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
-              <Text
-                style={{
-                  ...FONTS.body5,
-                  color: COLORS.primary,
-                }}>
-                Digbeth
-              </Text>
-              <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
-              <Text
-                style={{
-                  ...FONTS.body5,
-                  color: COLORS.primary,
-                }}>
-                Erdington
-              </Text>
-              <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
-              <Text
-                style={{
-                  ...FONTS.body5,
-                  color: COLORS.primary,
-                }}>
-                Digbeth
-              </Text>
-              <Divider style={{marginTop: 15, marginBottom: 15, height: 2}} />
-              <Text
-                style={{
-                  ...FONTS.body5,
-                  color: COLORS.primary,
-                }}>
-                Erdington
-              </Text>
+              <FlatList
+                data={predictions}
+                keyExtractor={(item) => item.place_id}
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableWithoutFeedback onPress={() => { setLocation(item.terms[0].value); addressRef.current.close() }}>
+                      <View>
+                        <Text
+                          style={{
+                            ...FONTS.body5,
+                            color: COLORS.primary,
+                          }}>
+                          {item.description}
+                        </Text>
+                        <Divider style={{ marginTop: 15, marginBottom: 15, height: 2 }} />
+                      </View>
+                    </TouchableWithoutFeedback>
+                  );
+                }}
+              />
             </View>
           </View>
         </View>

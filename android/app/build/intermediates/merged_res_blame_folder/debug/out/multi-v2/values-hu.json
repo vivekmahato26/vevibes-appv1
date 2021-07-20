@@ -21,23 +21,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-hu\\values-hu.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "60",
-                        "startColumns": "4",
-                        "startOffsets": "7427",
-                        "endColumns": "100",
-                        "endOffsets": "7523"
-                    }
-                },
-                {
                     "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\22742e4b9af995071ca75997100be565\\jetified-play-services-wallet-11.8.0\\res\\values-hu\\values.xml",
                     "from": {
                         "startLines": "4",
@@ -52,6 +35,23 @@
                         "startOffsets": "7528",
                         "endColumns": "109",
                         "endOffsets": "7633"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-hu\\values-hu.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "60",
+                        "startColumns": "4",
+                        "startOffsets": "7427",
+                        "endColumns": "100",
+                        "endOffsets": "7523"
                     }
                 },
                 {

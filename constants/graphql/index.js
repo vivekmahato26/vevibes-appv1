@@ -137,3 +137,105 @@ export const GET_WISHLIST = gql`
       }
     }
 `
+
+export const CHECK_WHISHLISTED = gql`
+    query checkWishlisted($productId:String!) {
+      checkWishlisted(productId:$productId){
+        __typename ... on  Sucess{
+        res
+        }
+        __typename ... on LoginError {
+          message
+        }
+      }
+    }
+`
+
+export const GET_ADDRESS = gql`
+  {
+    getAddress{
+      id
+      name
+      line1
+      line2
+      pin
+      city
+      state
+      mobile
+      type
+      country
+      countryCode
+    }
+  }
+`;
+
+export const DELETE_ADDRESS = gql`
+  mutation deleteAddress($addressId: String!) {
+    deleteAddress(addressId: $addressId)
+  }
+`
+
+export const GET_USER = gql`
+  {
+    getUser{
+      id
+      name
+      email
+      phone
+      password
+      address {
+        id
+        name
+        line1
+        line2
+        pin
+        city
+        state
+        country
+        countryCode
+        mobile
+        type
+      }
+      wishlist {
+        id
+        name
+        description
+        price
+        featured
+        salePrice
+        tags
+        category
+        cupon
+        stock
+        indregients
+        weightKG
+        img
+        nutritionalValues{
+          energy
+          fat
+          saturatedFat
+          protine
+          carbohydrates
+          sugar
+          fiber
+          salt
+        }
+        allergen
+        disclaimer
+      }
+    }
+  }
+
+`
+
+export const CHANGE_PASSWORD = gql`
+  mutation changePassword($password: String!) {
+    changePassword(password: $password)
+  }
+`;
+
+export const REGISTER = gql`
+  mutation signUp($input: SignupInput!) {
+    signUp(input: $input)
+  }
+`;

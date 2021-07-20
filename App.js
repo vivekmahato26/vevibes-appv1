@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -51,7 +51,7 @@ import Feedback from "./screens/feedback";
 import Wishlist from "./screens/user/wishlist";
 
 
-import { client, LOGIN } from "./constants/graphql";
+import { client, GET_USER } from "./constants/graphql";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -59,6 +59,7 @@ import { onboarding1, onboarding2, onboarding3 } from './constants/images';
 
 import { Dimensions } from 'react-native';
 import CartContext from './constants/context/cartContext';
+import UserContext from './constants/context/userContext';
 
 const { width, height } = Dimensions.get('window');
 
@@ -112,6 +113,7 @@ const DrawerRoutes = () => {
   );
 };
 
+
 const App = () => {
   const MyTheme = {
     dark: false,
@@ -127,30 +129,16 @@ const App = () => {
 
   const [user, setUser] = React.useState();
   const [authenticated, setAuthenticated] = React.useState(false);
-  const [error, setError] = React.useState();
+
   const [location, setLocation] = React.useState();
   const [cart, dispatch] = React.useReducer(shopReducer, [])
+  const [token, setToken] = React.useState("");
 
-  const loginHandler = async (args) => {
-    const data = await client.request(LOGIN, args);
-    const loginData = data.signIn;
-    if (loginData.token) {
-      setAuthenticated(true);
-      setUser(loginData);
-      try {
-        await AsyncStorage.setItem('token', loginData.token);
-        await AsyncStorage.setItem('userId', loginData.userId);
-        await AsyncStorage.setItem('email', loginData.email);
-        return true;
-      } catch (e) {
-        // saving error
-      }
-    }
-    else {
-      console.log(loginData);
-      setError(loginData)
-    }
-    return false;
+  const getUserData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    client.setHeader('authorization', `Bearer ${token}`);
+    const userData = await client.request(GET_USER);
+    setUser(userData.getUser);
   }
 
   const logoutHandler = async () => {
@@ -171,68 +159,71 @@ const App = () => {
   }, [])
 
   const addProductToCart = product => {
-      // setCart(updatedCart);
-      dispatch({ type: ADD_PRODUCT, product: product });
+    // setCart(updatedCart);
+    dispatch({ type: ADD_PRODUCT, product: product });
   };
 
   const removeProductFromCart = productId => {
-      // setCart(updatedCart);
-      dispatch({ type: REMOVE_PRODUCT, productId: productId });
+    // setCart(updatedCart);
+    dispatch({ type: REMOVE_PRODUCT, productId: productId });
   };
 
   return (
     <AuthContext.Provider value={{
       authenticated: authenticated,
-      login: loginHandler,
-      error: error,
       logout: logoutHandler,
       setLocation,
       location,
-      user
+      token,
+      setAuthenticated,
+      setToken,
+      getUserData
     }}>
       <CartContext.Provider value={{
         cart,
         addProductToCart,
         removeProductFromCart,
       }} >
-        <NavigationContainer theme={MyTheme}>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="HomeGrey" component={HomeGrey} />
-            <Stack.Screen name="OnBoarding">
-              {props => (
-                <Slider
-                  {...props}
-                  items={onBoardings.items}
-                  type={onBoardings.type}
-                />
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Welcome" component={Welcome} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="Mobile" component={Mobile} />
-            <Stack.Screen name="Verify" component={Verify} />
-            <Stack.Screen name="ChangePassword" component={ChangePassword} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-            <Stack.Screen name="ProductHome" component={DrawerRoutes} independent={true} />
-            <Stack.Screen name="ProductList" component={ProductList} />
-            <Stack.Screen name="ProductDetails" component={ProductDetails} />
-            <Stack.Screen name="Cart" component={Cart} />
-            <Stack.Screen name="Coupon" component={Coupon} />
-            <Stack.Screen name="Address" component={Address} />
-            <Stack.Screen name="AddAddress" component={AddAddress} />
-            <Stack.Screen name="Checkout" component={Checkout} />
-            <Stack.Screen name="Payment" component={Payment} />
-            <Stack.Screen name="AddCard" component={AddCard} />
-            <Stack.Screen name="Sucess" component={Sucess} />
-            <Stack.Screen name="Failure" component={Failure} />
-            <Stack.Screen name="Feedback" component={Feedback} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <UserContext.Provider value={{ user, getUserData }}>
+          <NavigationContainer theme={MyTheme}>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="HomeGrey" component={HomeGrey} />
+              <Stack.Screen name="OnBoarding">
+                {props => (
+                  <Slider
+                    {...props}
+                    items={onBoardings.items}
+                    type={onBoardings.type}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="Welcome" component={Welcome} />
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Register" component={Register} />
+              <Stack.Screen name="Mobile" component={Mobile} />
+              <Stack.Screen name="Verify" component={Verify} />
+              <Stack.Screen name="ChangePassword" component={ChangePassword} />
+              <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+              <Stack.Screen name="ProductHome" component={DrawerRoutes} independent={true} />
+              <Stack.Screen name="ProductList" component={ProductList} />
+              <Stack.Screen name="ProductDetails" component={ProductDetails} />
+              <Stack.Screen name="Cart" component={Cart} />
+              <Stack.Screen name="Coupon" component={Coupon} />
+              <Stack.Screen name="Address" component={Address} />
+              <Stack.Screen name="AddAddress" component={AddAddress} />
+              <Stack.Screen name="Checkout" component={Checkout} />
+              <Stack.Screen name="Payment" component={Payment} />
+              <Stack.Screen name="AddCard" component={AddCard} />
+              <Stack.Screen name="Sucess" component={Sucess} />
+              <Stack.Screen name="Failure" component={Failure} />
+              <Stack.Screen name="Feedback" component={Feedback} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </UserContext.Provider>
       </CartContext.Provider>
     </AuthContext.Provider>
 

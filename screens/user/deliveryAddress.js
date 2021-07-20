@@ -1,9 +1,12 @@
 import React from 'react';
 
-import { View, Text, FlatList, Dimensions, Animated } from 'react-native';
+import { View, Text, FlatList, Dimensions, Animated,ScrollView,Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { Button, FAB, Snackbar } from 'react-native-paper';
+
+import { GET_ADDRESS, client } from '../../constants/graphql';
+import Auth from '../../constants/context/auth';
 
 import { CheckBox } from 'react-native-elements';
 
@@ -11,7 +14,11 @@ const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
 const { COLORS, FONTS, SIZES } = theme;
 
+import { useIsFocused } from "@react-navigation/native";
+
 export default function Address({ navigation, route }) {
+  const isFocused = useIsFocused();
+  const { authenticated, token } = React.useContext(Auth);
   const couponCode = route.params.couponCode;
   const cart = route.params.cart;
   const discount = route.params.discount;
@@ -21,74 +28,24 @@ export default function Address({ navigation, route }) {
   const scrollX = new Animated.Value(0);
   const [checked, setChecked] = React.useState(-1);
   const [visible, setVisible] = React.useState(false);
+  const [addresses, setAddresses] = React.useState([])
 
   const onToggleSnackBar = () => setVisible(!visible);
 
   const onDismissSnackBar = () => setVisible(false);
 
-  const data = [
-    {
-      name: 'Joseph',
-      street: 'Baker Street',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdom',
-      phone: '+44 999-XXX-XXXX',
-      countryCode: 'GB'
-    },
-    {
-      name: 'Joseph',
-      street: 'Baker Street',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdom',
-      phone: '+44 999-XXX-XXXX',
-      countryCode: 'GB'
-    },
-    {
-      name: 'Joseph',
-      street: 'Baker Street',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdom',
-      phone: '+44 999-XXX-XXXX',
-      countryCode: 'GB'
-    },
-    {
-      name: 'Joseph',
-      street: 'Baker Street',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdom',
-      phone: '+44 999-XXX-XXXX',
-      countryCode: 'GB'
-    },
-    {
-      name: 'Joseph',
-      street: 'Baker Street',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdom',
-      phone: '+44 999-XXX-XXXX',
-      countryCode: 'GB'
-    },
-    {
-      name: 'Joseph',
-      street: 'Baker Street',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdom',
-      phone: '+44 999-XXX-XXXX',
-      countryCode: 'GB'
-    },
-  ];
-  const emptyData = [];
+  const getAddress = async () => {
+    client.setHeader('authorization', `Bearer ${token}`);
+    const address = await client.request(GET_ADDRESS);
+    const addressData = address.getAddress;
+    setAddresses(addressData);
+    return;
+  }
+
+  React.useEffect(() => {
+    getAddress();
+  }, [isFocused])
+
   const goToCheckout = () => {
 
     if (checked !== -1) {
@@ -100,7 +57,8 @@ export default function Address({ navigation, route }) {
         grandTotal: grandTotal,
         couponCode: couponCode,
         deliveryPrice: deliveryPrice,
-        address: data[checked]
+        address: addresses[checked],
+        addressList: addresses
       })
     }
     else {
@@ -123,12 +81,12 @@ export default function Address({ navigation, route }) {
         />
         <Text
           style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold' }}>
-          Deliver Address
+          Delivery Address
         </Text>
       </View>
       <View style={{ height: height - 110 }}>
-        <FlatList
-          data={data}
+        {addresses.length !== 0 && <FlatList
+          data={addresses}
           keyExtractor={(item, index) => 'key' + index}
           decelerationRate={'normal'}
           scrollEventThrottle={16}
@@ -178,27 +136,13 @@ export default function Address({ navigation, route }) {
                       <Text style={{ ...FONTS.body2, color: COLORS.primary }}>
                         {item.name}
                       </Text>
-                      <View style={{ flexDirection: 'row' }}>
-                        <SimpleLineIcons
-                          name="pencil"
-                          style={{
-                            ...FONTS.body2,
-                            color: COLORS.gray,
-                            marginRight: 10,
-                          }}
-                        />
-                        <Icon
-                          name="trash-can-outline"
-                          style={{ ...FONTS.body2, color: COLORS.gray }}
-                        />
-                      </View>
                     </View>
                     <View>
                       <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
-                        {item.street}, {item.locality}
+                        {item.line1}, {item.line2}
                       </Text>
                       <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
-                        {item.city} {item.zip},
+                        {item.city} {item.pin},
                       </Text>
                       <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
                         {item.country}
@@ -208,7 +152,7 @@ export default function Address({ navigation, route }) {
                           Mobile:{' '}
                         </Text>
                         <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
-                          {item.phone}
+                          {item.mobile}
                         </Text>
                       </View>
                     </View>
@@ -221,7 +165,15 @@ export default function Address({ navigation, route }) {
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             { useNativeDriver: false },
           )}
-        />
+        />}
+        {addresses.length === 0 && <>
+                    <ScrollView contentContainerStyle={{ justifyContent: "center", alignItems: 'center', flex: 1 }}>
+                        <Image source={{ uri: "https://res.cloudinary.com/vevibes/image/upload/v1626525983/App%20Assets/Asset_22_bwovwp.png" }}
+                            style={{ width: width / 1.5, height: 250 }} resizeMode="contain" />
+                        <Text style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold', margin: 10 }}>No addresses added yet</Text>
+                        <Text style={{ ...FONTS.body5, color: COLORS.gray }}>Please add an address and come back</Text>
+                    </ScrollView>
+                </>}
       </View>
       <View style={{ marginTop: '0%', margin: 10 }}>
         <FAB
@@ -258,13 +210,13 @@ export default function Address({ navigation, route }) {
             },
           }}
           theme={{
-            colors:{accent: COLORS.white,onSurface:COLORS.error}
+            colors: { accent: COLORS.white, onSurface: COLORS.error }
           }}
         >
           <Text style={{
             ...FONTS.h3,
-            color: COLORS.white, 
-            backgroundColor:"transparent"
+            color: COLORS.white,
+            backgroundColor: "transparent"
           }}>
             Please select a deliver address!
           </Text>

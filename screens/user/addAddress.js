@@ -1,19 +1,25 @@
-import React, {useState} from 'react';
+import React, { useState, useContext } from 'react';
 
-import {View, Text, Dimensions, ScrollView} from 'react-native';
+import { View, Text, Dimensions, ScrollView } from 'react-native';
 
-import {TextInput, Button, Provider} from 'react-native-paper';
+import { TextInput, Button, Provider } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {client, ADD_ADDRESS} from '../../constants/graphql';
+import { client, ADD_ADDRESS} from '../../constants/graphql';
 
 import theme from '../../constants/theme';
-const {width, height} = Dimensions.get('window');
-const {COLORS, FONTS, SIZES} = theme;
+const { width, height } = Dimensions.get('window');
+const { COLORS, FONTS, SIZES } = theme;
 
-export default function AddAddress() {
+import Auth from "../../constants/context/auth";
+import UserContext from '../../constants/context/userContext';
+
+export default function AddAddress({ navigation }) {
   const [showDropDown, setShowDropDown] = useState(false);
+
+  const { authenticated, token } = useContext(Auth);
+  const {user} = useContext(UserContext);
 
   const [addressType, setAddressType] = useState();
 
@@ -25,48 +31,78 @@ export default function AddAddress() {
   const stateRef = React.createRef();
   const mobileRef = React.createRef();
 
-  const addressTypeList = [
-    {label: 'Office', value: 'Office'},
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
+  const [countryCode, setCountryCode] = useState("");
 
-    {label: 'Home', value: 'Home'},
+  const addressTypeList = [
+    { label: 'Office', value: 'Office' },
+
+    { label: 'Home', value: 'Home' },
   ];
 
+  const getLocationDetails = (arg) => {
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?&address=${arg}&key=AIzaSyC5F8htg_kG0BcYHooYuxS-aOXGjndiQF4`)
+      .then(response => response.json())
+      .then((res) => {
+        const addressData = res.results[0].address_components;
+        addressData.map((a) => {
+          if (a.types[0] === "locality") {
+            setCity(a.long_name)
+          }
+          if (a.types[0] === "administrative_area_level_1") {
+            setState(a.long_name)
+          }
+          if (a.types[0] === "country") {
+            setCountry(a.long_name);
+            setCountryCode(a.short_name);
+          }
+        })
+      })
+  }
 
-  const addAddress = () => {
+
+  const addAddress = async() => {
     const variables = {
-      name: nameRef.current.value,
-      pin: pinRef.current.value,
-      address: addressRef.current.value,
-      landmark: landmarkRef.current.value,
-      city: cityRef.current.value,
-      state: stateRef.current.value,
-      mobile: mobileRef.current.value,
-      type: addressType
+      input: {
+        name: nameRef.current.state.value,
+        pin: pinRef.current.state.value,
+        line1: addressRef.current.state.value,
+        line2: landmarkRef.current.state.value,
+        city: cityRef.current.state.value,
+        state: stateRef.current.state.value,
+        mobile: mobileRef.current.state.value,
+        type: addressType,
+        countryCode,
+        country
+      }
     };
-    const data = client.request(ADD_ADDRESS, variables);
-    console.log(data);
-    return;
+    client.setHeader('authorization', `Bearer ${token}`);
+    const data = await client.request(ADD_ADDRESS, variables);
+    navigation.goBack();
   }
 
   return (
-    <View style={{flex: 1}}>
-      <View style={{flexDirection: 'row', marginTop: 20}}>
+    <View style={{ flex: 1 }}>
+      <View style={{ flexDirection: 'row', marginTop: 20, alignItems: 'center' }}>
         <Icon
           name="chevron-left"
-          style={{...FONTS.body2, color: COLORS.primary, fontWeight: 'bold'}}
+          style={{ ...FONTS.h2, color: COLORS.primary, fontWeight: 'bold' }}
+          onPress={() => navigation.goBack()}
         />
         <Text
-          style={{...FONTS.body2, color: COLORS.primary, fontWeight: 'bold'}}>
+          style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold' }}>
           Add Delivery Address
         </Text>
       </View>
       <Provider>
-        <View style={{margin: 10, marginTop: 20, flex: 1}}>
+        <View style={{ margin: 10, marginTop: 20, flex: 1 }}>
           <ScrollView>
             <TextInput
-            ref={nameRef}
+              ref={nameRef}
               theme={{
-                colors: {text: COLORS.primary, primary: COLORS.lightGray},
+                colors: { text: COLORS.primary, primary: COLORS.lightGray },
               }}
               name="name"
               label="Full Name*"
@@ -82,9 +118,9 @@ export default function AddAddress() {
               underlineColor={COLORS.lightGray}
             />
             <TextInput
-            ref={pinRef}
+              ref={pinRef}
               theme={{
-                colors: {text: COLORS.primary, primary: COLORS.lightGray},
+                colors: { text: COLORS.primary, primary: COLORS.lightGray },
               }}
               name="pin"
               label="Pin Code*"
@@ -98,11 +134,16 @@ export default function AddAddress() {
               selectionColor={COLORS.lightGray}
               outlineColor={COLORS.lightGray}
               underlineColor={COLORS.lightGray}
+              onChangeText={text => {
+                if (text.length > 5) {
+                  getLocationDetails(text);
+                }
+              }}
             />
             <TextInput
-            ref={addressRef}
+              ref={addressRef}
               theme={{
-                colors: {text: COLORS.primary, primary: COLORS.lightGray},
+                colors: { text: COLORS.primary, primary: COLORS.lightGray },
               }}
               name="address"
               label="Address*"
@@ -118,9 +159,9 @@ export default function AddAddress() {
               underlineColor={COLORS.lightGray}
             />
             <TextInput
-            ref={landmarkRef}
+              ref={landmarkRef}
               theme={{
-                colors: {text: COLORS.primary, primary: COLORS.lightGray},
+                colors: { text: COLORS.primary, primary: COLORS.lightGray },
               }}
               name="landmark"
               label="Landmark"
@@ -142,12 +183,13 @@ export default function AddAddress() {
                 marginBottom: 20,
               }}>
               <TextInput
-              ref={cityRef}
+                ref={cityRef}
                 theme={{
-                  colors: {text: COLORS.primary, primary: COLORS.lightGray},
+                  colors: { text: COLORS.primary, primary: COLORS.lightGray },
                 }}
                 name="city"
                 label="City*"
+                value={city}
                 style={{
                   width: width / 2 - 15,
                   backgroundColor: COLORS.white,
@@ -158,14 +200,16 @@ export default function AddAddress() {
                 selectionColor={COLORS.lightGray}
                 outlineColor={COLORS.lightGray}
                 underlineColor={COLORS.lightGray}
+                onChangeText={text => setCity(text)}
               />
               <TextInput
-              ref={stateRef}
+                ref={stateRef}
                 theme={{
-                  colors: {text: COLORS.primary, primary: COLORS.lightGray},
+                  colors: { text: COLORS.primary, primary: COLORS.lightGray },
                 }}
                 name="state"
                 label="State*"
+                value={state}
                 style={{
                   width: width / 2 - 15,
                   backgroundColor: COLORS.white,
@@ -176,14 +220,15 @@ export default function AddAddress() {
                 selectionColor={COLORS.lightGray}
                 outlineColor={COLORS.lightGray}
                 underlineColor={COLORS.lightGray}
+                onChangeText={text => setState(text)}
               />
             </View>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TextInput
-              ref={mobileRef}
+                ref={mobileRef}
                 theme={{
-                  colors: {text: COLORS.primary, primary: COLORS.lightGray},
+                  colors: { text: COLORS.primary, primary: COLORS.lightGray },
                 }}
                 name="phone"
                 label="Mobile No.*"
@@ -208,18 +253,20 @@ export default function AddAddress() {
                     width: width / 2 - 15,
                   }}>
                   <DropDown
-                    theme={{
-                      colors: {text: COLORS.primary, primary: COLORS.lightGray},
-                    }}
                     style={{
                       backgroundColor: COLORS.white,
                       ...FONTS.body3,
                       color: COLORS.primary,
                       fontWeight: 'bold',
                     }}
-                    activeColor={COLORS.lightGray}
+                    theme={{
+                      colors: {
+                         background: 'transparent',
+                         text: COLORS.gray
+                      }
+                    }}
+                    activeColor={COLORS.secondaryDark}
                     label={'Address Type*'}
-                    mode={'flat'}
                     value={addressType}
                     setValue={setAddressType}
                     list={addressTypeList}
@@ -230,7 +277,7 @@ export default function AddAddress() {
                       right: (
                         <TextInput.Icon
                           name={'chevron-down'}
-                          style={{color: COLORS.secondary}}
+                          style={{ color: COLORS.secondary }}
                         />
                       ),
                     }}
@@ -249,7 +296,7 @@ export default function AddAddress() {
           borderRadius: 10,
         }}
         onPress={addAddress}
-        >
+      >
         <Text
           style={{
             ...FONTS.body2,

@@ -58,6 +58,6 @@
     <string msgid="1807436368654974044" name="generic_error_no_keyguard">"Aquest dispositiu no admet utilitzar cap PIN, patró ni contrasenya."</string>
     <string msgid="7309881387583143581" name="generic_error_user_canceled">"L\'usuari ha cancel·lat l\'autenticació."</string>
     <string msgid="730395136688082741" name="search_menu_title">"Cerca"</string>
-    <string msgid="8106346172024741305" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
     <string msgid="363496807345461806" name="wallet_buy_button_place_holder">"Compra amb Google"</string>
 </resources>

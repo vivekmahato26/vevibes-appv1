@@ -38,6 +38,23 @@
                     }
                 },
                 {
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-ms\\values-ms.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "60",
+                        "startColumns": "4",
+                        "startOffsets": "7200",
+                        "endColumns": "100",
+                        "endOffsets": "7296"
+                    }
+                },
+                {
                     "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\44ab6804b80638410c6c0827d4445946\\biometric-1.1.0\\res\\values-ms\\values-ms.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13",
@@ -52,23 +69,6 @@
                         "startOffsets": "5645,5755,5853,5968,6097,6224,6359,6479,6617,6717,6856,6997",
                         "endColumns": "109,97,114,128,126,134,119,137,99,138,140,122",
                         "endOffsets": "5750,5848,5963,6092,6219,6354,6474,6612,6712,6851,6992,7115"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-ms\\values-ms.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "60",
-                        "startColumns": "4",
-                        "startOffsets": "7200",
-                        "endColumns": "100",
-                        "endOffsets": "7296"
                     }
                 },
                 {

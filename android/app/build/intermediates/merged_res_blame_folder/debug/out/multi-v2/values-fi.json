@@ -72,23 +72,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\d67cd79abd1ca209502f51c69d23182b\\core-1.1.0\\res\\values-fi\\values-fi.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "77",
-                        "startColumns": "4",
-                        "startOffsets": "8090",
-                        "endColumns": "100",
-                        "endOffsets": "8186"
-                    }
-                },
-                {
                     "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\44ab6804b80638410c6c0827d4445946\\biometric-1.1.0\\res\\values-fi\\values-fi.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13",
@@ -120,6 +103,23 @@
                         "startOffsets": "8237",
                         "endColumns": "108",
                         "endOffsets": "8341"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-fi\\values-fi.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "77",
+                        "startColumns": "4",
+                        "startOffsets": "8090",
+                        "endColumns": "100",
+                        "endOffsets": "8186"
                     }
                 }
             ]

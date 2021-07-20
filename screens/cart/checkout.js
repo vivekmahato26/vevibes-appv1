@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   View,
   ScrollView,
   Text,
   Dimensions,
-  Animated,
-  FlatList,
 } from 'react-native';
 import { TextInput, Divider, Button } from 'react-native-paper';
 import { CheckBox } from 'react-native-elements';
@@ -15,68 +13,67 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Modalize } from 'react-native-modalize';
 import DatePicker from 'react-native-date-picker';
+import moment from "moment";
+
+import UserContext from '../../constants/context/userContext';
+import { GET_ADDRESS, client } from '../../constants/graphql';
+import Auth from '../../constants/context/auth';
 
 const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
 import { Image } from 'react-native-elements/dist/image/Image';
 const { COLORS, FONTS, SIZES } = theme;
 
+import { useIsFocused } from "@react-navigation/native";
+
 export default function Checkout({ navigation, route }) {
+  const isFocused = useIsFocused();
+  const { user } = React.useContext(UserContext);
+  const { token } = React.useContext(Auth);
   const couponCode = route.params.couponCode;
   const cart = route.params.cart;
   const discount = route.params.discount;
   const total = route.params.total;
   const grandTotal = route.params.grandTotal;
   const deliveryPrice = route.params.deliveryPrice;
-  const address = route.params.address;
-  const scrollX = new Animated.Value(0);
-  const [collection, setCollection] = React.useState(true);
-  const [delivery, setDelivery] = React.useState(false);
+  const [addresses, setAddresses] = React.useState(user.address);
+  const [address, setAddress] = React.useState(route.params.address);
+  const day = moment().format("dddd");
+  const formattedDate = moment().format("LL");
+  const [date, setDate] = React.useState(`${day}, ${formattedDate}`);
+  const [collection, setCollection] = React.useState(false);
+  const [delivery, setDelivery] = React.useState(true);
   const addressRef = React.useRef(null);
   const dateRef = React.useRef(null);
   const [checked, setChecked] = React.useState(-1);
-  const [date, setDate] = useState(new Date());
+  const todayMoment = moment().format("L");
+  const maxMoment = moment().add(60, 'days').calendar();
+  const today = new Date(todayMoment);
+  const maxDate = new Date(maxMoment);
 
-  const data = [
-    {
-      name: 'Joseph',
-      street: 'Lyric Theatre',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdon',
-      phone: '+44 999-XXX-XXXX',
-    },
-    {
-      name: 'Joseph',
-      street: 'Lyric Theatre',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdon',
-      phone: '+44 999-XXX-XXXX',
-    },
-    {
-      name: 'Joseph',
-      street: 'Lyric Theatre',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdon',
-      phone: '+44 999-XXX-XXXX',
-    },
-    {
-      name: 'Joseph',
-      street: 'Lyric Theatre',
-      locality: 'Lyric Square',
-      city: 'London',
-      zip: 'W6 0QL',
-      country: 'United Kingdon',
-      phone: '+44 999-XXX-XXXX',
-    },
-  ];
+  const getAddress = async () => {
+    client.setHeader('authorization', `Bearer ${token}`);
+    const address = await client.request(GET_ADDRESS);
+    const addressData = address.getAddress;
+    setAddresses(addressData);
+    return;
+  }
 
-  const emptyData = [];
+  React.useEffect(() => {
+    getAddress();
+  }, [isFocused])
+
+
+  const handleAddressToggle = (arg) => {
+    setChecked(arg);
+    setAddress(addresses[arg]);
+  }
+
+  const handleDateChange = (arg) => {
+    const day = moment(arg).format("dddd");
+    const formattedDate = moment(arg).format("LL");
+    setDate(`${day}, ${formattedDate}`);
+  }
 
   return (
     <View style={{ flex: 1, padding: 10 }}>
@@ -111,7 +108,7 @@ export default function Checkout({ navigation, route }) {
                 fontWeight: 'bold',
                 marginTop: 10,
               }}>
-              Sunday, 10 May 20, 10:00 AM
+              {date}
             </Text>
             <Icon
               name="chevron-right"
@@ -136,7 +133,7 @@ export default function Checkout({ navigation, route }) {
               fontWeight: 'bold',
               marginTop: 10,
             }}>
-            Home
+            {address.type}
           </Text>
           <View
             style={{
@@ -152,7 +149,7 @@ export default function Checkout({ navigation, route }) {
                 fontWeight: 'bold',
                 marginTop: 10,
               }}>
-              {address.street}, {address.locality}
+              {address.line1}, {address.line2}
             </Text>
             <Icon
               name="chevron-right"
@@ -278,7 +275,7 @@ export default function Checkout({ navigation, route }) {
         </View>}
       </ScrollView>
       <Modalize modalHeight={300} ref={addressRef}>
-        {data.length === 0 ? (
+        {user.address.length === 0 ? (
           <View style={{ margin: 10 }}>
             <Text
               style={{
@@ -365,7 +362,7 @@ export default function Checkout({ navigation, route }) {
                 </Text>
               </View>
             </View>
-            {data.map((item, index) => {
+            {addresses.map((item, index) => {
               return (
                 <ScrollView
                   key={index + Math.random(index)}
@@ -384,6 +381,7 @@ export default function Checkout({ navigation, route }) {
                       flexDirection: 'row',
                       alignItems: 'baseline',
                       marginTop: 0,
+                      paddingBottom: 10
                     }}>
                     <CheckBox
                       start
@@ -401,7 +399,7 @@ export default function Checkout({ navigation, route }) {
                         />
                       }
                       checked={checked === index}
-                      onPress={() => setChecked(index)}
+                      onPress={() => handleAddressToggle(index)}
                     />
                     <View style={{ width: width - 100 }}>
                       <View
@@ -420,10 +418,10 @@ export default function Checkout({ navigation, route }) {
                       </View>
                       <View>
                         <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
-                          {item.street}, {item.locality}
+                          {item.line1}, {item.line2}
                         </Text>
                         <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
-                          {item.city} {item.zip},
+                          {item.city} {item.pin},
                         </Text>
                         <Text style={{ ...FONTS.body5, color: COLORS.lightGray }}>
                           {item.country}
@@ -434,7 +432,7 @@ export default function Checkout({ navigation, route }) {
                           </Text>
                           <Text
                             style={{ ...FONTS.body5, color: COLORS.lightGray }}>
-                            {item.phone}
+                            {item.mobile}
                           </Text>
                         </View>
                       </View>
@@ -480,12 +478,15 @@ export default function Checkout({ navigation, route }) {
           </View>
           <View style={{ justifyContent: "center", alignItems: 'center' }}>
             <DatePicker
-              date={date}
-              onDateChange={setDate}
+              minimumDate={today}
+              maximumDate={maxDate}
+              date={today}
+              onDateChange={(e) => handleDateChange(e)}
               minuteInterval={10}
               textColor={COLORS.primary}
               dividerHeight={0}
               fadeToColor="none"
+              mode="date"
             />
           </View>
         </View>
