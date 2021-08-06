@@ -819,7 +819,7 @@
     <integer name="date_length">5</integer>
     <integer name="design_snackbar_text_max_lines">2</integer>
     <integer name="design_tab_indicator_anim_duration_ms">300</integer>
-    <integer name="google_play_services_version">11910000</integer>
+    <integer name="google_play_services_version">12451000</integer>
     <integer name="hide_password_duration">320</integer>
     <integer name="light_text_alpha_hex">204</integer>
     <integer name="mtrl_badge_max_character_count">4</integer>
@@ -1005,6 +1005,7 @@
     <string name="date_description">Select Date</string>
     <string name="day_description">Select Day</string>
     <string name="default_error_msg">Unknown error</string>
+    <string name="default_web_client_id" translatable="false">43227895876-oo0i6vkh8bo64imtmll0b12g4oaqkl4v.apps.googleusercontent.com</string>
     <string name="diners_club">Diners Club</string>
     <string name="discover">Discover</string>
     <string name="ending_in">%1$s ending in %2$s</string>
@@ -1021,6 +1022,7 @@
     <string name="fingerprint_error_no_fingerprints">No fingerprints enrolled.</string>
     <string name="fingerprint_error_user_canceled">Fingerprint operation canceled by user.</string>
     <string name="fingerprint_not_recognized">Not recognized</string>
+    <string name="gcm_defaultSenderId" translatable="false">43227895876</string>
     <string name="generic_error_no_device_credential">No PIN, pattern, or password set.</string>
     <string name="generic_error_no_keyguard">This device does not support PIN, pattern, or password.</string>
     <string name="generic_error_user_canceled">Authentication canceled by user.</string>
@@ -1033,6 +1035,10 @@
     <string name="gettipsi_google_pay_unavaliable">Google Pay is unavailable on your device.</string>
     <string name="gettipsi_save">Save</string>
     <string name="gettipsi_user_cancel_dialog">A user has canceled the dialog. No card added!</string>
+    <string name="google_api_key" translatable="false">AIzaSyDoM8_18gk1H5H1vde81VSZO6noDTa3L_4</string>
+    <string name="google_app_id" translatable="false">1:43227895876:android:ddc5645a0f7a14b8e80411</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDoM8_18gk1H5H1vde81VSZO6noDTa3L_4</string>
+    <string name="google_storage_bucket" translatable="false">vevibes-app.appspot.com</string>
     <string name="header_description" translatable="false">Heading</string>
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
     <string name="hour_description">Select Hour</string>
@@ -1103,6 +1109,7 @@
     <string name="price_free">Free</string>
     <string name="processing">Processing\u2026</string>
     <string name="progressbar_description" translatable="false">Progress Bar</string>
+    <string name="project_id" translatable="false">vevibes-app</string>
     <string name="radiogroup_description" translatable="false">Radio Group</string>
     <string name="rn_tab_description" translatable="false">Tab</string>
     <string name="scrollbar_description" translatable="false">Scroll Bar</string>

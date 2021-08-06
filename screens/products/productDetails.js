@@ -10,7 +10,8 @@ import {
   Dimensions,
   StyleSheet,
   LogBox,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native';
 import { DataTable, Card, Title, Button } from 'react-native-paper';
 
@@ -19,6 +20,9 @@ import Fa from 'react-native-vector-icons/FontAwesome';
 
 import CartContext from "../../constants/context/cartContext";
 import Auth from "../../constants/context/auth";
+
+import * as Animatable from 'react-native-animatable';
+import Accordion from 'react-native-collapsible/Accordion';
 
 import {
   client,
@@ -41,8 +45,13 @@ export default function ProductDetails({ navigation, route }) {
 
   const { cart, addProductToCart, removeProductFromCart } = React.useContext(CartContext);
   const { token, authenticated } = React.useContext(Auth);
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
 
   const [cartUpdate, setCartUpdate] = React.useState(0);
+
+  const [activeSections, setActiveSections] = React.useState([]);
+
+  const sections = ["Ingredients", "Nutrition", "Delivery", "Allergens", "Disclaimer"];
 
   const addProductToCartHandler = product => {
     addProductToCart(product);
@@ -81,8 +90,6 @@ export default function ProductDetails({ navigation, route }) {
     const data = await client.request(CHECK_WHISHLISTED, { productId: product.id });
     if (data.checkWishlisted.__typename === "Sucess") {
       setWislisted(data.checkWishlisted.res);
-    } else {
-      navigation.navigate('Login');
     }
     getFeaturedProducts();
     return () => scrollX.removeListener();
@@ -96,11 +103,11 @@ export default function ProductDetails({ navigation, route }) {
 
   const handleWishlist = async () => {
     if (authenticated) {
-      if(wishlisted) {
-        const data = await client.request(REMOVE_FROM_WISHLIST,{productId: product.id});
+      if (wishlisted) {
+        const data = await client.request(REMOVE_FROM_WISHLIST, { productId: product.id });
         setWislisted(false);
       } else {
-        const data = await client.request(ADD_TO_WISHLIST,{productId: product.id});
+        const data = await client.request(ADD_TO_WISHLIST, { productId: product.id });
         setWislisted(true);
       }
     }
@@ -109,46 +116,158 @@ export default function ProductDetails({ navigation, route }) {
     }
   }
 
+  const setSections = (sections) => {
+    setActiveSections(sections.includes(undefined) ? [] : sections);
+  };
+
+  const renderHeader = (section, _, isActive) => {
+    let title = "Ingred";
+    switch (section) {
+      case "Ingredients": title = "Ingredients"; break;
+      case "Nutrition": title = "Nutritional Values"; break;
+      case "Delivery": title = "Delivery"; break;
+      case "Allergens": title = "Allergens"; break;
+      case "Disclaimer": title = "Disclaimer"; break;
+    }
+    return (
+      <Animatable.View
+        duration={200}
+        style={[styles.header]}
+        transition="backgroundColor"
+      >
+        <View style={[styles.flexView, { justifyContent: 'space-between' }]}>
+          <Text style={styles.head}>{title}</Text>
+          <Icon name={isActive ? "chevron-up" : "chevron-down"} style={[styles.head2, { ...FONTS.h2 }]} />
+        </View>
+      </Animatable.View>
+    );
+  };
+
+  const renderContent = (section, _, isActive) => {
+    let jsx;
+    switch (section) {
+      case "Ingredients": jsx = <Animatable.View
+        duration={300}
+        easing="ease-out"
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+        }}>
+        {product.ingredients && product.ingredients.map((i, index) => {
+          return (
+            <Text
+              key={index + Math.random(index)}
+              style={{
+                textTransform: 'capitalize',
+                ...FONTS.body3,
+                marginLeft: 10,
+              }}>
+              {i},
+            </Text>
+          );
+        })}
+      </Animatable.View>; break;
+      case "Nutrition": jsx = <Animated.View >
+        <DataTable>
+          <DataTable.Header>
+            <DataTable.Title style={{ color: COLORS.secondary }}>Nutritional Info</DataTable.Title>
+            <DataTable.Title style={{ color: COLORS.secondary }}>per 100g</DataTable.Title>
+          </DataTable.Header>
+          <DataTable.Row>
+            <DataTable.Cell>Energy</DataTable.Cell>
+            <DataTable.Cell>183 kJ / 44 Kcal</DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>Energy</DataTable.Cell>
+            <DataTable.Cell>183 kJ / 44 Kcal</DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>Energy</DataTable.Cell>
+            <DataTable.Cell>183 kJ / 44 Kcal</DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>Energy</DataTable.Cell>
+            <DataTable.Cell>183 kJ / 44 Kcal</DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>Energy</DataTable.Cell>
+            <DataTable.Cell>183 kJ / 44 Kcal</DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>Energy</DataTable.Cell>
+            <DataTable.Cell>183 kJ / 44 Kcal</DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>Energy</DataTable.Cell>
+            <DataTable.Cell>183 kJ / 44 Kcal</DataTable.Cell>
+          </DataTable.Row>
+        </DataTable>
+      </Animated.View>; break;
+      case "Delivery": jsx = <Animated.View>
+        <Text style={{ ...FONTS.body3, marginLeft: 10, marginRight: 10 }}>{product.delivery}</Text>
+      </Animated.View>; break;
+      case "Allergens": jsx = <Animated.View>
+        <Text style={{ ...FONTS.body3, marginLeft: 10, marginRight: 10 }}>{product.allergen}</Text>
+      </Animated.View>; break;
+      case "Disclaimer": jsx = <Animated.View>
+        <Text style={{ ...FONTS.body3, marginLeft: 10, marginRight: 10 }}>{product.disclaimer}</Text>
+      </Animated.View>; break;
+    }
+    return (
+      <Animatable.View
+        duration={200}
+        style={[styles.content, isActive ? styles.active : styles.inactive]}
+        transition="backgroundColor"
+      >
+        <Animatable.View animation={isActive ? 'zoomIn' : undefined}>
+          {jsx}
+        </Animatable.View>
+      </Animatable.View>
+    );
+  }
 
   return (
     <>
       <ScrollView>
-        <View>
-          <FlatList
-            horizontal
-            data={product.img}
-            keyExtractor={(item, index) => 'key' + index}
-            pagingEnabled
-            scrollEnabled
-            decelerationRate={0}
-            scrollEventThrottle={16}
-            snapToAlignment="center"
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => {
-              return (
-                <View style={{ padding: 10, flex: 1, alignItems: 'center' }}>
-                  <Icon
-                    name="chevron-left"
-                    style={{
-                      position: 'absolute',
-                      top: 10,
-                      left: 10,
-                      ...FONTS.h2,
-                      color: COLORS.primary,
-                    }}
-                  />
-                  <Image
-                    source={{ uri: item }}
-                    style={{ width: width - 20, height: 200, zIndex: -1 }}
-                  />
-                </View>
-              );
-            }}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-              { useNativeDriver: false },
-            )}
-          />
+        <View >
+          <View style={{ flexDirection: 'row' }}>
+            <Icon
+              name="chevron-left"
+              style={{
+                ...FONTS.h2,
+                color: COLORS.primary,
+              }}
+              onPress={() => navigation.goBack()}
+            />
+            <FlatList
+              horizontal
+              data={product.img}
+              keyExtractor={(item, index) => 'key' + index}
+              pagingEnabled
+              scrollEnabled
+              decelerationRate={0}
+              scrollEventThrottle={16}
+              snapToAlignment="center"
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => {
+                return (
+                  <View style={{justifyContent: 'center',alignItems: 'center'}}>
+
+                    <Image
+                      source={{ uri: item }}
+                      style={{ width: width - 20, height: 250, zIndex: -1 }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                );
+              }}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                { useNativeDriver: false },
+              )}
+            />
+          </View>
           <View style={styles.dotView}>
             {product.img.map((_, i) => {
               let opacity = position.interpolate({
@@ -188,7 +307,7 @@ export default function ProductDetails({ navigation, route }) {
               { justifyContent: 'space-between', padding: 10 },
             ]}>
             <View style={[styles.flexView, { justifyContent: 'flex-start' }]}>
-              {product.cupon && (
+              {product.coupon && (
                 <Text
                   style={{
                     ...FONTS.body4,
@@ -199,7 +318,7 @@ export default function ProductDetails({ navigation, route }) {
                     borderRadius: 5,
                     borderWidth: 1,
                   }}>
-                  {product.cupon}
+                  {product.coupon}
                 </Text>
               )}
               {product.weightKG && (
@@ -238,42 +357,47 @@ export default function ProductDetails({ navigation, route }) {
             <Text style={styles.head}>Description</Text>
             <Text style={{ ...FONTS.body3 }}>{product.description}</Text>
           </View>
-          <View style={{ padding: 10 }}>
+          {/* <View style={{ padding: 10 }}>
             <View style={[styles.flexView, { justifyContent: 'space-between' }]}>
               <Text style={styles.head}>Ingredients</Text>
               <Icon name="chevron-up" style={[styles.head2, { ...FONTS.h2 }]} />
             </View>
-            <Animated.View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-              }}>
-              {product.indregients.map((i, index) => {
-                return (
-                  <Text
-                    key={index + Math.random(index)}
-                    style={{
-                      textTransform: 'capitalize',
-                      ...FONTS.body3,
-                      marginLeft: 10,
-                    }}>
-                    {i},
-                  </Text>
-                );
-              })}
-            </Animated.View>
+            <Collapsible collapsed={isCollapsed}>
+              <Animatable.View
+                duration={300}
+                easing="ease-out"
+                animation={zoomOut}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}>
+                {product.ingredients.map((i, index) => {
+                  return (
+                    <Text
+                      key={index + Math.random(index)}
+                      style={{
+                        textTransform: 'capitalize',
+                        ...FONTS.body3,
+                        marginLeft: 10,
+                      }}>
+                      {i},
+                    </Text>
+                  );
+                })}
+              </Animatable.View>
+            </Collapsible>
           </View>
           <View style={{ padding: 10 }}>
             <View style={[styles.flexView, { justifyContent: 'space-between' }]}>
               <Text style={styles.head}>Nutrition Values</Text>
               <Icon name="chevron-up" style={[styles.head2, { ...FONTS.h2 }]} />
             </View>
-            <Animated.View>
+            <Animated.View >
               <DataTable>
                 <DataTable.Header>
-                  <DataTable.Title>Nutritional Info</DataTable.Title>
-                  <DataTable.Title>per 100g</DataTable.Title>
+                  <DataTable.Title style={{ color: COLORS.secondary }}>Nutritional Info</DataTable.Title>
+                  <DataTable.Title style={{ color: COLORS.secondary }}>per 100g</DataTable.Title>
                 </DataTable.Header>
                 <DataTable.Row>
                   <DataTable.Cell>Energy</DataTable.Cell>
@@ -337,8 +461,19 @@ export default function ProductDetails({ navigation, route }) {
                 {product.disclaimer}
               </Text>
             </Animated.View>
-          </View>
+          </View> */}
         </View>
+        <Accordion
+          activeSections={activeSections}
+          sections={sections}
+          touchableComponent={TouchableWithoutFeedback}
+          expandMultiple={true}
+          renderHeader={renderHeader}
+          renderContent={renderContent}
+          duration={400}
+          renderAsFlatList={false}
+          onChange={setSections}
+        />
         <View style={{ padding: 10 }}>
           <View style={[styles.flexView, { justifyContent: 'space-between' }]}>
             <Text style={styles.head}>Related Products</Text>
@@ -662,5 +797,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 3,
     elevation: 5,
+  },
+  header: {
+    padding: 10,
+  },
+  headerText: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '500',
   },
 });

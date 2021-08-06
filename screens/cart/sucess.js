@@ -15,6 +15,7 @@ export default function Sucess({navigation}) {
       <Icon
         name="close-thick"
         style={{...FONTS.h2, color: COLORS.primary, margin: 10}}
+        onPress={() => navigation.navigate("ProductHome")}
       />
       <View
         style={{
@@ -83,7 +84,7 @@ export default function Sucess({navigation}) {
             </Text>
           </View>
         </View>
-        <Text
+        <Text onPress={() => navigation.navigate("Orders")}
           style={{...FONTS.body2, color: COLORS.secondary, fontWeight: 'bold'}}>
           Track Your Order
         </Text>
@@ -94,8 +95,8 @@ export default function Sucess({navigation}) {
             marginTop: 20,
             paddingLeft: 10,
             paddingRight: 10,
-          }}>
-          <Text
+          }} onPress={() => navigation.navigate("ProductHome")}>
+          <Text 
             style={{...FONTS.body2, color: COLORS.white, fontWeight: '500'}}>
             Back To Home
           </Text>

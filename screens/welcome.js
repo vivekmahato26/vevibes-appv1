@@ -37,7 +37,7 @@ const Welcome = ({ navigation }) => {
   const { setLocation, location } = React.useContext(Auth);
   const [predictions, setPredictions] = React.useState([]);
 
-  if (location !== undefined && location !== "") {
+  if (location !== undefined && location !== "" && location !== null) {
     navigation.navigate("ProductHome");
   }
 
@@ -49,7 +49,6 @@ const Welcome = ({ navigation }) => {
         url: url,
       })
       .then((response) => {
-        console.log(response.data);
         setPredictions(response.data.predictions);
       })
       .catch((e) => {

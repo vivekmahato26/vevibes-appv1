@@ -6,22 +6,21 @@ import { TextInput, Button, Provider } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { client, ADD_ADDRESS} from '../../constants/graphql';
+import { client, ADD_ADDRESS, UPDATE_ADDRESS } from '../../constants/graphql';
 
 import theme from '../../constants/theme';
 const { width, height } = Dimensions.get('window');
 const { COLORS, FONTS, SIZES } = theme;
 
 import Auth from "../../constants/context/auth";
-import UserContext from '../../constants/context/userContext';
 
-export default function AddAddress({ navigation }) {
+export default function AddAddress({ navigation, route }) {
+  const address = route.params.address;
   const [showDropDown, setShowDropDown] = useState(false);
 
-  const { authenticated, token } = useContext(Auth);
-  const {user} = useContext(UserContext);
+  const { token } = useContext(Auth);
 
-  const [addressType, setAddressType] = useState();
+  const [addressType, setAddressType] = useState(address.type);
 
   const nameRef = React.createRef();
   const pinRef = React.createRef();
@@ -30,11 +29,16 @@ export default function AddAddress({ navigation }) {
   const cityRef = React.createRef();
   const stateRef = React.createRef();
   const mobileRef = React.createRef();
-
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [countryCode, setCountryCode] = useState("");
+  const [name, setName] = useState(address.name);
+  const [pin, setPin] = useState(address.pin);
+  const [locality, setLocality] = useState(address.line1);
+  const [landmark, setLandmark] = useState(address.line2);
+  const [mobile, setMobile] = useState(address.mobile);
+  const [city, setCity] = useState(address.city);
+  const [state, setState] = useState(address.state);
+  const [country, setCountry] = useState(address.country);
+  const [countryCode, setCountryCode] = useState(address.countryCode);
+  const [error, setError] = useState({ status: "", message: "" });
 
   const addressTypeList = [
     { label: 'Office', value: 'Office' },
@@ -46,9 +50,15 @@ export default function AddAddress({ navigation }) {
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?&address=${arg}&key=AIzaSyC5F8htg_kG0BcYHooYuxS-aOXGjndiQF4`)
       .then(response => response.json())
       .then((res) => {
+        if(res.results.length === 0) {
+          setError({ status: "pin", message: "Please enter a valid Pincode" });
+          return;
+        } else {
+          setError({ status: "", message: "" });
+        }
         const addressData = res.results[0].address_components;
         addressData.map((a) => {
-          if (a.types[0] === "locality") {
+          if (a.types[0] === "locality" || a.types[0] === "postal_town") {
             setCity(a.long_name)
           }
           if (a.types[0] === "administrative_area_level_1") {
@@ -57,13 +67,17 @@ export default function AddAddress({ navigation }) {
           if (a.types[0] === "country") {
             setCountry(a.long_name);
             setCountryCode(a.short_name);
+            if (a.short_name === "GB") {
+              const temp = addressData.filter((a) => a.types[0] === "administrative_area_level_2");
+              setState(temp[0].short_name)
+            }
           }
         })
       })
   }
 
 
-  const addAddress = async() => {
+  const addAddress = async () => {
     const variables = {
       input: {
         name: nameRef.current.state.value,
@@ -78,8 +92,40 @@ export default function AddAddress({ navigation }) {
         country
       }
     };
+    if (variables.input.name === undefined || variables.input.name === "") {
+      setError({ status: "name", message: "Please enter Name" });
+      return;
+    }
+    if (variables.input.pin === undefined || variables.input.pin === "") {
+      setError({ status: "pin", message: "Please enter Pincode" });
+      return;
+    }
+    if (variables.input.line1 === undefined || variables.input.line1 === "") {
+      setError({ status: "line1", message: "Please enter Address" });
+      return;
+    }
+    if (variables.input.city === undefined || variables.input.city === "") {
+      setError({ status: "city", message: "Please enter City" });
+      return;
+    }
+    if (variables.input.state === undefined || variables.input.state === "") {
+      setError({ status: "state", message: "Please enter State" });
+      return;
+    }
+    if (variables.input.mobile === undefined || variables.input.mobile === "") {
+      setError({ status: "mobile", message: "Please enter Mobile" });
+      return;
+    }
+    if (variables.input.type === undefined) {
+      setError({ status: "type", message: "Please select Address Type" });
+      return;
+    }
     client.setHeader('authorization', `Bearer ${token}`);
-    const data = await client.request(ADD_ADDRESS, variables);
+    if (address.name !== "") {
+      const data = await client.request(UPDATE_ADDRESS, { ...variables, addressId: address.id });
+    } else {
+      const data = await client.request(ADD_ADDRESS, variables);
+    }
     navigation.goBack();
   }
 
@@ -93,7 +139,7 @@ export default function AddAddress({ navigation }) {
         />
         <Text
           style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold' }}>
-          Add Delivery Address
+          {address.name !== "" ? "Update" : "Add"} Delivery Address
         </Text>
       </View>
       <Provider>
@@ -106,6 +152,7 @@ export default function AddAddress({ navigation }) {
               }}
               name="name"
               label="Full Name*"
+              value={name}
               style={{
                 marginBottom: 20,
                 backgroundColor: COLORS.white,
@@ -116,6 +163,8 @@ export default function AddAddress({ navigation }) {
               selectionColor={COLORS.lightGray}
               outlineColor={COLORS.lightGray}
               underlineColor={COLORS.lightGray}
+              onChangeText={text => setName(text)}
+              error={error.status === "name"}
             />
             <TextInput
               ref={pinRef}
@@ -124,6 +173,7 @@ export default function AddAddress({ navigation }) {
               }}
               name="pin"
               label="Pin Code*"
+              value={pin}
               style={{
                 marginBottom: 20,
                 backgroundColor: COLORS.white,
@@ -135,10 +185,12 @@ export default function AddAddress({ navigation }) {
               outlineColor={COLORS.lightGray}
               underlineColor={COLORS.lightGray}
               onChangeText={text => {
-                if (text.length > 5) {
+                setPin(text);
+                if (text.length > 3) {
                   getLocationDetails(text);
                 }
               }}
+              error={error.status === "pin"}
             />
             <TextInput
               ref={addressRef}
@@ -147,6 +199,7 @@ export default function AddAddress({ navigation }) {
               }}
               name="address"
               label="Address*"
+              value={locality}
               style={{
                 marginBottom: 20,
                 backgroundColor: COLORS.white,
@@ -157,6 +210,8 @@ export default function AddAddress({ navigation }) {
               selectionColor={COLORS.lightGray}
               outlineColor={COLORS.lightGray}
               underlineColor={COLORS.lightGray}
+              onChangeText={text => setLocality(text)}
+              error={error.status === "line1"}
             />
             <TextInput
               ref={landmarkRef}
@@ -165,6 +220,7 @@ export default function AddAddress({ navigation }) {
               }}
               name="landmark"
               label="Landmark"
+              value={landmark}
               style={{
                 marginBottom: 20,
                 backgroundColor: COLORS.white,
@@ -175,6 +231,7 @@ export default function AddAddress({ navigation }) {
               selectionColor={COLORS.lightGray}
               outlineColor={COLORS.lightGray}
               underlineColor={COLORS.lightGray}
+              onChangeText={text => setLandmark(text)}
             />
             <View
               style={{
@@ -201,6 +258,7 @@ export default function AddAddress({ navigation }) {
                 outlineColor={COLORS.lightGray}
                 underlineColor={COLORS.lightGray}
                 onChangeText={text => setCity(text)}
+                error={error.status === "city"}
               />
               <TextInput
                 ref={stateRef}
@@ -221,6 +279,7 @@ export default function AddAddress({ navigation }) {
                 outlineColor={COLORS.lightGray}
                 underlineColor={COLORS.lightGray}
                 onChangeText={text => setState(text)}
+                error={error.status === "state"}
               />
             </View>
             <View
@@ -232,6 +291,7 @@ export default function AddAddress({ navigation }) {
                 }}
                 name="phone"
                 label="Mobile No.*"
+                value={mobile}
                 style={{
                   width: width / 2 - 15,
                   backgroundColor: COLORS.white,
@@ -243,6 +303,8 @@ export default function AddAddress({ navigation }) {
                 outlineColor={COLORS.lightGray}
                 underlineColor={COLORS.lightGray}
                 keyboardType="numeric"
+                onChangeText={text => setMobile(text)}
+                error={error.status === "mobile"}
               />
               <View>
                 <View
@@ -261,16 +323,18 @@ export default function AddAddress({ navigation }) {
                     }}
                     theme={{
                       colors: {
-                         background: 'transparent',
-                         text: COLORS.gray
+                        background: 'transparent',
+                        text: COLORS.gray,
                       }
                     }}
                     activeColor={COLORS.secondaryDark}
+                    listStyle={{ color: COLORS.secondaryDark }}
                     label={'Address Type*'}
                     value={addressType}
                     setValue={setAddressType}
                     list={addressTypeList}
                     visible={showDropDown}
+                    error={error.status === "type"}
                     showDropDown={() => setShowDropDown(true)}
                     onDismiss={() => setShowDropDown(false)}
                     inputProps={{
@@ -304,7 +368,7 @@ export default function AddAddress({ navigation }) {
             color: COLORS.white,
             fontWeight: 'bold',
           }}>
-          Save and Continue
+          {address.name !== "" ? "Update" : "Save"} and Continue
         </Text>
       </Button>
     </View>

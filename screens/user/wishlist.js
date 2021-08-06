@@ -25,6 +25,8 @@ import { client, GET_WISHLIST, REMOVE_FROM_WISHLIST } from "../../constants/grap
 import theme from '../../constants/theme';
 const { COLORS, FONTS, SIZES } = theme;
 
+import { noWishlist, noOrder, noCard } from '../../constants/images';
+
 const { width, height } = Dimensions.get('window');
 
 import Auth from "../../constants/context/auth";
@@ -67,10 +69,14 @@ export default function Wishlist({ navigation }) {
     }
   };
   const getWishlist = async () => {
-    client.setHeader('authorization', `Bearer ${token}`);
-    const wishlist = await client.request(GET_WISHLIST);
-    const wishlistData = wishlist.getWishlist;
-    setData(wishlistData);
+    try {
+      client.setHeader('authorization', `Bearer ${token}`);
+      const wishlist = await client.request(GET_WISHLIST);
+      const wishlistData = wishlist.getWishlist;
+      setData(wishlistData);
+    } catch (e) {
+      console.log(e.message);
+    }
     return;
   }
   const removeFromWishlist = async (arg) => {
@@ -80,30 +86,29 @@ export default function Wishlist({ navigation }) {
   }
   return (
     <>
-      <ScrollView>
-        <View
-          style={{
-            padding: 10,
-            flex: 1,
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
-            <Icon name="chevron-left" style={styles.icon} onPress={() => navigation.goBack()} />
-            <Text
-              style={{ ...FONTS.h3, color: COLORS.primary, fontWeight: 'bold' }}>
-              Wishlist
-            </Text>
-          </View>
-          <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-            <Fa
-              name={viewStyle}
-              onPress={changeViewStyle}
-              style={styles.icon}
-            />
-          </View>
+      <View
+        style={{
+          padding: 10,
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
+          <Icon name="chevron-left" style={styles.icon} onPress={() => navigation.goBack()} />
+          <Text
+            style={{ ...FONTS.h3, color: COLORS.primary, fontWeight: 'bold' }}>
+            Wishlist
+          </Text>
         </View>
+        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+          <Fa
+            name={viewStyle}
+            onPress={changeViewStyle}
+            style={styles.icon}
+          />
+        </View>
+      </View>
+      {data.length !== 0 && <ScrollView contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
         <View>
           {viewStyle === 'th-large' && (
             <FlatList
@@ -445,12 +450,20 @@ export default function Wishlist({ navigation }) {
             />
           )}
         </View>
-      </ScrollView>
-      <Button mode="flat" style={{ backgroundColor: COLORS.secondary, elevation: 2 }} theme={{
+      </ScrollView>}
+      {data.length === 0 && <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Image source={{ uri: noWishlist }} style={{ width: width - 40, height: 400 }} resizeMode="contain" />
+      </View>}
+      {data.length !== 0 && <Button mode="flat" style={{ backgroundColor: COLORS.secondary, elevation: 2 }} theme={{
         roundness: 0
-      }} onPress={() => navigation.navigate("Cart",{screen:"Cart"})}>
+      }} onPress={() => navigation.navigate("Cart", { screen: "Cart" })}>
         <Text style={{ color: COLORS.white, ...FONTS.body5, fontWeight: 'bold' }}>Go To Cart</Text>
-      </Button>
+      </Button>}
+      {data.length === 0 && <Button mode="flat" style={{ backgroundColor: COLORS.secondary, elevation: 2 }} theme={{
+        roundness: 0
+      }} onPress={() => navigation.navigate("ProductHome", { screen: "ProductHome" })}>
+        <Text style={{ color: COLORS.white, ...FONTS.body5, fontWeight: 'bold' }}>Continue Shopping</Text> 
+      </Button>}
     </>
   );
 }

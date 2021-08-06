@@ -4,24 +4,7 @@
             "outputFile": "C:\\Users\\CLIQTICK03\\Desktop\\Vevibes-App\\vevibes\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-zh-rCN\\values-zh-rCN.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\d14dbad7340cad958a2e361a440b498d\\appcompat-1.1.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,200,295,395,477,574,680,757,833,924,1016,1113,1209,1304,1397,1492,1584,1675,1766,1843,1939,2034,2129,2226,2322,2420,2568,2662",
-                        "endColumns": "94,94,99,81,96,105,76,75,90,91,96,95,94,92,94,91,90,90,76,95,94,94,96,95,97,147,93,77",
-                        "endOffsets": "195,290,390,472,569,675,752,828,919,1011,1108,1204,1299,1392,1487,1579,1670,1761,1838,1934,2029,2124,2221,2317,2415,2563,2657,2735"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,59",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,200,295,395,477,574,680,757,833,924,1016,1113,1209,1304,1397,1492,1584,1675,1766,1843,1939,2034,2129,2226,2322,2420,2568,6153",
-                        "endColumns": "94,94,99,81,96,105,76,75,90,91,96,95,94,92,94,91,90,90,76,95,94,94,96,95,97,147,93,77",
-                        "endOffsets": "195,290,390,472,569,675,752,828,919,1011,1108,1204,1299,1392,1487,1579,1670,1761,1838,1934,2029,2124,2221,2317,2415,2563,2657,6226"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\22742e4b9af995071ca75997100be565\\jetified-play-services-wallet-11.8.0\\res\\values-zh-rCN\\values.xml",
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\232b9ed422d574af01022a8e230f9e3d\\jetified-play-services-wallet-11.8.0\\res\\values-zh-rCN\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -38,7 +21,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\3975ffd70914deb17405b14313b8e4ba\\core-1.3.1\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\819ec8c6af10e4a00a056b819af593de\\jetified-play-services-basement-17.5.0\\res\\values-zh-rCN\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "251",
+                        "endColumns": "157",
+                        "endOffsets": "408"
+                    },
+                    "to": {
+                        "startLines": "37",
+                        "startColumns": "4",
+                        "startOffsets": "3682",
+                        "endColumns": "157",
+                        "endOffsets": "3835"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\8f4dfadce8b90b8fa7f72007c5536a1d\\core-1.3.1\\res\\values-zh-rCN\\values-zh-rCN.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -55,30 +55,13 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\65d81bd5e213fb585d1f1457e7cb4b2a\\jetified-play-services-basement-11.8.0\\res\\values-zh-rCN\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "287",
-                        "endColumns": "157",
-                        "endOffsets": "444"
-                    },
-                    "to": {
-                        "startLines": "37",
-                        "startColumns": "4",
-                        "startOffsets": "3682",
-                        "endColumns": "157",
-                        "endOffsets": "3835"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\74688708890d9cfd29846842609154b0\\jetified-play-services-base-11.8.0\\res\\values-zh-rCN\\values.xml",
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\539b7be7a2b3a05a04064c89f6e7b6d2\\jetified-play-services-base-17.5.0\\res\\values-zh-rCN\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "285,384,545,658,758,922,1036,1164,1281,1448,1547,1708,1821,1984,2118,2200,2283",
+                        "startOffsets": "249,348,509,622,722,886,1000,1128,1245,1412,1511,1672,1785,1948,2082,2164,2247",
                         "endColumns": "98,160,112,99,163,113,127,116,166,98,160,112,162,133,81,82,98",
-                        "endOffsets": "383,544,657,757,921,1035,1163,1280,1447,1546,1707,1820,1983,2117,2199,2282,2381"
+                        "endOffsets": "347,508,621,721,885,999,1127,1244,1411,1510,1671,1784,1947,2081,2163,2246,2345"
                     },
                     "to": {
                         "startLines": "29,30,31,32,33,34,35,36,38,39,40,41,42,43,44,45,46",
@@ -89,7 +72,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\44ab6804b80638410c6c0827d4445946\\biometric-1.1.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\4b5868a218f8e0fe022c3ea45ad9869d\\appcompat-1.1.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,200,295,395,477,574,680,757,833,924,1016,1113,1209,1304,1397,1492,1584,1675,1766,1843,1939,2034,2129,2226,2322,2420,2568,2662",
+                        "endColumns": "94,94,99,81,96,105,76,75,90,91,96,95,94,92,94,91,90,90,76,95,94,94,96,95,97,147,93,77",
+                        "endOffsets": "195,290,390,472,569,675,752,828,919,1011,1108,1204,1299,1392,1487,1579,1670,1761,1838,1934,2029,2124,2221,2317,2415,2563,2657,2735"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,59",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,200,295,395,477,574,680,757,833,924,1016,1113,1209,1304,1397,1492,1584,1675,1766,1843,1939,2034,2129,2226,2322,2420,2568,6153",
+                        "endColumns": "94,94,99,81,96,105,76,75,90,91,96,95,94,92,94,91,90,90,76,95,94,94,96,95,97,147,93,77",
+                        "endOffsets": "195,290,390,472,569,675,752,828,919,1011,1108,1204,1299,1392,1487,1579,1670,1761,1838,1934,2029,2124,2221,2317,2415,2563,2657,6226"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\CLIQTICK03\\.gradle\\caches\\transforms-2\\files-2.1\\f8fae90af3f999a01e647f7c08fc8903\\biometric-1.1.0\\res\\values-zh-rCN\\values-zh-rCN.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",

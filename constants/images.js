@@ -44,3 +44,9 @@ export const menuIcon = {
     setting:"https://res.cloudinary.com/vevibes/image/upload/v1625211245/App%20Assets/Group_8271_2_gu9zvf.png",
 
 }
+
+export const filter = "https://res.cloudinary.com/vevibes/image/upload/s--KARovWU_--/v1627882849/App%20Assets/Asset_21_o0nlv2.png";
+
+export const noCard = "https://res.cloudinary.com/vevibes/image/upload/s--Je_ESGN8--/v1627901461/App%20Assets/Empty_Card_oj2buo.png";
+export const noOrder = "https://res.cloudinary.com/vevibes/image/upload/s--S3WQ4RVO--/v1627901461/App%20Assets/Empty_Box_dok3t2.png";
+export const noWishlist = "https://res.cloudinary.com/vevibes/image/upload/s--9SdAldxF--/v1627901461/App%20Assets/Empty_Wish_List_ztcidj.png";

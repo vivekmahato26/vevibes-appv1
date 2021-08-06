@@ -32,10 +32,23 @@ export default function MyAddress({ navigation, route }) {
     }
 
     React.useEffect(() => {
-        if(isFocused) {
+        if (isFocused) {
             getUserData();
         }
     }, [isFocused])
+
+    const dummyAddress = {
+        name: "",
+        pin: "",
+        line1: "",
+        line2: "",
+        city: "",
+        state: "",
+        mobile: "",
+        type: "",
+        countryCode:"",
+        country:""
+    }
 
 
     return (
@@ -68,14 +81,14 @@ export default function MyAddress({ navigation, route }) {
                         small
                         color={COLORS.white}
                         icon="plus"
-                        onPress={() => navigation.navigate('AddAddress')}
+                        onPress={() => navigation.navigate('AddAddress', { screen: "Addresses",address:dummyAddress })}
                     />
                 </View>}
             </View>
             <View style={{ flex: 1 }}>
                 {user.address.length !== 0 && <FlatList
                     data={user.address}
-                    keyExtractor={(item, index) => 'key' + index}
+                    keyExtractor={(item) => 'key' + item.id}
                     decelerationRate={'normal'}
                     scrollEventThrottle={16}
                     renderItem={({ item, index }) => {
@@ -109,6 +122,7 @@ export default function MyAddress({ navigation, route }) {
                                                         color: COLORS.gray,
                                                         marginRight: 10,
                                                     }}
+                                                    onPress={() => navigation.navigate("AddAddress", { screen: "AddAddress", address: item })}
                                                 />
                                                 <Icon
                                                     name="trash-can-outline"
@@ -153,7 +167,7 @@ export default function MyAddress({ navigation, route }) {
                         <Text style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold', margin: 10 }}>No addresses added yet</Text>
                         <Text style={{ ...FONTS.body5, color: COLORS.gray }}>Please add an address and come back</Text>
                     </ScrollView>
-                    <Button mode="contained" style={{ backgroundColor: COLORS.secondary, margin: 10 }} onPress={() => navigation.navigate("AddAddress")}>
+                    <Button mode="contained" style={{ backgroundColor: COLORS.secondary, margin: 10 }} onPress={() => navigation.navigate("AddAddress", { screen: "AddAddress", address: dummyAddress })}>
                         <Text style={{ ...FONTS.body5, color: COLORS.white, fontWeight: 'bold' }}>Add new address</Text>
                     </Button>
                 </>}

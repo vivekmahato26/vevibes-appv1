@@ -63,6 +63,18 @@ export default function Checkout({ navigation, route }) {
     getAddress();
   }, [isFocused])
 
+  const dummyAddress = {
+    name: "",
+    pin: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    mobile: "",
+    type: "",
+    countryCode: "",
+    country: ""
+  }
 
   const handleAddressToggle = (arg) => {
     setChecked(arg);
@@ -344,7 +356,7 @@ export default function Checkout({ navigation, route }) {
                     paddingRight: 10,
                     marginRight: 10,
                   }}
-                  onPress={() => navigation.navigate('AddAddress')}
+                  onPress={() => navigation.navigate('AddAddress', { screen: "AddAddresses", address: dummyAddress })}
                 />
                 <Text
                   style={{

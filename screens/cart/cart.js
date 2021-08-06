@@ -9,7 +9,6 @@ import {
   Dimensions,
   StyleSheet,
   Animated,
-  TouchableHighlight,
   LogBox,
   TouchableWithoutFeedback
 } from 'react-native';
@@ -42,7 +41,7 @@ export default function Cart({ navigation, route }) {
   const [couponErr, setCouponErr] = React.useState();
   const [discountPrice, setDiscountPrice] = React.useState(0);
   const scrollX = new Animated.Value(0);
-  const [cartUpdate, setCartUpdate] = React.useState(0);
+  const [cartUpdate, setCartUpdate] = React.useState(true);
 
 
   const { authenticated } = useContext(Auth);
@@ -50,33 +49,34 @@ export default function Cart({ navigation, route }) {
 
   const addProductToCartHandler = product => {
     addProductToCart(product);
-    setCartUpdate(cartUpdate + 1);
+    calculateCart();
+    setCartUpdate(!cartUpdate);
   };
 
   const removeProductFromCartHandler = productId => {
     removeProductFromCart(productId);
-    setCartUpdate(cartUpdate + 1);
+    calculateCart();
+    setCartUpdate(!cartUpdate);
   };
-  React.useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  const calculateCart = () => {
     var temp = 0;
     cart.map((item) => {
       if (item.product.salePrice) {
-        temp = (temp + item.product.salePrice * item.quantity)
+        temp = parseFloat(temp + item.product.salePrice * item.quantity).toFixed(2)
       } else {
-        temp = (temp + item.product.price * item.quantity)
+        temp = parseFloat(temp + item.product.price * item.quantity).toFixed(2)
 
       }
     })
-    setTotal((prev) => temp);
+    setTotal(temp);
     var tempGrandTotal = 0
     var tempDiscount = 0;
     if (discount) {
 
-      if (total > minCartPrice) {
+      if (temp > minCartPrice) {
         if (percent) {
-          tempDiscount = (total * discount / 100 + 5).toFixed(2);
-          tempGrandTotal = (total - total * discount / 100 + 5).toFixed(2);
+          tempDiscount = parseFloat(temp * discount / 100).toFixed(2);
+          tempGrandTotal = parseFloat(temp - temp * discount / 100).toFixed(2);
         } else {
           tempDiscount = discount;
           tempGrandTotal = total - discount;
@@ -84,13 +84,17 @@ export default function Cart({ navigation, route }) {
         setDiscountPrice(tempDiscount);
         setCouponErr((prev) => (false))
       } else {
-        tempGrandTotal = total + 5;
-        setCouponErr((prev) => (`Minimum cart value should be $${minCartPrice}`))
+        tempGrandTotal = parseFloat(temp).toFixed(2);
+        setCouponErr((prev) => (`Minimum cart value should be £${minCartPrice}`))
       }
     } else {
-      tempGrandTotal = temp + 5;
+      tempGrandTotal = parseFloat(temp).toFixed(2);
     }
     setGrandTotal(tempGrandTotal);
+  }
+  React.useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    calculateCart();
   }, [discount, minCartPrice]);
   const productDetails = (item) => {
     navigation.navigate('ProductDetails', { screen: "ProductDetails", product: item });
@@ -136,7 +140,6 @@ export default function Cart({ navigation, route }) {
           total: total,
           grandTotal: grandTotal,
           couponCode: !couponErr && coupon,
-          deliveryPrice: 5
         })
     } else {
       navigation.navigate("Login",
@@ -146,7 +149,6 @@ export default function Cart({ navigation, route }) {
           total: total,
           grandTotal: grandTotal,
           couponCode: !couponErr && coupon,
-          deliveryPrice: 5
         })
     }
   }
@@ -374,21 +376,6 @@ export default function Cart({ navigation, route }) {
             </TouchableWithoutFeedback>
             {couponErr && <Text style={{ margin: 10, color: 'red', marginTop: 0, textAlign: "center" }}>{couponErr}</Text>}
             <View style={{ margin: 10, marginTop: '20%' }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{ ...FONTS.h3, color: COLORS.lightGray }}>
-                  Delivery Fees
-                </Text>
-                <Text
-                  style={{ ...FONTS.h3, color: COLORS.primary, fontWeight: 'bold' }}>
-                  £05
-                </Text>
-              </View>
-              <Divider style={{ height: 2, marginTop: 5, marginBottom: 5 }} />
               <View
                 style={{
                   flexDirection: 'row',

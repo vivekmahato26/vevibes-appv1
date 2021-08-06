@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { View, Text, FlatList, Dimensions, Animated,ScrollView,Image } from 'react-native';
+import { View, Text, FlatList, Dimensions, Animated, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { Button, FAB, Snackbar } from 'react-native-paper';
 
 import { GET_ADDRESS, client } from '../../constants/graphql';
@@ -14,6 +13,8 @@ const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
 const { COLORS, FONTS, SIZES } = theme;
 
+import Axios from "axios";
+
 import { useIsFocused } from "@react-navigation/native";
 
 export default function Address({ navigation, route }) {
@@ -24,7 +25,6 @@ export default function Address({ navigation, route }) {
   const discount = route.params.discount;
   const total = route.params.total;
   const grandTotal = route.params.grandTotal;
-  const deliveryPrice = route.params.deliveryPrice;
   const scrollX = new Animated.Value(0);
   const [checked, setChecked] = React.useState(-1);
   const [visible, setVisible] = React.useState(false);
@@ -41,12 +41,34 @@ export default function Address({ navigation, route }) {
     setAddresses(addressData);
     return;
   }
+  const dummyAddress = {
+    name: "",
+    pin: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    mobile: "",
+    type: "",
+    countryCode: "",
+    country: ""
+  }
+
 
   React.useEffect(() => {
     getAddress();
   }, [isFocused])
 
-  const goToCheckout = () => {
+  const goToCheckout = async () => {
+
+    const res = await Axios({
+      url: "",
+      method:"",
+      headers: { 
+        'Content-Type': 'application/json',
+        'API-Key': ""
+      }
+    })
 
     if (checked !== -1) {
       navigation.navigate('Checkout', {
@@ -56,7 +78,6 @@ export default function Address({ navigation, route }) {
         total: total,
         grandTotal: grandTotal,
         couponCode: couponCode,
-        deliveryPrice: deliveryPrice,
         address: addresses[checked],
         addressList: addresses
       })
@@ -167,13 +188,13 @@ export default function Address({ navigation, route }) {
           )}
         />}
         {addresses.length === 0 && <>
-                    <ScrollView contentContainerStyle={{ justifyContent: "center", alignItems: 'center', flex: 1 }}>
-                        <Image source={{ uri: "https://res.cloudinary.com/vevibes/image/upload/v1626525983/App%20Assets/Asset_22_bwovwp.png" }}
-                            style={{ width: width / 1.5, height: 250 }} resizeMode="contain" />
-                        <Text style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold', margin: 10 }}>No addresses added yet</Text>
-                        <Text style={{ ...FONTS.body5, color: COLORS.gray }}>Please add an address and come back</Text>
-                    </ScrollView>
-                </>}
+          <ScrollView contentContainerStyle={{ justifyContent: "center", alignItems: 'center', flex: 1 }}>
+            <Image source={{ uri: "https://res.cloudinary.com/vevibes/image/upload/v1626525983/App%20Assets/Asset_22_bwovwp.png" }}
+              style={{ width: width / 1.5, height: 250 }} resizeMode="contain" />
+            <Text style={{ ...FONTS.body2, color: COLORS.primary, fontWeight: 'bold', margin: 10 }}>No addresses added yet</Text>
+            <Text style={{ ...FONTS.body5, color: COLORS.gray }}>Please add an address and come back</Text>
+          </ScrollView>
+        </>}
       </View>
       <View style={{ marginTop: '0%', margin: 10 }}>
         <FAB
@@ -188,7 +209,7 @@ export default function Address({ navigation, route }) {
           small
           color={COLORS.white}
           icon="plus"
-          onPress={() => navigation.navigate('AddAddress')}
+          onPress={() => navigation.navigate('AddAddress', { screen: "AddAddresses", address: dummyAddress })}
         />
         <Button
           mode="flat"

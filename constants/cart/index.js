@@ -6,7 +6,6 @@ const addProductToCart = (product, cart) => {
   const updatedItemIndex = updatedCart.findIndex(
     item => item.product.id === product.id
   );
-
   if (updatedItemIndex < 0) {
     updatedCart.push({ product, quantity: 1 });
   } else {
@@ -16,10 +15,8 @@ const addProductToCart = (product, cart) => {
 };
 
 const removeProductFromCart = (productId, cart) => {
-  console.log('Removing product with id: ' + productId);
   const updatedCart = cart;
   const updatedItemIndex = updatedCart.findIndex(item => item.product.id === productId);
-
   updatedCart[updatedItemIndex].quantity-- ;
   if (updatedCart[updatedItemIndex].quantity <= 0) {
     updatedCart.splice(updatedItemIndex, 1);

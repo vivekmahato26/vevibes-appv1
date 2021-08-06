@@ -86,15 +86,15 @@ const Login = ({ navigation }) => {
           return;
         }
       } catch (e) {
-        const errorObj = JSON.parse(e.message.split("!!!:")[1]);
+        console.log(e.message);
         setLoginError({
           status: true,
-          message: errorObj.response.errors[0].message
+          message: e.message
         })
         return;
       }
    
-    if(res.staus) {
+    if(!loginError.staus) {
       navigation.navigate(state.routes[index-1].name);
     }
   }

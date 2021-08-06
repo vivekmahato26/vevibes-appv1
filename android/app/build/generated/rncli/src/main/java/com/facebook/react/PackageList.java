@@ -17,8 +17,14 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.geolocation.GeolocationPackage;
 // @react-native-community/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
+// @react-native-firebase/analytics
+import io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage;
+// @react-native-firebase/app
+import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 // react-native-date-picker
 import com.henninghall.date_picker.DatePickerPackage;
+// react-native-fs
+import com.rnfs.RNFSPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 // react-native-image-picker
@@ -87,7 +93,10 @@ public class PackageList {
       new AsyncStoragePackage(),
       new GeolocationPackage(),
       new RNCMaskedViewPackage(),
+      new ReactNativeFirebaseAnalyticsPackage(),
+      new ReactNativeFirebaseAppPackage(),
       new DatePickerPackage(),
+      new RNFSPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
       new KeychainPackage(),

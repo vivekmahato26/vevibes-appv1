@@ -14,17 +14,17 @@ export const GET_PRODUCTS = gql`
         featured
         salePrice
         tags
-        category
-        cupon
+        coupon
         stock
-        indregients
+        ingredients
+        category
         weightKG
         img
         nutritionalValues{
           energy
           fat
           saturatedFat
-          protine
+          protien
           carbohydrates
           sugar
           fiber
@@ -45,17 +45,17 @@ export const GET_FEATURED_PRODUCTS = gql`
     featured
     salePrice
     tags
-    category
-    cupon
+    coupon
     stock
-    indregients
+    ingredients
+    category
     weightKG
     img
     nutritionalValues{
       energy
       fat
       saturatedFat
-      protine
+      protien
       carbohydrates
       sugar
       fiber
@@ -117,16 +117,17 @@ export const GET_WISHLIST = gql`
         salePrice
         tags
         category
-        cupon
+        coupon
         stock
-        indregients
+        ingredients
+        category
         weightKG
         img
         nutritionalValues{
           energy
           fat
           saturatedFat
-          protine
+          protien
           carbohydrates
           sugar
           fiber
@@ -144,7 +145,7 @@ export const CHECK_WHISHLISTED = gql`
         __typename ... on  Sucess{
         res
         }
-        __typename ... on LoginError {
+        __typename ... on Error {
           message
         }
       }
@@ -205,16 +206,17 @@ export const GET_USER = gql`
         salePrice
         tags
         category
-        cupon
+        coupon
         stock
-        indregients
+        ingredients
+        category
         weightKG
         img
         nutritionalValues{
           energy
           fat
           saturatedFat
-          protine
+          protien
           carbohydrates
           sugar
           fiber
@@ -237,5 +239,48 @@ export const CHANGE_PASSWORD = gql`
 export const REGISTER = gql`
   mutation signUp($input: SignupInput!) {
     signUp(input: $input)
+  }
+`;
+
+export const UPDATE_ADDRESS = gql`
+  mutation updateAddress($input: AddressInput,$addressId: String!) { 
+    updateAddress(input: $input,addressId: $addressId) 
+    }
+`;
+
+export const GET_CARDS = gql`
+  {
+    getCards{
+      brand
+      id
+      name
+      number
+      expires
+      fingerprint
+    }
+  }
+`;
+
+export const ADD_CARD = gql`
+  mutation addCard($input: CardInput){
+    addCard(input: $input){
+      brand
+      id
+      name
+      number
+      expires
+    }
+  }
+`;
+
+export const REMOVE_CARD = gql`
+  mutation deleteCard($cardId: String!){
+    deleteCard(cardId: $cardId)
+  }
+`
+
+export const CHECKOUT = gql `
+  mutation checkout($amount: Float!,$currency: String!,$description: String!,$paymentMethod: [String!]){
+    checkout(amount: $amount,currency: $currency,description:$description,paymentMethod:$paymentMethod)
   }
 `;

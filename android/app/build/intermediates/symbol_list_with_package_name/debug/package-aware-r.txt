@@ -2503,6 +2503,7 @@ string czv_whitelist_yes_label
 string date_description
 string day_description
 string default_error_msg
+string default_web_client_id
 string diners_club
 string discover
 string ending_in
@@ -2519,6 +2520,7 @@ string fingerprint_error_lockout
 string fingerprint_error_no_fingerprints
 string fingerprint_error_user_canceled
 string fingerprint_not_recognized
+string gcm_defaultSenderId
 string generic_error_no_device_credential
 string generic_error_no_keyguard
 string generic_error_user_canceled
@@ -2531,6 +2533,10 @@ string gettipsi_card_number_label
 string gettipsi_google_pay_unavaliable
 string gettipsi_save
 string gettipsi_user_cancel_dialog
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
 string header_description
 string hide_bottom_view_on_scroll_behavior
 string hour_description
@@ -2601,6 +2607,7 @@ string payment_method_add_new_fpx
 string price_free
 string processing
 string progressbar_description
+string project_id
 string radiogroup_description
 string rn_tab_description
 string scrollbar_description

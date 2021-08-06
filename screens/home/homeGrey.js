@@ -6,8 +6,16 @@ import {homeStyle} from '../../constants/styles';
 
 import {homeBG_Grey, logo} from '../../constants/images';
 
+import Auth from '../../constants/context/auth';
+
 const HomeGrey = ({navigation}) => {
+
+  const { location } = React.useContext(Auth);
   React. useEffect(() => {
+    if (location !== undefined && location !== "" && location !== null) {
+      navigation.navigate("ProductHome");
+      return;
+    }
     setTimeout(() => {
       nextScreen();
     },300)

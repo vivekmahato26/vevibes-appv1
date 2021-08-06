@@ -1,5 +1,5 @@
-import {Dimensions} from 'react-native';
-const {width, height} = Dimensions.get('window');
+import { Dimensions } from 'react-native';
+const { width, height } = Dimensions.get('window');
 
 export const COLORS = {
   black: '#1E1F20',
@@ -13,7 +13,8 @@ export const COLORS = {
   apple: '#A3AAAE',
   amazon: '#FF9900',
   secondaryDark: '#58afaf',
-  error:"#e84118"
+  error: "#e84118",
+  green: "#63A004"
 };
 export const SIZES = {
   // global sizes
@@ -40,18 +41,18 @@ export const SIZES = {
   height,
 };
 export const FONTS = {
-  h1: {fontFamily: 'SegoeUIBold', fontSize: SIZES.h1, lineHeight: 36},
-  h2: {fontFamily: 'SegoeUIBold', fontSize: SIZES.h2, lineHeight: 36},
-  h3: {fontFamily: 'SegoeUIBold', fontSize: SIZES.h3, lineHeight: 22},
-  h4: {fontFamily: 'SegoeUIBold', fontSize: SIZES.h4, lineHeight: 22},
-  h5: {fontFamily: 'SegoeUIBold', fontSize: SIZES.h5, lineHeight: 40},
-  body1: {fontFamily: 'SegoeUI', fontSize: SIZES.body1, lineHeight: 36},
-  body2: {fontFamily: 'SegoeUI', fontSize: SIZES.body2, lineHeight: 30},
-  body3: {fontFamily: 'SegoeUI', fontSize: SIZES.body3, lineHeight: 22},
-  body4: {fontFamily: 'SegoeUI', fontSize: SIZES.body4, lineHeight: 22},
-  body5: {fontFamily: 'SegoeUI', fontSize: SIZES.body5, lineHeight: 22},
+  h1: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h1, lineHeight: 36 },
+  h2: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h2, lineHeight: 36 },
+  h3: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h3, lineHeight: 22 },
+  h4: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h4, lineHeight: 22 },
+  h5: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h5, lineHeight: 40 },
+  body1: { fontFamily: 'SegoeUI', fontSize: SIZES.body1, lineHeight: 36 },
+  body2: { fontFamily: 'SegoeUI', fontSize: SIZES.body2, lineHeight: 30 },
+  body3: { fontFamily: 'SegoeUI', fontSize: SIZES.body3, lineHeight: 22 },
+  body4: { fontFamily: 'SegoeUI', fontSize: SIZES.body4, lineHeight: 22 },
+  body5: { fontFamily: 'SegoeUI', fontSize: SIZES.body5, lineHeight: 22 },
 };
 
-const appTheme = {COLORS, SIZES, FONTS};
+const appTheme = { COLORS, SIZES, FONTS };
 
 export default appTheme;

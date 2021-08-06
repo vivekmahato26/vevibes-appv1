@@ -59,7 +59,7 @@ export default function Drawer({ navigation }) {
     {
       name: 'Manage Card',
       icon: menuIcon.card,
-      link: 'MyAddresses',
+      link: 'MyCards',
     },
     {
       name: 'Change Password',

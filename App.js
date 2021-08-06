@@ -14,6 +14,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import analytics from '@react-native-firebase/analytics';
+
 import AuthContext from "./constants/context/auth";
 import { shopReducer, ADD_PRODUCT, REMOVE_PRODUCT } from "./constants/cart";
 
@@ -49,6 +51,8 @@ import Support from "./screens/support";
 import Settings from "./screens/settings";
 import Feedback from "./screens/feedback";
 import Wishlist from "./screens/user/wishlist";
+import MyCards from "./screens/user/myCards";
+import Search from "./screens/products/searchScreen";
 
 
 import { client, GET_USER } from "./constants/graphql";
@@ -90,7 +94,15 @@ const onBoardings = {
   ],
   type: 'onboarding',
 };
+// global.XMLHttpRequest = global.originalXMLHttpRequest || global.XMLHttpRequest;
+// global.FormData = global.originalFormData || global.FormData;
 
+// if (window.FETCH_SUPPORT) {
+//   window.FETCH_SUPPORT.blob = false;
+// } else {
+//   global.Blob = global.originalBlob || global.Blob;
+//   global.FileReader = global.originalFileReader || global.FileReader;
+// }
 const DrawerRoutes = () => {
   return (
     <Drawer.Navigator
@@ -109,12 +121,16 @@ const DrawerRoutes = () => {
       <Drawer.Screen name="MyAddresses" component={MyAddress} />
       <Drawer.Screen name="Coupons" component={Coupons} />
       <Drawer.Screen name="Wishlist" component={Wishlist} />
+      <Drawer.Screen name="MyCards" component={MyCards} />
     </Drawer.Navigator>
   );
 };
 
 
 const App = () => {
+  const routeNameRef = React.useRef();
+  const navigationRef = React.useRef();
+
   const MyTheme = {
     dark: false,
     colors: {
@@ -156,6 +172,12 @@ const App = () => {
   React.useEffect(async () => {
     const city = await AsyncStorage.getItem('location');
     setLocation(city);
+    const token = await AsyncStorage.getItem('token');
+    if(token) {
+      setToken(token);
+      setAuthenticated(true);
+      getUserData();
+    }
   }, [])
 
   const addProductToCart = product => {
@@ -185,7 +207,24 @@ const App = () => {
         removeProductFromCart,
       }} >
         <UserContext.Provider value={{ user, getUserData }}>
-          <NavigationContainer theme={MyTheme}>
+          <NavigationContainer theme={MyTheme}
+            ref={navigationRef}
+            onReady={() => {
+              routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+            }}
+            onStateChange={async () => {
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName = navigationRef.current.getCurrentRoute().name;
+      
+              if (previousRouteName !== currentRouteName) {
+                await analytics().logScreenView({
+                  screen_name: currentRouteName,
+                  screen_class: currentRouteName,
+                });
+              }
+              routeNameRef.current = currentRouteName;
+            }}
+          >
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
@@ -221,6 +260,7 @@ const App = () => {
               <Stack.Screen name="Sucess" component={Sucess} />
               <Stack.Screen name="Failure" component={Failure} />
               <Stack.Screen name="Feedback" component={Feedback} />
+              <Stack.Screen name="Search" component={Search} />
             </Stack.Navigator>
           </NavigationContainer>
         </UserContext.Provider>

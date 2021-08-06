@@ -22,6 +22,8 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import analytics from '@react-native-firebase/analytics';
+
 import Fa from 'react-native-vector-icons/FontAwesome';
 
 import _ from 'lodash';
@@ -40,6 +42,8 @@ import {
 } from '../../constants/graphql';
 import axios from 'axios';
 
+import { ALGOLIA_APP, ALGOLIA_SEARCH_KEY } from "@env";
+
 import Carousal from '../../components/carousal/carousal';
 import { Image } from 'react-native';
 import theme from '../../constants/theme';
@@ -48,6 +52,11 @@ const { COLORS, FONTS, SIZES } = theme;
 
 
 const { width, height } = Dimensions.get('window');
+
+import algoliasearch from "algoliasearch";
+import Search from "../../components/search";
+
+import {add_product_to_cart_event,remove_product_to_cart_event} from "../../constants/algolia";
 
 
 export default function ProductHome({ route, navigation }) {
@@ -63,8 +72,23 @@ export default function ProductHome({ route, navigation }) {
   //const [cart, dispatch] = useReducer(shopReducer, []);
   const [cartUpdate, setCartUpdate] = React.useState(0);
   const [predictions, setPredictions] = React.useState([]);
+  const showSearch = React.createRef();
+  const [searchResult, setSearchResult] = React.useState([]);
 
-  const onChangeSearch = query => setSearchQuery(query);
+  const onChangeSearch = query => {
+    setSearchQuery(query);
+    showSearch.current.open();
+    const client = algoliasearch(ALGOLIA_APP, ALGOLIA_SEARCH_KEY);
+    const index = client.initIndex('Products');
+
+    // only query string
+    index.search(query, {
+      clickAnalytics: true
+    }).then(({ hits }) => {
+      setSearchResult(hits);
+      console.log(hits);
+    });
+  };
 
   const openMenu = () => setVisible(true);
 
@@ -80,14 +104,16 @@ export default function ProductHome({ route, navigation }) {
     setFeaturedProducts(products.getFeaturedProducts);
   };
 
-  const addProductToCartHandler = product => {
+  const addProductToCartHandler =  (product) => {
     addProductToCart(product);
     setCartUpdate(cartUpdate + 1);
+    add_product_to_cart_event(product);
   };
 
   const removeProductFromCartHandler = productId => {
     removeProductFromCart(productId);
     setCartUpdate(cartUpdate + 1);
+    remove_product_to_cart_event(productId);
   };
 
   const getLocation = async (arg) => {
@@ -189,10 +215,6 @@ export default function ProductHome({ route, navigation }) {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_46_rnksjt.png',
       title: ['Snacks'],
     },
-    {
-      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531481/App%20Assets/Asset_45_jst8ad.png',
-      title: ['Household'],
-    },
   ];
 
   const notification = [
@@ -264,24 +286,24 @@ export default function ProductHome({ route, navigation }) {
         setCompleted(true);
       }
     });
-    
+
 
     getProducts();
     getFeaturedProducts();
-    return () =>  scrollX.removeListener();
+    return () => scrollX.removeListener();
   }, []);
-  useEffect(() =>{
-    // const onBackPress = () => {
-    //   if (location) {
-    //     return true;
-    //   } else {
-    //     navigation.navigate("Welcome");
-    //     return false;
-    //   }
-    // };
-    // BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    // return () =>  BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  })
+  useEffect(() => {
+    const onBackPress = () => {
+      if (location && route.name === "ProductHome") {
+        return true;
+      } else {
+        navigation.navigate("Welcome");
+        return false;
+      }
+    };
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [])
   const productDetails = item => {
     navigation.navigate('ProductDetails', {
       screen: 'ProductsDetails',
@@ -296,38 +318,6 @@ export default function ProductHome({ route, navigation }) {
     addressRef.current.open();
   };
 
-
-
-  // const removeFromCart = (item) => {
-  //   var index = _.findIndex(cart, function (o) {
-  //     return o.item.id == item.id;
-  //   });
-  //   var tempCart = cart;
-  //   if(tempCart[index].quantity === 1) {
-  //     tempCart = tempCart.splice(index, 1);
-  //   } else {
-  //     tempCart[index].quantity = tempCart[index].quantity - 1 ;
-  //   }
-  //   setCart((prev) => (tempCart));
-  // }
-
-  // const addToCart = item => {
-  //   var index = _.findIndex(cart, function (o) {
-  //     return o.item.id == item.id;
-  //   });
-  //   var tempCart = cart;
-  //   if (index === -1) {
-  //     tempCart.push({
-  //       item,
-  //       quantity:1,
-  //     });
-  //   } else {
-  //     tempCart[index].quantity = tempCart[index].quantity + 1 ;
-  //   }
-  //   setCart((prev) => {
-  //     return tempCart;
-  //   });
-  // };
   return (
     <>
       <Provider>
@@ -356,6 +346,9 @@ export default function ProductHome({ route, navigation }) {
                     flexDirection: 'row',
                     flex: 1,
                     borderRadius: 5,
+                    borderColor: COLORS.lightGray,
+                    borderWidth: 1,
+                    elevation: 1
                   }}>
                   <Button
                     onPress={openMenu}
@@ -372,28 +365,38 @@ export default function ProductHome({ route, navigation }) {
               }>
               <Menu.Item
                 style={styles.top}
-                onPress={() => { }}
-                title="Food &amp; Drink"
+                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "BC" })}
+                title="Bakery &amp; Cakes"
+              />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "CH" })} title="Cheese" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "CS" })} title="Cupboard Staples" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "DE" })} title="Dairy &amp; Egg Alternatives" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "DR" })} title="Drinks" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "PA" })} title="Pasta &amp; Noodles" />
+              <Menu.Item
+                style={styles.top}
+                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "PB" })}
+                title="Plant Based Alternatives"
               />
               <Menu.Item
                 style={styles.top}
-                onPress={() => { }}
-                title="Household"
+                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "RC" })}
+                title="Ready To Cook"
               />
-              <Menu.Item style={styles.top} onPress={() => { }} title="Pets" />
-              <Menu.Item style={styles.top} onPress={() => { }} title="Beauty" />
-              <Menu.Item
-                style={styles.top}
-                onPress={() => { }}
-                title="Dietary Options"
-              />
-              <Menu.Item style={styles.top} onPress={() => { }} title="Brands" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "SA" })} title="Sauces" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "SN" })} title="Snacks" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "YD" })} title="Yogurt &amp; Deserts" />
             </Menu>
             <Searchbar
               placeholder="Search For Products"
               onChangeText={onChangeSearch}
               value={searchQuery}
-              style={{ width: '60%', elevation: 0, marginLeft: 5 }}
+              style={{
+                width: '65%', elevation: 0, marginLeft: 5, borderRadius: 5,
+                borderColor: COLORS.lightGray,
+                borderWidth: 1,
+                elevation: 1
+              }}
               inputStyle={{ fontWeight: 'bold', fontSize: 13, paddingLeft: 0 }}
             />
           </View>
@@ -665,7 +668,7 @@ export default function ProductHome({ route, navigation }) {
                   onPress={() => {
                     navigation.navigate('ProductList', {
                       screen: 'ProductList',
-                      products: productsData,
+                      products: featuredProducts,
                     });
                   }}>
                   See All
@@ -673,7 +676,7 @@ export default function ProductHome({ route, navigation }) {
               </View>
               <FlatList
                 horizontal
-                data={productsData}
+                data={featuredProducts}
                 keyExtractor={(item, index) => 'key' + index}
                 pagingEnabled
                 scrollEnabled
@@ -1005,6 +1008,9 @@ export default function ProductHome({ route, navigation }) {
               )}
             />
           </View>
+        </Modalize>
+        <Modalize ref={showSearch} adjustToContentHeight={true}>
+          <Search results={searchResult} navigation={navigation} modalizeRef={showSearch} />
         </Modalize>
       </Provider>
     </>
