@@ -5,6 +5,8 @@ import {
   ScrollView,
   Text,
   Dimensions,
+  TouchableWithoutFeedback,
+  StyleSheet
 } from 'react-native';
 import { TextInput, Divider, Button } from 'react-native-paper';
 import { CheckBox } from 'react-native-elements';
@@ -19,12 +21,17 @@ import UserContext from '../../constants/context/userContext';
 import { GET_ADDRESS, client } from '../../constants/graphql';
 import Auth from '../../constants/context/auth';
 
+import Axios from "axios";
+import _ from "lodash";
+
 const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
 import { Image } from 'react-native-elements/dist/image/Image';
 const { COLORS, FONTS, SIZES } = theme;
 
 import { useIsFocused } from "@react-navigation/native";
+
+import { getRateEstimates } from "../../constants/shipengine";
 
 export default function Checkout({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -35,7 +42,11 @@ export default function Checkout({ navigation, route }) {
   const discount = route.params.discount;
   const total = route.params.total;
   const grandTotal = route.params.grandTotal;
-  const deliveryPrice = route.params.deliveryPrice;
+  const [minDelivery, setMinDelivery] = React.useState({
+    rate: "",
+    estimatedDelivery: "",
+    serviceCode: ""
+  });
   const [addresses, setAddresses] = React.useState(user.address);
   const [address, setAddress] = React.useState(route.params.address);
   const day = moment().format("dddd");
@@ -50,17 +61,58 @@ export default function Checkout({ navigation, route }) {
   const maxMoment = moment().add(60, 'days').calendar();
   const today = new Date(todayMoment);
   const maxDate = new Date(maxMoment);
+  const [disabled, setDisabled] = React.useState(true);
+  const [deliveryOptions, setDeliveryOptions] = React.useState([{
+    rate: 0,
+    estimatedDelivery: "",
+    serviceCode: ""
+  }]);
+  const [cartValue, setCartValue] = React.useState(grandTotal);
 
   const getAddress = async () => {
     client.setHeader('authorization', `Bearer ${token}`);
     const address = await client.request(GET_ADDRESS);
-    const addressData = address.getAddress;
+    const addressData = address.getAddress.res;
     setAddresses(addressData);
     return;
   }
 
+  const getRate = async () => {
+    let weight = 0;
+    for (let i = 0; i < cart.length; i++) {
+      if (cart[i].product.weightKG) {
+        weight += cart[i].product.weightKG;
+      }
+    }
+    const rates = await getRateEstimates(address, weight);
+    const temp = [];
+    rates.map(async (r, index) => {
+      var rate = r.shipping_amount.amount;
+      const url = `https://api.exchangerate.host/convert?from=USD&to=GBP&amount=${rate}`;
+      const convertedRateData = await Axios.get(url);
+      const convertedRate = convertedRateData.data.result;
+      temp.push({
+        rate: parseFloat(convertedRate.toFixed(2)),
+        estimatedDelivery: r.carrier_delivery_days,
+        serviceCode: r.service_code,
+      })
+      const min = _.minBy(temp, function (o) { return o.rate; });
+      setCartValue(parseFloat((parseFloat(grandTotal) + min.rate).toFixed(2)))
+      setMinDelivery(min);
+      if(total >= 65) {
+        setMinDelivery({rate: 0,
+          estimatedDelivery: min.estimatedDelivery,
+          serviceCode: min.serviceCode});
+          setCartValue(grandTotal)
+      }
+    })
+    setDeliveryOptions(temp);
+    setDisabled(false);
+  }
+
   React.useEffect(() => {
     getAddress();
+    getRate();
   }, [isFocused])
 
   const dummyAddress = {
@@ -178,86 +230,100 @@ export default function Checkout({ navigation, route }) {
             marginTop: 15,
             justifyContent: 'center',
           }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: COLORS.white,
-              borderColor: COLORS.gray,
-              borderRadius: 10,
-              width: width / 2 - 25,
-              justifyContent: 'space-between',
-              borderWidth: 2,
-              marginRight: 10,
-            }}>
-            <Text style={{ ...FONTS.body3, color: COLORS.gray, marginLeft: 10 }}>
-              Collection
-            </Text>
-            <CheckBox
-              checkedIcon={
-                <Icon
-                  name="record-circle-outline"
-                  style={{ ...FONTS.body2, color: COLORS.secondary }}
-                />
-              }
-              iconRight={true}
-              iconType="material"
-              uncheckedIcon={
-                <Icon
-                  name="circle-outline"
-                  style={{ ...FONTS.body2, color: COLORS.gray }}
-                />
-              }
-              checked={collection}
-              onPress={() => {
-                if (delivery) {
-                  setDelivery(false);
+          <TouchableWithoutFeedback onPress={() => {
+            if (delivery) {
+              setDelivery(false);
+            }
+            setCollection(true);
+            return;
+          }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: COLORS.white,
+                borderColor: COLORS.gray,
+                borderRadius: 10,
+                width: width / 2 - 25,
+                justifyContent: 'space-between',
+                borderWidth: 2,
+                marginRight: 10,
+              }}>
+              <Text style={{ ...FONTS.body3, color: COLORS.gray, marginLeft: 10 }}>
+                Collection
+              </Text>
+              <CheckBox
+                checkedIcon={
+                  <Icon
+                    name="record-circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.secondary }}
+                  />
                 }
-                setCollection(true);
-                return;
-              }}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: COLORS.white,
-              borderWidth: 2,
-              borderColor: COLORS.gray,
-              borderRadius: 10,
-              width: width / 2 - 25,
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{ ...FONTS.body3, color: COLORS.gray, marginLeft: 10 }}>
-              Delivery
-            </Text>
-            <CheckBox
-              checkedIcon={
-                <Icon
-                  name="record-circle-outline"
-                  style={{ ...FONTS.body2, color: COLORS.secondary }}
-                />
-              }
-              iconRight={true}
-              iconType="material"
-              uncheckedIcon={
-                <Icon
-                  name="circle-outline"
-                  style={{ ...FONTS.body2, color: COLORS.gray }}
-                />
-              }
-              checked={delivery}
-              onPress={() => {
-                if (collection) {
-                  setCollection(false);
+                iconRight={true}
+                iconType="material"
+                uncheckedIcon={
+                  <Icon
+                    name="circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.gray }}
+                  />
                 }
-                setDelivery(true);
-                return;
-              }}
-            />
-          </View>
+                checked={collection}
+                onPress={() => {
+                  if (delivery) {
+                    setDelivery(false);
+                  }
+                  setCollection(true);
+                  return;
+                }}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => {
+            if (collection) {
+              setCollection(false);
+            }
+            setDelivery(true);
+            return;
+          }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: COLORS.white,
+                borderWidth: 2,
+                borderColor: COLORS.gray,
+                borderRadius: 10,
+                width: width / 2 - 25,
+                justifyContent: 'space-between',
+              }}>
+              <Text style={{ ...FONTS.body3, color: COLORS.gray, marginLeft: 10 }}>
+                Delivery
+              </Text>
+              <CheckBox
+                checkedIcon={
+                  <Icon
+                    name="record-circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.secondary }}
+                  />
+                }
+                iconRight={true}
+                iconType="material"
+                uncheckedIcon={
+                  <Icon
+                    name="circle-outline"
+                    style={{ ...FONTS.body2, color: COLORS.gray }}
+                  />
+                }
+                checked={delivery}
+                onPress={() => {
+                  if (collection) {
+                    setCollection(false);
+                  }
+                  setDelivery(true);
+                  return;
+                }}
+              />
+            </View></TouchableWithoutFeedback>
         </View>
         {couponCode && <View
           style={{
@@ -284,6 +350,22 @@ export default function Checkout({ navigation, route }) {
               style={{ ...FONTS.body5, color: COLORS.secondary, marginLeft: 5 }}
             />
           </View>
+        </View>}
+        {total < 65 && <View style={{ marginTop: 10 }}>
+          {deliveryOptions && deliveryOptions.map((d) => {
+            return (
+              <TouchableWithoutFeedback onPress={() =>{ 
+                setMinDelivery(d);
+                setCartValue(parseFloat((parseFloat(grandTotal) + d.rate).toFixed(2)))
+              }} key={d.rate}>
+                <View style={{ backgroundColor: "#dedede",flexDirection: 'row', alignItems: "center", justifyContent: 'space-between', padding: 5, borderWidth: 0.5, borderColor: COLORS.gray, marginTop: 5, borderRadius: 5 }}>
+                  <Text style={{ ...FONTS.body3, color: COLORS.primary }}>{d.estimatedDelivery}</Text>
+                  <Text style={{ ...FONTS.body3, color: COLORS.secondaryDark }}>£{d.rate}</Text>
+                </View>
+              </TouchableWithoutFeedback>
+
+            )
+          })}
         </View>}
       </ScrollView>
       <Modalize modalHeight={300} ref={addressRef}>
@@ -515,7 +597,7 @@ export default function Checkout({ navigation, route }) {
           </Text>
           <Text
             style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
-            £{deliveryPrice}
+            £{minDelivery.rate}
           </Text>
         </View>
         <Divider
@@ -577,29 +659,30 @@ export default function Checkout({ navigation, route }) {
               color: COLORS.secondary,
               fontWeight: 'bold',
             }}>
-            £{grandTotal}
+            £{cartValue}
           </Text>
         </View>
         <Button
           mode="text"
-          style={{
-            backgroundColor: COLORS.secondary,
+          style={[{
             padding: 10,
             marginTop: 20,
             borderRadius: 10,
             zIndex: -1,
-          }}
+          },disabled ? styles.disabledButton: styles.activeButton]}
           onPress={() => navigation.navigate('Payment', {
             screen: "Payment",
             cart: cart,
             discount: discount,
             total: total,
-            grandTotal: grandTotal,
+            grandTotal: cartValue,
             couponCode: couponCode,
-            deliveryPrice: deliveryPrice,
+            deliveryOption: minDelivery,
             address: address,
 
-          })}>
+          })} 
+          disabled={disabled}
+          >
           <Text
             style={{ ...FONTS.body5, color: COLORS.white, fontWeight: 'bold' }}>
             Confirm Order
@@ -609,3 +692,12 @@ export default function Checkout({ navigation, route }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  disabledButton: {
+    backgroundColor: COLORS.lightGray,
+  },
+  activeButton: {
+    backgroundColor: COLORS.secondary
+  }
+})

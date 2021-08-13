@@ -31,10 +31,15 @@ export default function AddCard({ navigation }) {
       client.setHeader('authorization', `Bearer ${token}`);
       const data = await client.request(ADD_CARD, variables);
       //setError(undefined);
+      const addCardRes = data.addCard;
+      if(addCardRes.message) {
+        setError(addCardRes.message);
+        return;
+      }
       navigation.goBack();
     }
     catch (err) {
-      setError(err.message.split(".:")[0]);
+      setError(err.message);
     }
   }
 

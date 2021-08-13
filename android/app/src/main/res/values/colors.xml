@@ -2,4 +2,7 @@
 <resources>
   <!-- Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually -->
   <color name="splashscreen_background">#FFFFFF</color>
+  <color name="primary">#662d91</color>
+  <color name="secondary">#65c8ca</color>
+  <color name="green">#63A004</color>
 </resources>

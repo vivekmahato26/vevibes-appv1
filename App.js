@@ -17,7 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import analytics from '@react-native-firebase/analytics';
 
 import AuthContext from "./constants/context/auth";
-import { shopReducer, ADD_PRODUCT, REMOVE_PRODUCT } from "./constants/cart";
+import { shopReducer, ADD_PRODUCT, REMOVE_PRODUCT,EMPTY_CART } from "./constants/cart";
 
 import Home from './screens/home/home';
 import HomeGrey from './screens/home/homeGrey';
@@ -53,9 +53,13 @@ import Feedback from "./screens/feedback";
 import Wishlist from "./screens/user/wishlist";
 import MyCards from "./screens/user/myCards";
 import Search from "./screens/products/searchScreen";
+import Terms from "./screens/tnc";
+import Privacy from "./screens/privacy";
+import About from "./screens/about";
 
 
 import { client, GET_USER } from "./constants/graphql";
+import PushNotification, {Importance} from 'react-native-push-notification';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -173,6 +177,8 @@ const App = () => {
     const city = await AsyncStorage.getItem('location');
     setLocation(city);
     const token = await AsyncStorage.getItem('token');
+    const previousCart = await AsyncStorage.getItem('cart');
+    dispatch({type: 'PREVIOUS_CART',previousCart});
     if(token) {
       setToken(token);
       setAuthenticated(true);
@@ -180,15 +186,22 @@ const App = () => {
     }
   }, [])
 
-  const addProductToCart = product => {
+  const addProductToCart = async(product) => {
     // setCart(updatedCart);
     dispatch({ type: ADD_PRODUCT, product: product });
+    await AsyncStorage.setItem('cart',JSON.stringify(cart));
   };
 
-  const removeProductFromCart = productId => {
+  const removeProductFromCart = async (productId) => {
     // setCart(updatedCart);
     dispatch({ type: REMOVE_PRODUCT, productId: productId });
+    await AsyncStorage.setItem('cart',JSON.stringify(cart));
   };
+
+  const emptyCart = async () => {
+    dispatch({ type: EMPTY_CART }); 
+    await AsyncStorage.setItem('cart',JSON.stringify(cart));
+  }
 
   return (
     <AuthContext.Provider value={{
@@ -205,6 +218,7 @@ const App = () => {
         cart,
         addProductToCart,
         removeProductFromCart,
+        emptyCart
       }} >
         <UserContext.Provider value={{ user, getUserData }}>
           <NavigationContainer theme={MyTheme}
@@ -261,6 +275,9 @@ const App = () => {
               <Stack.Screen name="Failure" component={Failure} />
               <Stack.Screen name="Feedback" component={Feedback} />
               <Stack.Screen name="Search" component={Search} />
+              <Stack.Screen name="Terms" component={Terms} />
+              <Stack.Screen name="Privacy" component={Privacy} />
+              <Stack.Screen name="About" component={About} />
             </Stack.Navigator>
           </NavigationContainer>
         </UserContext.Provider>

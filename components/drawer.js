@@ -64,7 +64,7 @@ export default function Drawer({ navigation }) {
     {
       name: 'Change Password',
       icon: menuIcon.password,
-      link: 'ChangePassword',
+      link: 'Verify',
     },
     {
       name: 'Settings',
@@ -187,6 +187,9 @@ export default function Drawer({ navigation }) {
                   if (d.name === "Coupons") {
                     navigation.navigate(d.link);
                     return;
+                  }
+                  if(d.name === 'Change Password') {
+                    navigation.navigate(d.link, {screen: d.link, nextScreen:"ChangePassword"})
                   }
                   if (authenticated) {
                     navigation.navigate(d.link);

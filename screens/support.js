@@ -7,7 +7,7 @@ import theme from '../constants/theme';
 const {COLORS, FONTS, SIZES} = theme;
 
 const {width, height} = Dimensions.get('window');
-export default function Support() {
+export default function Support({ navigation}) {
   return (
     <View style={{flex: 1}}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>

@@ -119,6 +119,7 @@
     <string name="ending_in">%1$s - %2$s</string>
     <string name="expiry_date_hint">MM/YY</string>
     <string name="expiry_label_short">有効期限</string>
+    <string name="fcm_fallback_notification_channel_label">その他</string>
     <string msgid="1072308044213194243" name="fingerprint_dialog_touch_sensor">"指紋認証センサーをタップ"</string>
     <string msgid="8216738333501875566" name="fingerprint_error_hw_not_available">"指紋認証ハードウェアは使用できません。"</string>
     <string msgid="6306988885793029438" name="fingerprint_error_hw_not_present">"このデバイスには指紋認証センサーがありません"</string>
@@ -148,5 +149,5 @@
     <string name="title_add_an_address">住所を設定してください</string>
     <string name="title_payment_method">お支払い方法</string>
     <string name="title_select_shipping_method">配送方法を選択してください</string>
-    <string msgid="363496807345461806" name="wallet_buy_button_place_holder">"Googleで購入"</string>
+    <string name="wallet_buy_button_place_holder">Googleで購入</string>
 </resources>

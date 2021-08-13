@@ -61,7 +61,7 @@ export default function ProductHeader({
               style={{width: 30, height: 30, marginRight: 10}}
               resizeMode="contain"
             />
-            {cart.length !== 0 && (
+            {cart && cart.length !== 0 && (
               <View
                 style={{
                   ...FONTS.h4,

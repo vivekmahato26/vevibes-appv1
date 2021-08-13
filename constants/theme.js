@@ -30,6 +30,7 @@ export const SIZES = {
   h3: 16,
   h4: 14,
   h5: 40,
+  h6: 25,
   body1: 30,
   body2: 22,
   body3: 16,
@@ -42,7 +43,8 @@ export const SIZES = {
 };
 export const FONTS = {
   h1: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h1, lineHeight: 36 },
-  h2: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h2, lineHeight: 36 },
+  h2: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h2, lineHeight: 30 },
+  h6: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h6, lineHeight: 30 },
   h3: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h3, lineHeight: 22 },
   h4: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h4, lineHeight: 22 },
   h5: { fontFamily: 'SegoeUIBold', fontSize: SIZES.h5, lineHeight: 40 },

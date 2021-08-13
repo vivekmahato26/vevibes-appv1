@@ -5,7 +5,7 @@ import Auth from "../../constants/context/auth";
 
 import { client, GET_CARDS, REMOVE_CARD } from "../../constants/graphql";
 
-import { View, Text, FlatList, Dimensions, Animated, Image, ScrollView, ImageBackground } from 'react-native';
+import { View, Text, Dimensions, Animated, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fa from 'react-native-vector-icons/FontAwesome5';
 import { FAB, Button } from 'react-native-paper';
@@ -28,8 +28,9 @@ export default function MyCards({ navigation }) {
     const [cards, setCards] = React.useState([]);
     const getCards = async () => {
         client.setHeader('authorization', `Bearer ${token}`);
-        const cards = await client.request(GET_CARDS);
-        setCards(cards.getCards);
+        const cardsData = await client.request(GET_CARDS);
+        const cardsList = cardsData.getCards.res;
+        setCards(cardsList);
     }
     React.useEffect(() => {
         if (isFocused) {
@@ -77,6 +78,7 @@ export default function MyCards({ navigation }) {
             {cards.length !==0 && <ScrollView>
 
                 {cards.map((card, index) => {
+                    console.log(card);
                     return (
                         <View key={card.id} style={{ justifyContent: "center", alignItems: 'center' }}>
                             <LinearGradient

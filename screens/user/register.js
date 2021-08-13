@@ -88,12 +88,14 @@ const Register = ({ navigation }) => {
     };
     try{
       const signup = await client.request(REGISTER,variables);
+      if(signup.signUp.message) {
+        setError({status: true, message: signup.signUp.message});
+      } 
+      else {
+        
+      }
     } catch (e) {
-      const error = JSON.parse(e.message.split("!!!:")[1]);
-      setError({ 
-        status: true,
-        message: error.response.errors[0].message
-      })
+      console.log(e);
     }
   }
   return (

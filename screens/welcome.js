@@ -55,64 +55,70 @@ const Welcome = ({ navigation }) => {
         console.log(e.response);
       });
   }
-
+  const setAscynStorage = async (arg) => {
+    await AsyncStorage.setItem('location', arg);
+  }
   const findCoordinates = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location Access',
-          message: 'Please grant location access',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the Location');
+      var granted;
+      granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+      if (granted) {
+        Geolocation.setRNConfiguration({
+          skipPermissionRequests: true,
+          authorizationLevel: 'auto',
+        });
+        Geolocation.getCurrentPosition(
+          position => {
+            console.log(position);
+            setLocationData(position);
+            const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyC5F8htg_kG0BcYHooYuxS-aOXGjndiQF4`;
+            fetch(url)
+              .then(res => res.json())
+              .then(resJson => {
+                // the response had a deeply nested structure :/
+                if (resJson) {
+                  console.log(resJson);
+                  const city = resJson.plus_code.compound_code
+                    .split(' ')[1]
+                    .split(',')[0];
+                    console.log(city);
+                  setLocation(city);
+                  setAscynStorage(city);
+                  navigation.navigate('ProductHome', {
+                    screen: 'ProductHome',
+                    city: city,
+                  });
+                }
+              })
+              .catch(e => {
+                console.log('Error in getAddressFromCoordinates', e);
+              });
+          },
+          error => {
+            console.log(error);
+          },
+          { enableHighAccuracy: true, timeout: 50000},
+        );
       } else {
-        console.log('Location permission denied');
+        granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location Access',
+            message: 'Please grant location access',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('You can use the Location');
+        } else {
+          console.log('Location permission denied');
+        }
       }
     } catch (err) {
       console.warn(err);
     }
-
-    const setAscynStorage = async (arg) => {
-      await AsyncStorage.setItem('location', arg);
-    }
-    Geolocation.setRNConfiguration({
-      skipPermissionRequests: false,
-      authorizationLevel: 'auto',
-    });
-    Geolocation.getCurrentPosition(
-      position => {
-        setLocationData(position);
-        const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyC5F8htg_kG0BcYHooYuxS-aOXGjndiQF4`;
-        fetch(url)
-          .then(res => res.json())
-          .then(resJson => {
-            // the response had a deeply nested structure :/
-            if (resJson) {
-              const city = resJson.plus_code.compound_code
-                .split(' ')[1]
-                .split(',')[0];
-              setLocation(city);
-              setAscynStorage(city);
-              navigation.navigate('ProductHome', {
-                screen: 'ProductHome',
-                city: city,
-              });
-            }
-          })
-          .catch(e => {
-            console.log('Error in getAddressFromCoordinates', e);
-          });
-      },
-      error => {
-        console.log(error);
-      },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 10000 },
-    );
   };
   return (
     <>

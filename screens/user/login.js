@@ -69,7 +69,11 @@ const Login = ({ navigation }) => {
       try {
         const data = await client.request(LOGIN, variables);
         const loginData = data.signIn;
-        if (loginData.token) {
+        if(loginData.message) {
+          setLoginError({status: true, message: loginData.message});
+          return;
+        }
+        else {
           setAuthenticated(true);
           setToken(loginData.token);
           getUserData();
@@ -82,15 +86,8 @@ const Login = ({ navigation }) => {
             // saving error
           }
         }
-        else {
-          return;
-        }
       } catch (e) {
-        console.log(e.message);
-        setLoginError({
-          status: true,
-          message: e.message
-        })
+        console.log(e);
         return;
       }
    

@@ -137,7 +137,7 @@ export default function ProductDetails({ navigation, route }) {
       >
         <View style={[styles.flexView, { justifyContent: 'space-between' }]}>
           <Text style={styles.head}>{title}</Text>
-          <Icon name={isActive ? "chevron-up" : "chevron-down"} style={[styles.head2, { ...FONTS.h2 }]} />
+          <Icon name={isActive ? "chevron-up" : "chevron-down"} style={[styles.head2, { ...FONTS.h6 }]} />
         </View>
       </Animatable.View>
     );
@@ -252,7 +252,7 @@ export default function ProductDetails({ navigation, route }) {
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => {
                 return (
-                  <View style={{justifyContent: 'center',alignItems: 'center'}}>
+                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
                     <Image
                       source={{ uri: item }}
@@ -634,63 +634,65 @@ export default function ProductDetails({ navigation, route }) {
               { useNativeDriver: false },
             )}
           />
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                backgroundColor: '#f2f2f2',
-                width: 40,
-                borderRadius: 5,
-              }}
-              onPress={() => {
-                navigation.navigate('Cart');
-              }}>
-              <Icon
-                name="cart-outline"
-                style={{
-                  ...FONTS.h2,
-                  color: COLORS.primary,
-                  textAlign: 'center',
-                }}
-                onPress={() => {
-                  navigation.navigate('Cart', { screen: "Cart", cart: cart });
-                }}
-              />
-              {cart.length !== 0 && (
-                <View
-                  style={{
-                    ...FONTS.h4,
-                    color: COLORS.white,
-                    position: 'absolute',
-                    right: 2,
-                    top: 2,
-                    backgroundColor: 'red',
-                    borderRadius: 100,
-                    width: 10,
-                    fontSize: 10,
-                    height: 10,
-                    textAlign: 'center',
-                    textAlignVertical: 'top',
-                  }}></View>
-              )}
-            </View>
-            <Button
-              style={[styles.button, { borderRadius: 5, width: width - 80 }]}
-              mode="contained"
-              onPress={() => {
-                addProductToCartHandler(product);
-                navigation.navigate('Cart', { screen: "Cart", cart: cart });
-              }}>
-              Buy
-            </Button>
-          </View>
         </View>
       </ScrollView>
+      <View style={{ alignItems: 'center', flexDirection: 'row',margin:15}}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              backgroundColor: '#f2f2f2',
+              width: 40,
+              borderRadius: 5,
+            }}
+            onPress={() => {
+              navigation.navigate('Cart');
+            }}>
+            <Icon
+              name="cart-outline"
+              style={{
+                ...FONTS.h2,
+                color: COLORS.primary,
+                textAlign: 'center',
+              }}
+              onPress={() => {
+                navigation.navigate('Cart', { screen: "Cart", cart: cart });
+              }}
+            />
+            {cart.length !== 0 && (
+              <View
+                style={{
+                  ...FONTS.h4,
+                  color: COLORS.white,
+                  position: 'absolute',
+                  right: 2,
+                  top: 2,
+                  backgroundColor: 'red',
+                  borderRadius: 100,
+                  width: 10,
+                  fontSize: 10,
+                  height: 10,
+                  textAlign: 'center',
+                  textAlignVertical: 'top',
+                }}></View>
+            )}
+          </View>
+        </View>
+        <Button
+          style={[styles.button, { borderRadius: 5, width: width - 80 }]}
+          mode="contained"
+          onPress={() => {
+            addProductToCartHandler(product);
+            navigation.navigate('Cart', { screen: "Cart", cart: cart });
+          }}>
+          Add to Cart
+        </Button>
+      </View>
     </>
   );
 }
@@ -703,7 +705,7 @@ const styles = StyleSheet.create({
   },
   head: {
     color: COLORS.primary,
-    ...FONTS.body2,
+    ...FONTS.h4,
     fontWeight: 'bold',
     maxWidth: width / 1.3
   },

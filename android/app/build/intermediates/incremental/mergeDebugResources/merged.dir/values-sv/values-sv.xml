@@ -50,6 +50,7 @@
     <string name="date_description">Välj ett datum</string>
     <string name="day_description">Välj en dag</string>
     <string msgid="4776854077120974966" name="default_error_msg">"Okänt fel"</string>
+    <string name="fcm_fallback_notification_channel_label">Diverse</string>
     <string msgid="1072308044213194243" name="fingerprint_dialog_touch_sensor">"Tryck på fingeravtryckssensorn"</string>
     <string msgid="8216738333501875566" name="fingerprint_error_hw_not_available">"Det finns ingen maskinvara för fingeravtryck."</string>
     <string msgid="6306988885793029438" name="fingerprint_error_hw_not_present">"Enheten har ingen fingeravtryckssensor"</string>
@@ -77,6 +78,6 @@
     <string name="selected_year_description">Valt år</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
     <string name="time_tag">Tiden är</string>
-    <string msgid="363496807345461806" name="wallet_buy_button_place_holder">"Köp med Google"</string>
+    <string name="wallet_buy_button_place_holder">Köp med Google</string>
     <string name="year_description">Välj ett år</string>
 </resources>

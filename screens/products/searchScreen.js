@@ -4,6 +4,8 @@ import { View, Text, Image, ScrollView, StyleSheet, TouchableWithoutFeedback } f
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+import {ALGOLIA_APP, ALGOLIA_SEARCH_KEY} from "@env";
+
 import algoliasearch from "algoliasearch";
 
 import { Searchbar, Button } from "react-native-paper";
@@ -50,7 +52,7 @@ export default function SearchScreen({ navigation, route }) {
     }
     const onChangeSearch = (query) => {
         setSearchQuery(query);
-        const client = algoliasearch('NJVKK3NK76', '9c2c90bc64e07fd787cecc1174ae38f5');
+        const client = algoliasearch(ALGOLIA_APP, ALGOLIA_SEARCH_KEY);
         const index = client.initIndex('Products');
         // only query string
         index.search(query).then(({ hits }) => {
@@ -87,7 +89,7 @@ export default function SearchScreen({ navigation, route }) {
                     <Text style={{ ...FONTS.h3, color: COLORS.primary, fontWeight: 'bold' }}>Recent Searches</Text>
                     <Text style={{ ...FONTS.h3, color: COLORS.secondary, fontWeight: 'bold' }}>Clear All</Text>
                 </View>
-                {history.map((h) => {
+                {history && history.map((h) => {
                     return (
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                             <Text style={{ ...FONTS.body3, color: COLORS.primary, fontWeight: 'bold' }} onPress={() => onChangeSearch(h)}>{h}</Text>

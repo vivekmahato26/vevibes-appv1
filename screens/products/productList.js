@@ -27,7 +27,7 @@ import { Modalize } from "react-native-modalize";
 import Collapsible from 'react-native-collapsible';
 import * as Animatable from 'react-native-animatable';
 
-import { filter } from "../../constants/images";
+import { filterImg } from "../../constants/images";
 
 import _ from "lodash";
 
@@ -47,6 +47,8 @@ export default function ProductList({ navigation, route }) {
   const { authenticated, token } = useContext(Auth);
   const { cart, addProductToCart, removeProductFromCart } = React.useContext(CartContext);
   const productsArr = route.params.products;
+  const filter = route.params.filter;
+  const title = route.params.title;
   const scrollX = new Animated.Value(0);
   const [viewStyle, setViewStyle] = useState('th-large');
   const [cartUpdate, setCartUpdate] = React.useState(0);
@@ -147,6 +149,45 @@ export default function ProductList({ navigation, route }) {
   React.useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     getWishlist();
+    if (filter) {
+      let temp;
+      switch (filter) {
+        case "BC":  temp = _.filter(productsArr, ['category', "Bakery & Cakes"]);
+          setProducts(temp);
+          break;
+        case "CH":  temp = _.filter(productsArr, ['category', "Cheese"]);
+          setProducts(temp);
+          break;
+        case "CS":  temp = _.filter(productsArr, ['category', "Cupboard Staples"]);
+          setProducts(temp);
+          break;
+        case "DE":  temp = _.filter(productsArr, ['category', "Dairy & Egg Alternatives"]);
+          setProducts(temp);
+          break;
+        case "DR":  temp = _.filter(productsArr, ['category', "Drinks"]);
+          setProducts(temp);
+          break;
+        case "PN":  temp = _.filter(productsArr, ['category', "Pasta & Noodles"]);
+          setProducts(temp);
+          break;
+        case "PB":  temp = _.filter(productsArr, ['category', "Plant Based Alternatives"]);
+          setProducts(temp);
+          break;
+        case "RC":  temp = _.filter(productsArr, ['category', "Ready To Cook"]);
+          setProducts(temp);
+          break;
+        case "SA":  temp = _.filter(productsArr, ['category', "Sauces"]);
+          setProducts(temp);
+          break;
+        case "SN":  temp = _.filter(productsArr, ['category', "Snacks"]);
+          setProducts(temp);
+          break;
+        case "YD":  temp = _.filter(productsArr, ['category', "Yogurt & Deserts"]);
+          setProducts(temp);
+          break;
+        default : setProducts(productsArr); break;
+      }
+    }
   }, [isFocused]);
   const productDetails = (item) => {
     navigation.navigate('ProductDetails', {
@@ -185,8 +226,8 @@ export default function ProductList({ navigation, route }) {
     try {
       client.setHeader('authorization', `Bearer ${token}`);
       const wishlist = await client.request(GET_WISHLIST);
-      const wishlistData = wishlist.getWishlist;
-      setWishlistData(wishlistData);
+      const wishlistDataArr = wishlist.getWishlist.res;
+      setWishlistData(wishlistDataArr);
     } catch (e) {
       console.log(e.message);
     }
@@ -207,17 +248,17 @@ export default function ProductList({ navigation, route }) {
             <Icon name="chevron-left" style={styles.icon} onPress={() => navigation.goBack()} />
             <Text
               style={{ ...FONTS.h3, color: COLORS.primary, fontWeight: 'bold' }}>
-              Best Selling Items
+              {title}
             </Text>
           </View>
           <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly' }}>
             <Icon
               name="magnify"
               style={[styles.icon, { padding: 5 }]}
-              onPress={() => navigation.navigate("Search",{screen:"Search",productsArr:productsArr})}
+              onPress={() => navigation.navigate("Search", { screen: "Search", productsArr: productsArr })}
             />
             <TouchableWithoutFeedback onPress={() => filterModal.current.open()}>
-              <Image source={{ uri: filter }} style={{ width: 20, height: 20 }} resizeMode="contain"  />
+              <Image source={{ uri: filterImg }} style={{ width: 20, height: 20 }} resizeMode="contain" />
             </TouchableWithoutFeedback>
             <Fa
               name={viewStyle}
@@ -247,9 +288,9 @@ export default function ProductList({ navigation, route }) {
                       name={wishlisted === -1 ? "heart-outline" : "heart"}
                       style={{
                         position: 'absolute',
-                        top: 10,
-                        right: 10,
-                        ...FONTS.body2,
+                        top: 0,
+                        right: 0,
+                        fontSize:25,
                         color: COLORS.error,
                         elevation: 1,
                         zIndex: 10,
@@ -258,7 +299,6 @@ export default function ProductList({ navigation, route }) {
                     />
                     <View
                       style={{
-                        backgroundColor: COLORS.lightGray,
                         borderRadius: 25,
                         padding: 5,
                         marginRight: 0,
@@ -416,7 +456,6 @@ export default function ProductList({ navigation, route }) {
                       style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                       <View
                         style={{
-                          backgroundColor: COLORS.lightGray,
                           borderRadius: 25,
                           padding: 5,
                           marginRight: 10,
@@ -425,9 +464,9 @@ export default function ProductList({ navigation, route }) {
                           name={wishlisted === -1 ? "heart-outline" : "heart"}
                           style={{
                             position: 'absolute',
-                            top: 5,
-                            right: 5,
-                            ...FONTS.body2,
+                            top: 0,
+                            right: 0,
+                            fontSize:25,
                             color: COLORS.error,
                             elevation: 1,
                             zIndex: 10
@@ -682,7 +721,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: COLORS.lightGray,
     borderWidth: 1,
-    elevation: 2
+    elevation: 1
   },
   cardList: {
     width: width - 20,
@@ -690,9 +729,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: 10,
     borderRadius: 15,
-    borderColor: COLORS.lightGray,
-    borderWidth: 1,
-    elevation: 2
   },
   cardImg: {
     width: width / 2 - 50,

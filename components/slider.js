@@ -43,7 +43,7 @@ const Slider = ({navigation, items, type}) => {
         pagingEnabled
         scrollEnabled
         decelerationRate={0}
-        scrollEventThrottle={16}
+        scrollEventThrottle={0}
         snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
         onScroll={Animated.event(
@@ -76,7 +76,7 @@ const Slider = ({navigation, items, type}) => {
                   <Text
                     key={index}
                     style={{
-                      ...FONTS.h2,
+                      ...FONTS.h6,
                       color: COLORS.primary,
                       textAlign: 'center',
                     }}>

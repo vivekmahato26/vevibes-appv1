@@ -9,13 +9,21 @@ const {width, height} = Dimensions.get('window');
 import theme from '../../constants/theme';
 const {COLORS, FONTS, SIZES} = theme;
 
-export default function Sucess({navigation}) {
+import CartContext from "../../constants/context/cartContext";
+
+import moment from "moment";
+
+
+export default function Sucess({navigation,route}) {
+  const {emptyCart} = React.useContext(CartContext);
+  const orderId = route.params.orderId;
+  
   return (
     <View style={{flex: 1}}>
       <Icon
         name="close-thick"
         style={{...FONTS.h2, color: COLORS.primary, margin: 10}}
-        onPress={() => navigation.navigate("ProductHome")}
+        onPress={() => {emptyCart();navigation.navigate("ProductHome")}}
       />
       <View
         style={{
@@ -69,7 +77,7 @@ export default function Sucess({navigation}) {
                 color: COLORS.secondary,
                 fontWeight: 'bold',
               }}>
-              #4567865365
+              {orderId.id}
             </Text>
           </View>
           <View>
@@ -80,11 +88,11 @@ export default function Sucess({navigation}) {
                 color: COLORS.secondary,
                 fontWeight: 'bold',
               }}>
-              11 June, 10:00 am 2021
+              {moment().format('MMMM Do YYYY')}
             </Text>
           </View>
         </View>
-        <Text onPress={() => navigation.navigate("Orders")}
+        <Text onPress={() => {emptyCart();navigation.navigate("Orders")}}
           style={{...FONTS.body2, color: COLORS.secondary, fontWeight: 'bold'}}>
           Track Your Order
         </Text>
@@ -95,7 +103,7 @@ export default function Sucess({navigation}) {
             marginTop: 20,
             paddingLeft: 10,
             paddingRight: 10,
-          }} onPress={() => navigation.navigate("ProductHome")}>
+          }} onPress={() => {emptyCart();navigation.navigate("ProductHome")}}>
           <Text 
             style={{...FONTS.body2, color: COLORS.white, fontWeight: '500'}}>
             Back To Home

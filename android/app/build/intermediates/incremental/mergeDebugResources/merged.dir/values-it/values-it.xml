@@ -124,6 +124,7 @@
     <string name="ending_in">%1$s - %2$s</string>
     <string name="expiry_date_hint">MM/AA</string>
     <string name="expiry_label_short">Scad.</string>
+    <string name="fcm_fallback_notification_channel_label">Varie</string>
     <string msgid="1072308044213194243" name="fingerprint_dialog_touch_sensor">"Tocca sensore impronte"</string>
     <string msgid="8216738333501875566" name="fingerprint_error_hw_not_available">"Hardware per l\'impronta non disponibile."</string>
     <string msgid="6306988885793029438" name="fingerprint_error_hw_not_present">"Questo dispositivo non è dotato di sensore di impronte"</string>
@@ -162,5 +163,5 @@
     <string name="title_add_an_address">Aggiungi un indirizzo</string>
     <string name="title_payment_method">Metodo di pagamento</string>
     <string name="title_select_shipping_method">Seleziona metodo di spedizione</string>
-    <string msgid="363496807345461806" name="wallet_buy_button_place_holder">"Acquista con Google"</string>
+    <string name="wallet_buy_button_place_holder">Acquista con Google</string>
 </resources>

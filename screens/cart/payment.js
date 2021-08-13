@@ -8,8 +8,10 @@ import {
   ScrollView,
   ImageBackground,
   Image,
+  Platform,
+  TouchableWithoutFeedback
 } from 'react-native';
-import { Divider, Button, Snackbar, TextInput } from 'react-native-paper';
+import { Divider, Button, Snackbar, TextInput,Modal, Portal, Provider ,ActivityIndicator} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fa from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
@@ -21,13 +23,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import Auth from "../../constants/context/auth";
 import cartContext from "../../constants/context/cartContext";
 import UserContext from '../../constants/context/userContext';
-import { client, GET_CARDS, CHECKOUT } from "../../constants/graphql";
+import { client, GET_CARDS, CHECKOUT, CREATE_ORDER } from "../../constants/graphql";
 
 import stripe from 'tipsi-stripe'
 
-import Axios from "axios";
+import { createShipment, createLable } from "../../constants/shipengine";
 
-import {SHIP_ENGINE,STRIPE_KEY} from "@env";
+import { STRIPE_KEY } from "@env";
 
 stripe.setOptions({
   publishableKey: STRIPE_KEY,
@@ -37,6 +39,8 @@ stripe.setOptions({
 const { width, height } = Dimensions.get('window');
 import theme from '../../constants/theme';
 const { COLORS, FONTS, SIZES } = theme;
+
+import PushNotification from "react-native-push-notification";
 
 import { useIsFocused } from "@react-navigation/native";
 
@@ -49,10 +53,18 @@ export default function Payment({ navigation, route }) {
   const discount = route.params.discount;
   const total = route.params.total;
   const grandTotal = route.params.grandTotal;
-  const deliveryPrice = route.params.deliveryPrice;
+  const deliveryOption = route.params.deliveryOption;
   const address = route.params.address;
   const [checked, setChecked] = React.useState(-1);
-  const [payment, setPayment] = React.useState({ type: "", details: {} });
+  const [payment, setPayment] = React.useState({
+    type: "", details: {
+      brand: "",
+      id: "",
+      name: "",
+      number: "",
+      expires: ""
+    }
+  });
   const [visible, setVisible] = React.useState(false);
   const [clientSecret, setClientSecret] = React.useState();
   const [error, setError] = React.useState({ status: false, message: "" });
@@ -62,7 +74,7 @@ export default function Payment({ navigation, route }) {
   const getCards = async () => {
     client.setHeader('authorization', `Bearer ${token}`);
     const cards = await client.request(GET_CARDS);
-    setCards(cards.getCards);
+    setCards(cards.getCards.res);
     setPayment(prev => ({ type: "card", details: cards.getCards[0] }))
   }
   React.useEffect(() => {
@@ -89,6 +101,11 @@ export default function Payment({ navigation, route }) {
 
   const [cvc, setCvc] = React.useState("");
   const [cvcErr, setCvcErr] = React.useState(false);
+  const [loading,setLoading] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20,height: '100%'};
 
   const paymetnOptions = async (type, index) => {
     if (index === undefined) {
@@ -99,155 +116,186 @@ export default function Payment({ navigation, route }) {
       setPayment(prev => ({ type: type, details: cards[index] }))
       client.setHeader('authorization', `Bearer ${token}`);
       var args = {
-        amount: grandTotal,
+        amount: Math.ceil(grandTotal * 100),
         currency: "GBP",
-        paymentMethod: ["card"]
+        paymentMethod: ["card"],
+        description: "Payment for purchase made on  Vevibes"
       }
       const data = await client.request(CHECKOUT, args);
       setClientSecret(data.checkout);
     }
   }
 
+  const createOrder = async (lable, shipmentArr, paymentIntentId) => {
+    var tempShipment = [];
+    for (var i = 0; i < shipmentArr.length; i++) {
+      tempShipment.push({
+        shipment_id: shipmentArr[i].shipment_id,
+        carrier_id: shipmentArr[i].carrier_id,
+        service_code: shipmentArr[i].service_code,
+        ship_date: shipmentArr[i].ship_date,
+        created_at: shipmentArr[i].created_at,
+        modified_at: shipmentArr[i].modified_at,
+        shipment_status: shipmentArr[i].shipment_status,
+      });
+    }
+    var tempLable = [];
+    for (var i = 0; i < lable.length; i++) {
+      tempLable.push({
+        label_id: lable[i].label_id,
+        status: lable[i].status,
+        ship_date: lable[i].ship_date,
+        created_at: lable[i].created_at,
+        shipment_cost: {
+          currency: lable[i].shipment_cost.currency,
+          amount: lable[i].shipment_cost.amount
+        },
+        tracking_number: lable[i].tracking_number,
+        is_return_label: lable[i].is_return_label,
+        voided: lable[i].voided,
+        trackable: lable[i].trackable,
+        carrier_code: lable[i].carrier_code,
+        tracking_status: lable[i].tracking_status,
+        pdf: lable[i].label_download.pdf,
+        png: lable[i].label_download.png,
+        charge_event: lable[i].charge_event
+      })
+    }
+    const tempCart = [];
+    for (let i = 0; i < cart.length; i++) {
+      tempCart.push({ product: cart[i].product.id, quantity: cart[i].quantity })
+    }
+    const order = {
+      cart: tempCart,
+      lable: tempLable,
+      shipment: tempShipment,
+      payment: paymentIntentId,
+      coupon: couponCode,
+      cartValue: grandTotal,
+      address: address.id,
+      status: {
+        updatedAt: new Date(),
+        status: "Order Placed",
+        statusCode: "01"
+      },
+      paymentStatus: "Paid"
+    };
+    const orderRequest = await client.request(CREATE_ORDER, { input: order });
+    const orderId = orderRequest.createOrder;
+    setLoading(false);
+    navigation.navigate("Sucess",{screen: "Sucess",orderId: orderId});
+  }
+
 
   const shipProduct = async (paymentIntentId) => {
     var weight = 0;
-    for(var i = 0; i < cart.length; i++) {
+    for (var i = 0; i < cart.length; i++) {
       weight += parseFloat(cart[i].weightKG)
     }
-    const temp = "yes";
-    if (address.type === "Office") {
-      temp = "no";
+    const shipment = await createShipment(address, weight, deliveryOption.serviceCode);
+    const shipmentArr = shipment.shipments;
+    const lable = []
+    for (var i = 0; i < shipmentArr.length; i++) {
+      const temp = await createLable(shipmentArr[i].shipment_id);
+      lable.push(temp);
     }
-    const body = {
-      shipment: {
-        service_code: "ups_ground",
-        ship_to: {
-          name: address.name,
-          address_line1: address.line1,
-          city_locality: address.city,
-          state_province: address.state,
-          postal_code: address.pin,
-          country_code: address.countryCode,
-          address_residential_indicator: temp
-        },
-        ship_from: {
-          name: originAddr.name,
-          company_name: originAddr.company_name,
-          phone: originAddr.phone,
-          address_line1: originAddr.address_line1,
-          city_locality: originAddr.city_locality,
-          state_province: originAddr.state_province,
-          postal_code: originAddr.postal_code,
-          country_code: originAddr.country_code,
-          address_residential_indicator: originAddr.address_residential_indicator,
-        },
-        packages: [
-          {
-            weight: {
-              value: weight,
-              unit: "kilogram"
-            }
-          }
-        ]
-      }
-    }
-
-    const shipmentUrl = "https://api.shipengine.com/v1/shipments";
-    const apikey = SHIP_ENGINE;
-    try {
-      // fetch data from a url endpoint
-      const response = await Axios.post(shipmentUrl,JSON.stringify(body),{"API-Key" : apikey})
-      const data = await response.json();
-      const lableUrl = `https://api.shipengine.com/v1/labels/shipment/${data.shipments.shipment_id}`;
-      const responseLable = await Axios.post(shipmentUrl,{"API-Key" : apikey});
-      const lableData = await responseLable.json();
-
-    } catch (error) {
-      console.log(error.message); // catches both errors
-    }
+    createOrder(lable, shipmentArr, paymentIntentId);
   }
 
   const handlePayment = async () => {
+    setLoading(true);
     if (checked === -1) {
       onToggleSnackBar();
       return;
     }
     let pay;
-    if (payment.type === 'card') {
-      if (cvc === undefined || cvc === "") {
+    switch (payment.type) {
+      case "card": if (cvc === undefined || cvc === "") {
         setCvcErr(true);
         return;
       } else {
         modalizeRef.current.close();
       }
-      pay = payment.details
-      try {
-        const paymentMethod = await stripe.createPaymentMethod({
-          card: {
-
-            number: payment.details.number,
-            expMonth: parseInt(payment.details.expires.split('/')[0]),
-            expYear: parseInt(payment.details.expires.split('/')[1]),
-            cvc: cvc,
-          },
-          billingDetails: {
-            address: {
-              city: address.city,
-              country: address.countryCode,
-              line1: address.line1,
-              line2: address.line2,
-              postalCode: address.pin,
-              state: address.state,
+        pay = payment.details
+        try {
+          const paymentMethod = await stripe.createPaymentMethod({
+            card: {
+              number: payment.details.number,
+              expMonth: parseInt(payment.details.expires.split('/')[0]),
+              expYear: parseInt(payment.details.expires.split('/')[1]),
+              cvc: cvc,
             },
-            email: user.email,
-            name: user.name,
-            phone: user.phone,
-          },
-        })
-        const confirmPaymentIntent = await stripe.confirmPaymentIntent({
-          clientSecret: clientSecret,
-          paymentMethodId: paymentMethod.id
-        })
-        if (confirmPaymentIntent.status === "succeeded") {
-          navigation.navigate("Sucess");
-          shipProduct(confirmPaymentIntent.paymentIntentId);
-        } else {
-          navigation.navigate("Failure");
+            billingDetails: {
+              address: {
+                city: address.city,
+                country: address.countryCode,
+                line1: address.line1,
+                line2: address.line2,
+                postalCode: address.pin,
+                state: address.state,
+              },
+              email: user.email,
+              name: user.name,
+              phone: user.phone,
+            },
+          })
+          const confirmPaymentIntent = await stripe.confirmPaymentIntent({
+            clientSecret: clientSecret,
+            paymentMethodId: paymentMethod.id
+          });
+          console.log(confirmPaymentIntent);
+          if (confirmPaymentIntent.status === "succeeded") {
+            shipProduct(confirmPaymentIntent.paymentIntentId);
+          } else {
+            navigation.navigate("Failure");
+          }
+        } catch (e) {
+          console.log(e);
+          setError({ status: true, message: e.message })
+          return;
         }
-      } catch (e) {
-        setError({ status: true, message: e.message })
-        return;
-      }
-    } else {
-      pay = payment;
-      const options = {
-        total_price: grandTotal,
-        currency_code: 'INR',
-        shipping_address_required: false,
-        billing_address_required: true,
-        shipping_countries: ["GB"],
-        line_items: [{
-          currency_code: 'INR',
-          description: `Payment for cart `,
-          total_price: grandTotal,
-          unit_price: total,
-          quantity: '1',
-        }],
+        break;
+      case "google": pay = payment;
+        const options = {
+          total_price: grandTotal.toString(),
+          currency_code: 'GBP',
+          shipping_address_required: false,
+          billing_address_required: true,
+          shipping_countries: ["GB"],
+          line_items: [{
+            currency_code: 'GBP',
+            description: `Payment for purchase made on  Vevibes`,
+            total_price: grandTotal.toString(),
+            unit_price: total.toString(),
+            quantity: '1',
+          }],
+        }
+        try {
+          const token = await stripe.paymentRequestWithAndroidPay(options);
+          console.log(token);
+          stripe.completeNativePayRequest();
+        }
+        catch (err) {
+          console.log(err.message);
+        }
+        break;
+      case 'bank': const params = {
+        // mandatory
+        accountNumber: '000123456789',
+        countryCode: 'us',
+        currency: 'usd',
+        // optional
+        routingNumber: '110000000', // 9 digits
+        accountHolderName: 'Test holder name',
+        accountHolderType: 'company', // "company" or "individual"
       }
 
-      try {
-        const token = await stripe.paymentRequestWithAndroidPay(options);
-        console.log(token);
-        stripe.completeNativePayRequest();
-      }
-      catch (err) {
-        console.log(err.message);
-      }
+        const token = await stripe.createTokenWithBankAccount(params)
+        break;
     }
-
-
   }
   return (
+    <Provider>
     <View style={{ margin: 10, flex: 1 }}>
       <View>
         <View
@@ -328,59 +376,62 @@ export default function Payment({ navigation, route }) {
                   }}
                   resizeMode="contain"
                 >
-                  <View
-                    style={{
-                      width: width / 2.5,
-                      height: 220,
-                      backgroundColor: 'transparent',
-                      borderRadius: 10,
-                    }}>
-                    <CheckBox
-                      right
-                      checkedIcon={
-                        <Icon
-                          name="record-circle-outline"
-                          style={{ ...FONTS.body2, color: COLORS.white }}
-                        />
-                      }
-                      iconType="material"
-                      uncheckedIcon={
-                        <Icon
-                          name="circle-outline"
-                          style={{ ...FONTS.body2, color: COLORS.white }}
-                        />
-                      }
-                      checked={checked === index}
-                      onPress={() => { modalizeRef.current.open(); paymetnOptions('card', index); }}
-                    />
-                    <View style={{ marginTop: 0, margin: 15 }}>
-                      <Fa name={`cc-${item.brand}`} style={{ fontSize: 40, color: COLORS.white }} />
-                      <Text
-                        style={{
-                          ...FONTS.body3,
-                          color: COLORS.white,
-                          fontWeight: 'bold',
-                          marginTop: 10,
-                        }}>
-                        {item.number.replace(/\w(?=\w{4})/g, "*")}
-                      </Text>
-                      <Text
-                        style={{
-                          ...FONTS.body2,
-                          fontWeight: 'bold',
-                          marginTop: 20,
-                        }}>
-                        {item.name}
-                      </Text>
-                      <Text
-                        style={{
-                          ...FONTS.body4,
-                          color: COLORS.white,
-                        }}>
-                        Expires {item.expires}
-                      </Text>
+                  <TouchableWithoutFeedback onPress={() => { modalizeRef.current.open(); paymetnOptions('card', index); }}>
+
+                    <View
+                      style={{
+                        width: width / 2.5,
+                        height: 220,
+                        backgroundColor: 'transparent',
+                        borderRadius: 10,
+                      }}>
+                      <CheckBox
+                        right
+                        checkedIcon={
+                          <Icon
+                            name="record-circle-outline"
+                            style={{ ...FONTS.body2, color: COLORS.white }}
+                          />
+                        }
+                        iconType="material"
+                        uncheckedIcon={
+                          <Icon
+                            name="circle-outline"
+                            style={{ ...FONTS.body2, color: COLORS.white }}
+                          />
+                        }
+                        checked={checked === index}
+                        onPress={() => { modalizeRef.current.open(); paymetnOptions('card', index); }}
+                      />
+                      <View style={{ marginTop: 0, margin: 15 }}>
+                        <Fa name={`cc-${item.brand}`} style={{ fontSize: 40, color: COLORS.white }} />
+                        <Text
+                          style={{
+                            ...FONTS.body3,
+                            color: COLORS.white,
+                            fontWeight: 'bold',
+                            marginTop: 10,
+                          }}>
+                          {item.number.replace(/\w(?=\w{4})/g, "*")}
+                        </Text>
+                        <Text
+                          style={{
+                            ...FONTS.body2,
+                            fontWeight: 'bold',
+                            marginTop: 20,
+                          }}>
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{
+                            ...FONTS.body4,
+                            color: COLORS.white,
+                          }}>
+                          Expires {item.expires}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
+                  </TouchableWithoutFeedback>
                 </ImageBackground>
               );
             }}
@@ -393,54 +444,63 @@ export default function Payment({ navigation, route }) {
               justifyContent: 'space-around',
               marginTop: 20,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <CheckBox
-                start
-                checkedIcon={
-                  <Icon
-                    name="record-circle-outline"
-                    style={{ ...FONTS.body2, color: COLORS.secondary }}
+            {Platform.OS === "ios" &&
+              <TouchableWithoutFeedback onPress={() => paymetnOptions('apple')}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <CheckBox
+                    start
+                    checkedIcon={
+                      <Icon
+                        name="record-circle-outline"
+                        style={{ ...FONTS.body2, color: COLORS.secondary }}
+                      />
+                    }
+                    iconType="material"
+                    uncheckedIcon={
+                      <Icon
+                        name="circle-outline"
+                        style={{ ...FONTS.body2, color: COLORS.gray }}
+                      />
+                    }
+                    checked={checked === 'apple'}
+                    onPress={() => paymetnOptions('apple')}
+                    containerStyle={{ margin: 0, padding: 0 }}
                   />
-                }
-                iconType="material"
-                uncheckedIcon={
-                  <Icon
-                    name="circle-outline"
-                    style={{ ...FONTS.body2, color: COLORS.gray }}
-                  />
-                }
-                checked={checked === 'apple'}
-                onPress={() => paymetnOptions('apple')}
-                containerStyle={{ margin: 0, padding: 0 }}
-              />
-              <Fa name="apple-pay" style={{ fontSize: 50, color: COLORS.apple }} />
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Fa name="apple-pay" style={{ fontSize: 50, color: COLORS.apple }} />
+                </View>
+              </TouchableWithoutFeedback>
+            }
+            {Platform.OS === "android" &&
+              <TouchableWithoutFeedback onPress={() => paymetnOptions('google')}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-              <CheckBox
-                start
-                checkedIcon={
-                  <Icon
-                    name="record-circle-outline"
-                    style={{ ...FONTS.body2, color: COLORS.secondary }}
+                  <CheckBox
+                    start
+                    checkedIcon={
+                      <Icon
+                        name="record-circle-outline"
+                        style={{ ...FONTS.body2, color: COLORS.secondary }}
+                      />
+                    }
+                    iconType="material"
+                    uncheckedIcon={
+                      <Icon
+                        name="circle-outline"
+                        style={{ ...FONTS.body2, color: COLORS.gray }}
+                      />
+                    }
+                    checked={checked === 'google'}
+                    onPress={() => paymetnOptions('google')}
+                    containerStyle={{ margin: 0, padding: 0 }}
                   />
-                }
-                iconType="material"
-                uncheckedIcon={
-                  <Icon
-                    name="circle-outline"
-                    style={{ ...FONTS.body2, color: COLORS.gray }}
+                  <Image source={{ uri: "https://res.cloudinary.com/vevibes/image/upload/v1626859350/App%20Assets/google-pay-gpay-logo_i63odz.png" }}
+                    resizeMode="contain"
+                    style={{ width: 100, height: 40 }}
                   />
-                }
-                checked={checked === 'google'}
-                onPress={() => paymetnOptions('google')}
-                containerStyle={{ margin: 0, padding: 0 }}
-              />
-              <Image source={{ uri: "https://res.cloudinary.com/vevibes/image/upload/v1626859350/App%20Assets/google-pay-gpay-logo_i63odz.png" }}
-                resizeMode="contain"
-                style={{ width: 100, height: 40 }}
-              />
-            </View></View>
+                </View>
+              </TouchableWithoutFeedback>
+            }
+          </View>
         </ScrollView>
       </View>
       <View>
@@ -455,7 +515,7 @@ export default function Payment({ navigation, route }) {
           </Text>
           <Text
             style={{ ...FONTS.body5, color: COLORS.primary, fontWeight: 'bold' }}>
-            £{deliveryPrice}
+            £{deliveryOption.rate}
           </Text>
         </View>
         <Divider
@@ -602,7 +662,7 @@ export default function Payment({ navigation, route }) {
               }}
               resizeMode="cover"
             />
-            <View style={{ padding: 15 }}>
+            {payment.details && <View style={{ padding: 15 }}>
               <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
                 <Fa name={`cc-${payment.details.brand}`} style={{ textAlign: "left", ...FONTS.body1, color: COLORS.white }} />
               </View>
@@ -618,7 +678,7 @@ export default function Payment({ navigation, route }) {
                   <Text style={{ ...FONTS.body3, color: COLORS.gray, fontWeight: 'bold' }}>{payment.details.expires}</Text>
                 </View>
               </View>
-            </View>
+            </View>}
           </LinearGradient>
           <TextInput name="cvc" label="CVC*" mode="outlined" error={cvcErr} style={{ width: width - 100 }} maxLength={4} keyboardType="number-pad" onChangeText={text => setCvc(text)} />
           <Button
@@ -637,6 +697,12 @@ export default function Payment({ navigation, route }) {
           </Button>
         </View>}
       </Modalize>}
+      <Portal>
+        <Modal visible={loading} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+        <ActivityIndicator animating={true} color={COLORS.primary} size={45}/>
+        </Modal>
+      </Portal>
     </View>
+    </Provider>
   );
 }

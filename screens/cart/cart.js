@@ -60,35 +60,33 @@ export default function Cart({ navigation, route }) {
   };
   const calculateCart = () => {
     var temp = 0;
-    cart.map((item) => {
-      if (item.product.salePrice) {
-        temp = parseFloat(temp + item.product.salePrice * item.quantity).toFixed(2)
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].product.salePrice !== null && cart[i].product.salePrice !== undefined) {
+        temp = parseFloat(parseFloat(temp + cart[i].product.salePrice * cart[i].quantity).toFixed(2))
       } else {
-        temp = parseFloat(temp + item.product.price * item.quantity).toFixed(2)
-
+        temp = parseFloat(parseFloat(temp + cart[i].product.price * cart[i].quantity).toFixed(2))
       }
-    })
+    }
     setTotal(temp);
     var tempGrandTotal = 0
     var tempDiscount = 0;
     if (discount) {
-
       if (temp > minCartPrice) {
         if (percent) {
-          tempDiscount = parseFloat(temp * discount / 100).toFixed(2);
-          tempGrandTotal = parseFloat(temp - temp * discount / 100).toFixed(2);
+          tempDiscount = parseFloat(parseFloat(temp * discount / 100).toFixed(2));
+          tempGrandTotal = parseFloat(parseFloat(temp - temp * discount / 100).toFixed(2));
         } else {
           tempDiscount = discount;
-          tempGrandTotal = total - discount;
+          tempGrandTotal = parseFloat((total - discount).toFixed(2));
         }
         setDiscountPrice(tempDiscount);
         setCouponErr((prev) => (false))
       } else {
-        tempGrandTotal = parseFloat(temp).toFixed(2);
+        tempGrandTotal = parseFloat(parseFloat(temp).toFixed(2));
         setCouponErr((prev) => (`Minimum cart value should be £${minCartPrice}`))
       }
     } else {
-      tempGrandTotal = parseFloat(temp).toFixed(2);
+      tempGrandTotal = parseFloat(parseFloat(temp).toFixed(2));
     }
     setGrandTotal(tempGrandTotal);
   }
@@ -191,7 +189,6 @@ export default function Cart({ navigation, route }) {
               scrollEventThrottle={16}
               renderItem={(product) => {
                 const item = product.item;
-                console.log(item);
                 return (
                   <Card style={styles.cardList} >
                     <View
@@ -374,8 +371,11 @@ export default function Cart({ navigation, route }) {
                 </View>
               </View>
             </TouchableWithoutFeedback>
-            {couponErr && <Text style={{ margin: 10, color: 'red', marginTop: 0, textAlign: "center" }}>{couponErr}</Text>}
+            {couponErr && <Text style={{ margin: 10, color: 'red', marginBottom: 20, textAlign: "center" }}>{couponErr}</Text>}
             <View style={{ margin: 10, marginTop: '20%' }}>
+              {parseFloat(total) < 65 && <View style={{justifyContent: 'center',flexDirection: 'row'}}>
+                <Text style={{ ...FONTS.h3, color: COLORS.secondary }}>Add products worth £{Math.ceil(65-parseFloat(total))} more to get free delivery</Text>
+              </View>}
               <View
                 style={{
                   flexDirection: 'row',

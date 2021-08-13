@@ -56,7 +56,7 @@ const { width, height } = Dimensions.get('window');
 import algoliasearch from "algoliasearch";
 import Search from "../../components/search";
 
-import {add_product_to_cart_event,remove_product_to_cart_event} from "../../constants/algolia";
+import { add_product_to_cart_event, remove_product_to_cart_event } from "../../constants/algolia";
 
 
 export default function ProductHome({ route, navigation }) {
@@ -69,7 +69,6 @@ export default function ProductHome({ route, navigation }) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [productsData, setProductsData] = React.useState([]);
   const [featuredProducts, setFeaturedProducts] = React.useState([]);
-  //const [cart, dispatch] = useReducer(shopReducer, []);
   const [cartUpdate, setCartUpdate] = React.useState(0);
   const [predictions, setPredictions] = React.useState([]);
   const showSearch = React.createRef();
@@ -96,15 +95,15 @@ export default function ProductHome({ route, navigation }) {
 
   const getProducts = async () => {
     const products = await client.request(GET_PRODUCTS);
-    setProductsData(products.getProducts);
+    setProductsData(products.getProducts.res);
   };
 
   const getFeaturedProducts = async () => {
     const products = await client.request(GET_FEATURED_PRODUCTS);
-    setFeaturedProducts(products.getFeaturedProducts);
+    setFeaturedProducts(products.getFeaturedProducts.res);
   };
 
-  const addProductToCartHandler =  (product) => {
+  const addProductToCartHandler = (product) => {
     addProductToCart(product);
     setCartUpdate(cartUpdate + 1);
     add_product_to_cart_event(product);
@@ -135,7 +134,7 @@ export default function ProductHome({ route, navigation }) {
   const dummyData = [
     {
       title: 'Anise Aroma Art Bazar',
-      url: 'https://i.ibb.co/hYjK44F/anise-aroma-art-bazaar-277253.jpg',
+      url: 'https://res.cloudinary.com/vevibes/image/upload/s--W8oWAPFG--/v1628758857/banners/banner_1_vmmamj.png',
       description:
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       id: 1,
@@ -202,18 +201,57 @@ export default function ProductHome({ route, navigation }) {
     {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531481/App%20Assets/Asset_42_yownt0.png',
       title: ['Bakery & Cakes'],
+      head: "Bakery & Cakes", filter: "BC"
+    },
+    {
+      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531481/App%20Assets/Asset_42_yownt0.png',
+      title: ['Cheese'],
+      head: "Cheese", filter: "CH"
+    },
+    {
+      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531481/App%20Assets/Asset_42_yownt0.png',
+      title: ['Cupboard',' Staples'],
+      head: "Cupboard Staples", filter: "CS"
     },
     {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_48_drfe9y.png',
       title: ['Diary & Egg', 'Alternatives'],
+      head: "Diary & Egg Alternatives", filter: "DE"
+    },
+    {
+      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_48_drfe9y.png',
+      title: ['Drinks'],
+      head: "Drinks", filter: "DR"
+    },
+    {
+      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_48_drfe9y.png',
+      title: ['Pasta & ','Noodles'],
+      head: "Pasta & Noodles", filter: "PN"
+    },
+    {
+      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_48_drfe9y.png',
+      title: ['Ready To','Cook'],
+      head: "Ready To Cook", filter: "RC"
     },
     {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_47_yv1ybt.png',
       title: ['Plant Based', 'Alternatives'],
+      head: "Plant Based Alternatives", filter: "PB"
+    },
+    {
+      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_46_rnksjt.png',
+      title: ['Sauces'],
+      head: "Sauces", filter: "SA"
     },
     {
       uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_46_rnksjt.png',
       title: ['Snacks'],
+      head: "Snacks", filter: "SN"
+    },
+    {
+      uri: 'https://res.cloudinary.com/vevibes/image/upload/v1624531482/App%20Assets/Asset_46_rnksjt.png',
+      title: ['Yogurt & Dairy'],
+      head: "Yogurt & Deserts", filter: "YD"
     },
   ];
 
@@ -365,27 +403,27 @@ export default function ProductHome({ route, navigation }) {
               }>
               <Menu.Item
                 style={styles.top}
-                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "BC" })}
+                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Bakery & Cakes", filter: "BC" })}
                 title="Bakery &amp; Cakes"
               />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "CH" })} title="Cheese" />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "CS" })} title="Cupboard Staples" />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "DE" })} title="Dairy &amp; Egg Alternatives" />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "DR" })} title="Drinks" />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "PA" })} title="Pasta &amp; Noodles" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Cheese", filter: "CH" })} title="Cheese" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Cupboard Staples", filter: "CS" })} title="Cupboard Staples" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Dairy & Egg Alternatives", filter: "DE" })} title="Dairy &amp; Egg Alternatives" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Drinks", filter: "DR" })} title="Drinks" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Pasta & Noodles", filter: "PN" })} title="Pasta &amp; Noodles" />
               <Menu.Item
                 style={styles.top}
-                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "PB" })}
+                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Plant Based Alternatives", filter: "PB" })}
                 title="Plant Based Alternatives"
               />
               <Menu.Item
                 style={styles.top}
-                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "RC" })}
+                onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Ready To Cook", filter: "RC" })}
                 title="Ready To Cook"
               />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "SA" })} title="Sauces" />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "SN" })} title="Snacks" />
-              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", filter: "YD" })} title="Yogurt &amp; Deserts" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Sauces", filter: "SA" })} title="Sauces" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Snacks", filter: "SN" })} title="Snacks" />
+              <Menu.Item style={styles.top} onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: "Yogurt & Deserts", filter: "YD" })} title="Yogurt &amp; Deserts" />
             </Menu>
             <Searchbar
               placeholder="Search For Products"
@@ -420,25 +458,27 @@ export default function ProductHome({ route, navigation }) {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => {
                   return (
-                    <View style={{ padding: 10, flex: 1, alignItems: 'center' }}>
-                      <Image
-                        source={{ uri: item.uri }}
-                        style={{ width: 60, height: 60 }}
-                      />
-                      {item.title.map((t, index) => {
-                        return (
-                          <Text
-                            key={t + index}
-                            style={{
-                              ...FONTS.body4,
-                              color: COLORS.primary,
-                              fontWeight: 'bold',
-                            }}>
-                            {t}
-                          </Text>
-                        );
-                      })}
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate("ProductList", { screen: "ProductList", products: productsData, title: item.head, filter: item.filter })}>
+                      <View style={{ padding: 10, flex: 1, alignItems: 'center' }}>
+                        <Image
+                          source={{ uri: item.uri }}
+                          style={{ width: 60, height: 60 }}
+                        />
+                        {item.title.map((t, index) => {
+                          return (
+                            <Text
+                              key={t + index}
+                              style={{
+                                ...FONTS.body4,
+                                color: COLORS.primary,
+                                fontWeight: 'bold',
+                              }}>
+                              {t}
+                            </Text>
+                          );
+                        })}
+                      </View>
+                    </TouchableWithoutFeedback>
                   );
                 }}
                 onScroll={Animated.event(
@@ -462,7 +502,7 @@ export default function ProductHome({ route, navigation }) {
                   onPress={() => {
                     navigation.navigate('ProductList', {
                       screen: 'ProductList',
-                      products: productsData,
+                      products: productsData, title: "Best Selling Items",
                     });
                   }}>
                   See All
@@ -636,7 +676,7 @@ export default function ProductHome({ route, navigation }) {
                 renderItem={({ item }) => {
                   return (
                     <Card style={styles.cardView}>
-                      <Image style={styles.image} source={{ uri: item.url }} />
+                      <Image style={styles.image} source={{ uri: item.url }} resizeMode="contain" />
                       <View style={styles.textView}>
                         <Text style={styles.itemTitle}> {item.title}</Text>
                         <Text style={styles.itemDescription}>
@@ -669,6 +709,7 @@ export default function ProductHome({ route, navigation }) {
                     navigation.navigate('ProductList', {
                       screen: 'ProductList',
                       products: featuredProducts,
+                      title: "Exclusive Products"
                     });
                   }}>
                   See All
@@ -1042,7 +1083,7 @@ const styles = StyleSheet.create({
   },
   cardImg: {
     width: width / 2 - 60,
-    height: width / 2 - 60,
+    height: width / 2,
     borderRadius: 10,
   },
   button: {
@@ -1082,7 +1123,7 @@ const styles = StyleSheet.create({
   image: {
     width: width - 20,
     height: height / 3,
-    borderRadius: 10,
+    borderRadius: 5,
   },
   itemTitle: {
     color: 'white',

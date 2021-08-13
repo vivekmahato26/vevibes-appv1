@@ -72,7 +72,7 @@ export default function Wishlist({ navigation }) {
     try {
       client.setHeader('authorization', `Bearer ${token}`);
       const wishlist = await client.request(GET_WISHLIST);
-      const wishlistData = wishlist.getWishlist;
+      const wishlistData = wishlist.getWishlist.res;
       setData(wishlistData);
     } catch (e) {
       console.log(e.message);

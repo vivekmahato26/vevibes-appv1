@@ -47,6 +47,7 @@
     <string msgid="669893613918351210" name="common_signin_button_text_long">"Prijavi se pomoću Googlea"</string>
     <string msgid="5912733858573823945" name="confirm_device_credential_password">"Koristi lozinku"</string>
     <string msgid="4776854077120974966" name="default_error_msg">"Nepoznata greška"</string>
+    <string name="fcm_fallback_notification_channel_label">Razno</string>
     <string msgid="1072308044213194243" name="fingerprint_dialog_touch_sensor">"Dodirnite senzor za otisak prsta"</string>
     <string msgid="8216738333501875566" name="fingerprint_error_hw_not_available">"Hardver za otisak prsta nije dostupan."</string>
     <string msgid="6306988885793029438" name="fingerprint_error_hw_not_present">"Ovaj uređaj nema senzor za otisak prsta"</string>
@@ -59,4 +60,5 @@
     <string msgid="7309881387583143581" name="generic_error_user_canceled">"Korisnik je otkazao autentifikaciju."</string>
     <string msgid="730395136688082741" name="search_menu_title">"Pretražite"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="wallet_buy_button_place_holder">Kupi putem Googlea</string>
 </resources>
